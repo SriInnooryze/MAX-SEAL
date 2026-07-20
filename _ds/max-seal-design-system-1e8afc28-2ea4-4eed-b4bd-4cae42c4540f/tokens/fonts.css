@@ -1,0 +1,10 @@
+/* ============================================================
+   Max-Seal — Webfonts
+   Prototype loads from Google Fonts CDN. For production, self-host
+   these families and replace the @import with local @font-face
+   rules (see readme.md → Visual Foundations / caveats).
+   Families: Archivo (display/UI), Hanken Grotesk (body),
+   IBM Plex Mono (technical).
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");

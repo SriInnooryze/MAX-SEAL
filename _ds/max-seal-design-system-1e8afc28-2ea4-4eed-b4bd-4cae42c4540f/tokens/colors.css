@@ -1,0 +1,112 @@
+/* ============================================================
+   Max-Seal — Color tokens
+   Highlight: Pantone 2995 C (azure). Built around warm white,
+   deep navy, graphite, steel grey, and restrained metallics.
+   ============================================================ */
+
+:root {
+  /* --- Primary highlight: Pantone 2995 C (azure) --- */
+  --azure-700: #0072a8; /* press / pressed states */
+  --azure-600: #0089c2; /* hover */
+  --azure-500: #009fda; /* PRIMARY highlight — Pantone 2995 C */
+  --azure-400: #3db6e4;
+  --azure-300: #82cdec;
+  --azure-200: #b9e2f4;
+  --azure-100: #ddf0fa;
+  --azure-50:  #eef8fd;
+
+  /* --- Deep navy (engineered, structural) --- */
+  --navy-900: #07172a;
+  --navy-800: #0a1f37;
+  --navy-700: #0f2a47;
+  --navy-600: #163556;
+  --navy-500: #20486e;
+
+  /* --- Graphite / ink (text + dark surfaces) --- */
+  --graphite-900: #14191f;
+  --graphite-800: #1d242c;
+  --graphite-700: #28323b;
+  --graphite-600: #36424c;
+  --graphite-500: #49555f;
+
+  /* --- Steel grey (mid neutrals) --- */
+  --steel-600: #5b6670;
+  --steel-500: #6e7984;
+  --steel-400: #8b95a0;
+  --steel-300: #aeb7bf;
+  --steel-200: #ccd2d8;
+  --steel-150: #dde1e5;
+  --steel-100: #ebedf0;
+
+  /* --- Warm white / paper (page + panels) --- */
+  --paper-0:   #ffffff;
+  --paper-50:  #f8f6f1; /* primary warm-white page bg */
+  --paper-100: #f2efe8;
+  --paper-200: #e9e4da;
+  --paper-300: #ded7c9;
+
+  /* --- Restrained metallic (used sparingly, hairline accents) --- */
+  --metal-light: #dfe3e7;
+  --metal-mid:   #bcc4cb;
+  --metal-dark:  #909aa2;
+  --metal-sheen: linear-gradient(180deg, #eef1f3 0%, #c9d0d6 48%, #aab2ba 52%, #d4dadf 100%); /* @kind color */
+
+  /* --- Functional / status --- */
+  --success-600: #16623f;
+  --success-500: #1f9d6b;
+  --success-100: #dff2e9;
+  --warning-600: #9a5e16;
+  --warning-500: #d9892b;
+  --warning-100: #f8ecd9;
+  --danger-600:  #97352a;
+  --danger-500:  #c9483a;
+  --danger-100:  #f7e1de;
+
+  /* ==========================================================
+     Semantic aliases — reference these in components
+     ========================================================== */
+
+  /* Backgrounds & surfaces */
+  --color-bg:            var(--paper-50);
+  --color-bg-sunken:     var(--paper-100);
+  --color-surface:       var(--paper-0);
+  --color-surface-2:     var(--paper-50);
+  --color-surface-inset: var(--paper-100);
+  --color-surface-dark:  var(--navy-800);
+  --color-surface-darker:var(--navy-900);
+  --color-surface-graphite: var(--graphite-800);
+
+  /* Text / ink */
+  --text-strong:  var(--graphite-900);
+  --text-body:    var(--graphite-700);
+  --text-muted:   var(--steel-500);
+  --text-subtle:  var(--steel-400);
+  --text-on-dark:        #eef2f5;
+  --text-on-dark-muted:  #9fb0bf;
+  --text-on-primary:     #ffffff;
+
+  /* Brand / interactive */
+  --color-primary:        var(--azure-500);
+  --color-primary-hover:  var(--azure-600);
+  --color-primary-press:  var(--azure-700);
+  --color-primary-tint:   var(--azure-50);
+  --color-primary-border: var(--azure-200);
+  --color-accent-ink:     var(--navy-800);
+
+  /* Borders & dividers */
+  --color-border:        var(--steel-150);
+  --color-border-strong: var(--steel-200);
+  --color-border-dark:   var(--navy-700);
+  --color-divider:       var(--paper-200);
+  --color-hairline:      var(--metal-mid);
+
+  /* Focus */
+  --color-focus: var(--azure-500);
+  --color-focus-ring: rgba(0, 159, 218, 0.35);
+
+  /* Status semantic */
+  --color-success: var(--success-500);
+  --color-warning: var(--warning-500);
+  --color-danger:  var(--danger-500);
+  --color-info:    var(--azure-500);
+}
