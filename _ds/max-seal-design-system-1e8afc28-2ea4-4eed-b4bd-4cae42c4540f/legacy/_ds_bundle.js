@@ -1,3 +1,12 @@
+/**
+ * Legacy Claude Website Builder Design System
+ *
+ * Preserved for historical reference.
+ * Not used by the React application.
+ * All runtime functionality has been migrated into
+ * src/components/ds/.
+ */
+
 /* @ds-bundle: {"format":3,"namespace":"MaxSealDesignSystem_1e8afc","components":[{"name":"Badge","sourcePath":"components/data/Badge.jsx"},{"name":"ProductCard","sourcePath":"components/data/ProductCard.jsx"},{"name":"SpecTable","sourcePath":"components/data/SpecTable.jsx"},{"name":"Stat","sourcePath":"components/data/Stat.jsx"},{"name":"Tag","sourcePath":"components/data/Tag.jsx"},{"name":"Accordion","sourcePath":"components/disclosure/Accordion.jsx"},{"name":"Tabs","sourcePath":"components/disclosure/Tabs.jsx"},{"name":"Button","sourcePath":"components/forms/Button.jsx"},{"name":"Checkbox","sourcePath":"components/forms/Checkbox.jsx"},{"name":"IconButton","sourcePath":"components/forms/IconButton.jsx"},{"name":"Input","sourcePath":"components/forms/Input.jsx"},{"name":"Select","sourcePath":"components/forms/Select.jsx"},{"name":"Textarea","sourcePath":"components/forms/Textarea.jsx"},{"name":"SectionHeading","sourcePath":"components/layout/SectionHeading.jsx"}],"sourceHashes":{"components/data/Badge.jsx":"34e3b2f8fa20","components/data/ProductCard.jsx":"b87d9e2d742b","components/data/SpecTable.jsx":"fddf2c1f07a0","components/data/Stat.jsx":"cba3d9a3a2bc","components/data/Tag.jsx":"38b78629d45e","components/disclosure/Accordion.jsx":"d07e8956de5c","components/disclosure/Tabs.jsx":"4b62c9961346","components/forms/Button.jsx":"764ae47eb9ef","components/forms/Checkbox.jsx":"594103478853","components/forms/IconButton.jsx":"1a8ccb12fd16","components/forms/Input.jsx":"64007634d316","components/forms/Select.jsx":"3a25ab6ed103","components/forms/Textarea.jsx":"600e73fd4baa","components/layout/SectionHeading.jsx":"39b74fbc27cb","ui_kits/website/Enquiry.jsx":"bfd4db9fffd3","ui_kits/website/EnquiryForm.jsx":"218eae4612ce","ui_kits/website/Footer.jsx":"c910abd06069","ui_kits/website/Header.jsx":"7786f741d865","ui_kits/website/Home.jsx":"c49c3c92d49d","ui_kits/website/ProductDetail.jsx":"07cf994cd92f","ui_kits/website/Products.jsx":"241b16eb594a","ui_kits/website/Resources.jsx":"2c7b12f36c38","ui_kits/website/data.jsx":"b4903c23a1a4","ui_kits/website/icons.jsx":"9867e943f835","ui_kits/website/ui.jsx":"5faec5bbeebc"},"inlinedExternals":[],"unexposedExports":[]} */
 
 (() => {

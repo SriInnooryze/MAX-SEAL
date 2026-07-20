@@ -3,6 +3,12 @@
    Loaded AFTER the design system's styles.css. Redefines tokens
    so DS components re-skin to the new direction, and provides
    the shared header / footer / utility classes used site-wide.
+   ============================================================
+   Maintainer note: imported globally (every route) from
+   src/main.jsx, second in the stylesheet chain — after the
+   _ds/.../styles.css foundation, before home.css and pages.css.
+   Do not import this file per-page; header/footer/nav/.ms-btn
+   etc. are used across the whole site.
    ============================================================ */
 
 @import url("https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");

@@ -1,6 +1,12 @@
 /* ============================================================
    Max-Seal — Inner page styles: Products discovery, Enquiry,
    Contact, resource library, and generic page sections.
+   ============================================================
+   Maintainer note: imported globally (every route) from
+   src/main.jsx, last in the stylesheet chain. Relies on the
+   `.page-hero` base class defined in home.css (loaded before this
+   file) — this file only adds the `.page-hero--slim` modifier used
+   by ProductDetail/DocumentPreview, it does not redefine the base.
    ============================================================ */
 
 /* ---------- generic page intro / prose ---------- */

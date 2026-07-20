@@ -2,6 +2,16 @@
 
 /* ============================================================
    Max-Seal — Home page + shared section helpers
+   ============================================================
+   Maintainer note: imported globally (every route) from
+   src/main.jsx, third in the stylesheet chain. The "loads on the
+   Home page ONLY" wording in the comment directly below describes
+   the *original* intent for the :root typography reset only — in
+   practice this file also defines `.page-hero`, `.shead`, `.caro-*`
+   and breadcrumb styles that every inner page's <PageHero> depends
+   on (see pages.css, which only adds a `.page-hero--slim` modifier
+   and assumes the base already exists). Removing the global import
+   or scoping this file to Home-only will break inner-page heroes.
    ============================================================ */
 
 /* ============================================================
