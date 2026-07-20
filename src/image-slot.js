@@ -75,6 +75,14 @@
 
   function load() {
     if (loadP) return loadP;
+    // The sidecar only ever exists inside the omelette design-canvas host,
+    // which writes it via window.omelette.writeFile (see save() below).
+    // Outside that host (e.g. a deployed production build) it can never
+    // exist, so skip the fetch rather than log a guaranteed 404.
+    if (!(window.omelette && window.omelette.writeFile)) {
+      loadP = Promise.resolve().then(() => { loaded = true; subs.forEach((fn) => fn()); });
+      return loadP;
+    }
     loadP = fetch(STATE_FILE)
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => {
