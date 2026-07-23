@@ -820,26 +820,50 @@
   .pl-act .ms-btn { width: 100%; justify-content: center; }
 }
 @media (max-width: 820px) {
-  .mx { grid-template-columns: 1fr; }
-  .mx__col--ind { border-right: 0; border-bottom: 1px solid var(--color-border); }
-  .mx__list { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; max-height: none; -webkit-overflow-scrolling: touch; }
-  .mx__ind { grid-template-columns: auto; border-bottom: 0; border-right: 1px solid var(--color-divider); white-space: nowrap; padding: 0.85rem 1.1rem; flex: 0 0 auto; }
-  .mx__ind.on { padding-left: 1.1rem; }
+  .mx { grid-template-columns: 1fr; min-height: 0; width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden; }
+  /* .mx__col--ind is the actual CSS grid item here (its overflow is the
+     default `visible`), so without min-width:0 its automatic minimum size
+     stays content-based and the grid track grows to fit all 13 industries
+     instead of the available viewport width — which then leaves
+     .mx__list's own overflow-x:auto below with nothing left to scroll,
+     silently clipping most industries off-screen. (.isplit__list on the
+     Home page doesn't need this because overflow-x:auto sits on the grid
+     item itself there, which auto-resolves min-width to 0 per spec.) */
+  .mx__col--ind { border-right: 0; border-bottom: 1px solid var(--color-border); min-width: 0; width: 100%; }
+  .mx__list { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; max-height: none; -webkit-overflow-scrolling: touch; width: 100%; max-width: 100%; padding: 0.3rem 0.5rem; scrollbar-width: none; }
+  .mx__ind { grid-template-columns: auto; border-bottom: 0; border-right: 1px solid var(--color-divider); white-space: nowrap; padding: 0.75rem 1rem; flex: 0 0 auto; }
+  .mx__ind.on { padding-left: 1rem; }
   .mx__ind-bar, .mx__ind-arr { display: none; }
   .mx__coltitle { display: none; }
   .mx__col--stage .mx__coltitle, .mx__apps .mx__coltitle { display: flex; }
+  .mx__media { min-height: clamp(200px, 35vh, 260px); }
+  .mx__panel { padding: 1.2rem 1.1rem 1.4rem; width: 100%; box-sizing: border-box; }
+  .mx__panel-actions { flex-direction: column; width: 100%; gap: 0.6rem; }
+  .mx__panel-actions .ms-btn { width: 100%; justify-content: center; }
+  .mx__fam-body { min-width: 0; overflow: hidden; }
+  .mx__next { flex-direction: column; align-items: stretch; gap: 1.2rem; text-align: left; padding: 1.3rem 1.2rem; }
+  .mx__next-actions { flex-direction: column; width: 100%; gap: 0.6rem; }
+  .mx__next-actions .ms-btn { width: 100%; justify-content: center; }
 }
 @media (max-width: 620px) {
   .paths, .pick-grid { grid-template-columns: 1fr; }
   .rrow { grid-template-columns: auto 1fr; }
   .rrow__thumb, .rrow__meta { display: none; }
+  .rrow--compact { grid-template-columns: 1fr auto; }
   .doc-row { grid-template-columns: 40px 1fr; gap: 0.7rem 0.9rem; }
   .doc-row .doc-fam { grid-column: 2; font-size: 0.7rem; }
   .doc-row .doc-actions { grid-column: 1 / -1; justify-content: stretch; }
   .doc-row .doc-mini { flex: 1; width: auto; }
   .pstage2__specs, .facts-rail { grid-template-columns: 1fr; }
   .pdet__thumbs { grid-template-columns: repeat(3, 1fr); }
+  .idet { grid-template-columns: 1fr; gap: 2rem; }
+  .idet__story { grid-template-columns: 1fr; border: 1px solid var(--color-border); overflow: hidden; }
+  .idet__story-media { position: relative; min-height: 200px; overflow: hidden; }
+  .idet__story-body { padding: 1.2rem 1.3rem 1.4rem; }
   .idet__chalrow { grid-template-columns: 1fr; gap: 0.3rem; }
+  .idet__rail { position: static; width: 100%; flex-direction: column; gap: 1.4rem; }
+  .idet__railcta { width: 100%; box-sizing: border-box; padding: 1.2rem 1.3rem; }
+  .idet__railcta .ms-btn { width: 100%; justify-content: center; }
   .phero__actions { flex-direction: column; align-items: stretch; }
   .phero__actions .ms-btn { justify-content: center; }
   .cmpbar__row { gap: 0.7rem; }
