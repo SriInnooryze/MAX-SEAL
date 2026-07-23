@@ -75,7 +75,7 @@ export default function Industries() {
                 <div className="mx__list" role="tablist" aria-label="Industries">
                   {INDUSTRIES.map(x => (
                     <button key={x.id} role="tab" aria-selected={x.id === activeInd}
-                      className={'mx__ind' + (x.id === activeInd ? ' on' : '')} onClick={() => selectInd(x.id)}>
+                      className={'mx__ind' + (x.id === activeInd ? ' on' : '')} onClick={(e) => { selectInd(x.id); if (e.currentTarget) e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }}>
                       <span className="mx__ind-bar" />
                       <span className="mx__ind-name">{x.name}</span>
                       <span className="mx__ind-arr"><ChevronRight size={16} /></span>

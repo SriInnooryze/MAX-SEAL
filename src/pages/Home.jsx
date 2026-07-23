@@ -231,7 +231,10 @@ function IndustryPreview() {
 
   useEffect(() => () => clearTimeout(settle.current), []);
 
-  const select = (idx) => {
+  const select = (idx, e) => {
+    if (e && e.currentTarget) {
+      e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
     if (idx === active || busy.current) return;
     busy.current = true;
     const run = () => { setActive(idx); clearTimeout(settle.current); settle.current = setTimeout(() => { busy.current = false; }, 520); };
@@ -268,7 +271,7 @@ function IndustryPreview() {
                 role="tab"
                 aria-selected={idx === active}
                 className={'isplit__item' + (idx === active ? ' on' : '')}
-                onClick={() => select(idx)}
+                onClick={(e) => select(idx, e)}
               >
                 <span className="isplit__bar" />
                 <span className="isplit__item-body">
