@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="fb-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="60%" stop-color="#27272a"/>
+      <stop offset="100%" stop-color="#451a03"/>
+    </linearGradient>
+    <filter id="glow-fb"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="800" height="500" fill="url(#fb-bg)"/>
+  <!-- Polished 316L Stainless Steel Tanks -->
+  <rect x="150" y="100" width="140" height="280" rx="40" fill="#27272a" stroke="#eab308" stroke-width="3"/>
+  <rect x="510" y="100" width="140" height="280" rx="40" fill="#27272a" stroke="#eab308" stroke-width="3"/>
+  <!-- Golden Liquid Fill Level -->
+  <path d="M 150 240 L 290 240 L 290 340 A 40 40 0 0 1 250 380 L 190 380 A 40 40 0 0 1 150 340 Z" fill="#eab308" opacity="0.3"/>
+  <path d="M 510 220 L 650 220 L 650 340 A 40 40 0 0 1 610 380 L 550 380 A 40 40 0 0 1 510 340 Z" fill="#eab308" opacity="0.3"/>
+  <!-- Sanitary Tri-Clamp Fluid Line -->
+  <path d="M 0 410 L 800 410" stroke="#fef08a" stroke-width="12" filter="url(#glow-fb)"/>
+  <!-- Hygienic Valve Symbol -->
+  <g transform="translate(400, 410)">
+    <circle cx="0" cy="0" r="28" fill="#eab308" stroke="#fff" stroke-width="3"/>
+    <circle cx="0" cy="0" r="10" fill="#fff"/>
+  </g>
+  <text x="400" y="475" text-anchor="middle" fill="#fef08a" font-family="monospace" font-size="14" letter-spacing="4">SANITARY FOOD, BEVERAGE &amp; DAIRY</text>
+</svg>

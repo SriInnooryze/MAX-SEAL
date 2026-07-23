@@ -197,7 +197,7 @@ export default function Products() {
   const ResultCard = (r) => (
     <article className="pcard" key={r.id}>
       <div className="pcard__media">
-        <image-slot id={'pcard-' + r.id} shape="rect" fit="cover" placeholder={r.name + ' image'} />
+        <image-slot id={'pcard-' + r.id} src={r.image} shape="rect" fit="contain" placeholder={r.name + ' image'} />
         <span className="pcard__series">{r.code} SERIES</span>
       </div>
       <div className="pcard__body">

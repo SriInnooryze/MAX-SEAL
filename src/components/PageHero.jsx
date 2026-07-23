@@ -2,10 +2,10 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import Slot from './Slot';
 
-export default function PageHero({ kicker, title, lead, crumbs, mediaId, mediaPlaceholder, children }) {
+export default function PageHero({ kicker, title, lead, crumbs, mediaId, mediaSrc, mediaPosition, mediaPlaceholder, children }) {
   return (
     <section className="page-hero">
-      {mediaId && <div className="page-hero__media"><Slot id={mediaId} placeholder={mediaPlaceholder || 'Page visual'} /></div>}
+      {mediaId && <div className="page-hero__media"><Slot id={mediaId} src={mediaSrc} position={mediaPosition || 'center top'} placeholder={mediaPlaceholder || 'Page visual'} /></div>}
       <div className="page-hero__scrim" />
       <div className="wrap">
         <div className="page-hero__inner">

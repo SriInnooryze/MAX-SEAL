@@ -1,6 +1,31 @@
 /* Max-Seal — shared content data. */
 import { routes } from '../router/paths';
 
+import dataCentersImg from '../assets/industries/data-centers.svg';
+import oilGasImg from '../assets/industries/oil-gas.svg';
+import refiningImg from '../assets/industries/refining.svg';
+import petrochemicalImg from '../assets/industries/petrochemical.svg';
+import chemicalImg from '../assets/industries/chemical.svg';
+import powerImg from '../assets/industries/power.svg';
+import pulpPaperImg from '../assets/industries/pulp-paper.svg';
+import miningImg from '../assets/industries/mining.svg';
+import marineImg from '../assets/industries/marine.svg';
+import hvacImg from '../assets/industries/hvac.svg';
+import foodBeverageImg from '../assets/industries/food-beverage.svg';
+import pharmaImg from '../assets/industries/pharma.svg';
+import transportationImg from '../assets/industries/transportation.svg';
+import industryHeroImg from '../assets/industries/hero.svg';
+import resilientSeatedImg from '../assets/products/resilient-seated.png';
+import highPerformanceImg from '../assets/products/high-performance.png';
+import tripleOffsetImg from '../assets/products/triple-offset.png';
+import pfaLinedImg from '../assets/products/pfa-lined.png';
+import specialAlloyImg from '../assets/products/special-alloy.png';
+import automatedImg from '../assets/products/automated.png';
+import customizedImg from '../assets/products/customized.png';
+
+export const HERO_INDUSTRY_IMAGE = industryHeroImg;
+
+
 /* Simplified primary navigation. Dropdowns are previews, not full mega-menus. */
 export const NAV = [
   { id: 'home', label: 'Home', href: routes.home },
@@ -15,42 +40,49 @@ export const NAV = [
 export const FAMILIES = [
   {
     id: 'resilient', code: 'RS', name: 'Resilient Seated', menuName: 'Resilient Seated Butterfly Valves', menuDesc: 'General service isolation and control', short: 'Bubble-tight bidirectional shutoff for general industrial and utility service.',
+    image: resilientSeatedImg,
     need: 'Repeatable bubble-tight isolation for everyday duties.', where: 'Common in water, HVAC and building services.',
     application: 'Water, HVAC, building services', sizes: 'DN50–DN600', rating: 'PN10–PN16',
     categories: ['butterfly'], types: ['resilient'], apps: ['isolation', 'shutoff'], industries: ['data-centers', 'hvac', 'pulp-paper', 'transportation', 'food-beverage'], service: ['low-pressure', 'clean'], automation: ['manual']
   },
   {
     id: 'high-performance', code: 'HP', name: 'High Performance', menuName: 'High Performance Butterfly Valves', menuDesc: 'Built for more demanding operating conditions', short: 'Double-offset design for higher pressure and temperature duties.',
+    image: highPerformanceImg,
     need: 'Isolation and control across higher pressure and temperature.', where: 'Considered in process, refining and power.',
     application: 'Process, refining, power', sizes: 'DN50–DN900', rating: '150–300#',
     categories: ['butterfly'], types: ['high-performance'], apps: ['isolation', 'control'], industries: ['oil-gas', 'refining', 'power', 'hvac', 'pulp-paper'], service: ['high-pressure', 'high-temp'], automation: ['manual', 'actuated']
   },
   {
     id: 'triple-offset', code: 'TO', name: 'Triple Offset', menuName: 'Triple Offset Butterfly Valves', menuDesc: 'For severe service and critical shutoff needs', short: 'Metal-seated, torque-seated shutoff for severe and critical service.',
+    image: tripleOffsetImg,
     need: 'Tight, repeatable shutoff for severe and critical service.', where: 'Used in demanding isolation duties.',
     application: 'Severe service, isolation', sizes: 'DN80–DN1200', rating: '150–300#',
     categories: ['butterfly'], types: ['triple-offset'], apps: ['isolation', 'shutoff', 'severe'], industries: ['oil-gas', 'refining', 'petrochemical', 'power'], service: ['high-pressure', 'high-temp', 'severe'], automation: ['manual', 'actuated']
   },
   {
     id: 'pfa-lined', code: 'PL', name: 'PFA Lined', menuName: 'PFA Lined Butterfly Valves', menuDesc: 'For corrosive media and chemical applications', short: 'Fully lined wetted parts for aggressive and corrosive media.',
+    image: pfaLinedImg,
     need: 'Protection of wetted parts in corrosive media.', where: 'Considered in chemical and process service.',
     application: 'Chemical, corrosive media', sizes: 'DN50–DN600', rating: 'PN10–PN16',
     categories: ['butterfly'], types: ['lined'], apps: ['isolation', 'corrosive'], industries: ['petrochemical', 'chemical', 'pharma', 'food-beverage'], service: ['corrosive', 'clean'], automation: ['manual', 'actuated']
   },
   {
     id: 'special-alloy', code: 'SA', name: 'Special Alloy', menuName: 'Special Alloy Butterfly Valves', menuDesc: 'For marine, chemical and specialized environments', short: 'Exotic alloy bodies and trims for demanding chemistries.',
+    image: specialAlloyImg,
     need: 'Material compatibility for aggressive chemistries.', where: 'Used in marine, chemical and exotic media.',
     application: 'Marine, chemical, exotic media', sizes: 'DN50–DN900', rating: '150–300#',
     categories: ['butterfly'], types: ['alloy'], apps: ['isolation', 'corrosive', 'severe'], industries: ['marine', 'chemical', 'petrochemical', 'pharma'], service: ['corrosive', 'severe'], automation: ['manual', 'actuated']
   },
   {
     id: 'automated', code: 'AP', name: 'Automated Packages', menuName: 'Automated Packages', menuDesc: 'Valve and actuator packages for controlled operation', short: 'Valves assembled with actuators, controls and accessories.',
+    image: automatedImg,
     need: 'Valves prepared for control and automated operation.', where: 'Considered where systems are automated.',
     application: 'Process automation', sizes: 'DN50–DN1200', rating: 'Per base valve',
     categories: ['package'], types: ['automated'], apps: ['control', 'isolation'], industries: ['data-centers', 'oil-gas', 'power', 'hvac', 'pulp-paper'], service: ['cycling', 'high-pressure'], automation: ['actuated']
   },
   {
     id: 'customized', code: 'CS', name: 'Customized Solutions', menuName: 'Customized Solutions', menuDesc: 'Application-specific configurations and support', short: 'Engineered-to-order valves built around your application.',
+    image: customizedImg,
     need: 'Engineered-to-order configurations for specific needs.', where: 'Used where standard options do not fit.',
     application: 'Project specific', sizes: 'Project specific', rating: 'Project specific',
     categories: ['package', 'butterfly'], types: ['custom'], apps: ['isolation', 'control', 'corrosive', 'severe'], industries: ['chemical', 'mining', 'marine', 'pharma', 'food-beverage'], service: ['cycling', 'severe', 'corrosive', 'clean'], automation: ['manual', 'actuated']
@@ -90,19 +122,19 @@ export const FACETS = [
 ];
 
 export const INDUSTRIES = [
-  { id: 'data-centers', name: 'Data Centers', ctx: 'Cooling loops and water distribution where reliable isolation keeps critical infrastructure running.', families: ['Resilient Seated', 'High Performance', 'Automated Packages'] },
-  { id: 'oil-gas', name: 'Oil and Gas', ctx: 'Upstream and midstream service that calls for robust shutoff across a wide pressure and temperature range.', families: ['Triple Offset', 'High Performance', 'Special Alloy'] },
-  { id: 'refining', name: 'Refining', ctx: 'Process isolation and control where metal-seated performance supports severe operating conditions.', families: ['Triple Offset', 'High Performance', 'Automated Packages'] },
-  { id: 'petrochemical', name: 'Petrochemical', ctx: 'Demanding media and cycling duties with sealing options matched to the process.', families: ['Triple Offset', 'PFA Lined', 'Special Alloy'] },
-  { id: 'chemical', name: 'Chemical Processing', ctx: 'Corrosive and aggressive media where lined and alloy constructions protect wetted parts.', families: ['PFA Lined', 'Special Alloy', 'Customized Solutions'] },
-  { id: 'power', name: 'Power', ctx: 'Cooling water, balance of plant and process duties across conventional and renewable generation.', families: ['Triple Offset', 'High Performance', 'Automated Packages'] },
-  { id: 'pulp-paper', name: 'Pulp and Paper', ctx: 'Stock, water and chemical lines that benefit from durable seating and dependable cycling.', families: ['Resilient Seated', 'High Performance', 'Automated Packages'] },
-  { id: 'mining', name: 'Mining', ctx: 'Slurry, water and process duties that demand rugged construction and serviceable designs.', families: ['Resilient Seated', 'High Performance', 'Customized Solutions'] },
-  { id: 'marine', name: 'Marine', ctx: 'Seawater and onboard systems where corrosion resistance and compact design matter.', families: ['Special Alloy', 'Resilient Seated', 'Automated Packages'] },
-  { id: 'hvac', name: 'HVAC', ctx: 'Chilled and condenser water systems that rely on tight shutoff and smooth control.', families: ['Resilient Seated', 'High Performance', 'Automated Packages'] },
-  { id: 'food-beverage', name: 'Food and Beverage', ctx: 'Clean and utility service where material selection supports process hygiene.', families: ['Resilient Seated', 'PFA Lined', 'Customized Solutions'] },
-  { id: 'pharma', name: 'Pharmaceuticals', ctx: 'Process and utility lines that call for careful material choices and consistent performance.', families: ['PFA Lined', 'Special Alloy', 'Customized Solutions'] },
-  { id: 'transportation', name: 'Transportation', ctx: 'Fluid handling for terminals and transfer systems with practical maintenance in mind.', families: ['Resilient Seated', 'High Performance', 'Automated Packages'] },
+  { id: 'data-centers', name: 'Data Centers', image: dataCentersImg, ctx: 'Cooling loops and water distribution where reliable isolation keeps critical infrastructure running.', families: ['Resilient Seated', 'High Performance', 'Automated Packages'] },
+  { id: 'oil-gas', name: 'Oil and Gas', image: oilGasImg, ctx: 'Upstream and midstream service that calls for robust shutoff across a wide pressure and temperature range.', families: ['Triple Offset', 'High Performance', 'Special Alloy'] },
+  { id: 'refining', name: 'Refining', image: refiningImg, ctx: 'Process isolation and control where metal-seated performance supports severe operating conditions.', families: ['Triple Offset', 'High Performance', 'Automated Packages'] },
+  { id: 'petrochemical', name: 'Petrochemical', image: petrochemicalImg, ctx: 'Demanding media and cycling duties with sealing options matched to the process.', families: ['Triple Offset', 'PFA Lined', 'Special Alloy'] },
+  { id: 'chemical', name: 'Chemical Processing', image: chemicalImg, ctx: 'Corrosive and aggressive media where lined and alloy constructions protect wetted parts.', families: ['PFA Lined', 'Special Alloy', 'Customized Solutions'] },
+  { id: 'power', name: 'Power', image: powerImg, ctx: 'Cooling water, balance of plant and process duties across conventional and renewable generation.', families: ['Triple Offset', 'High Performance', 'Automated Packages'] },
+  { id: 'pulp-paper', name: 'Pulp and Paper', image: pulpPaperImg, ctx: 'Stock, water and chemical lines that benefit from durable seating and dependable cycling.', families: ['Resilient Seated', 'High Performance', 'Automated Packages'] },
+  { id: 'mining', name: 'Mining', image: miningImg, ctx: 'Slurry, water and process duties that demand rugged construction and serviceable designs.', families: ['Resilient Seated', 'High Performance', 'Customized Solutions'] },
+  { id: 'marine', name: 'Marine', image: marineImg, ctx: 'Seawater and onboard systems where corrosion resistance and compact design matter.', families: ['Special Alloy', 'Resilient Seated', 'Automated Packages'] },
+  { id: 'hvac', name: 'HVAC', image: hvacImg, ctx: 'Chilled and condenser water systems that rely on tight shutoff and smooth control.', families: ['Resilient Seated', 'High Performance', 'Automated Packages'] },
+  { id: 'food-beverage', name: 'Food and Beverage', image: foodBeverageImg, ctx: 'Clean and utility service where material selection supports process hygiene.', families: ['Resilient Seated', 'PFA Lined', 'Customized Solutions'] },
+  { id: 'pharma', name: 'Pharmaceuticals', image: pharmaImg, ctx: 'Process and utility lines that call for careful material choices and consistent performance.', families: ['PFA Lined', 'Special Alloy', 'Customized Solutions'] },
+  { id: 'transportation', name: 'Transportation', image: transportationImg, ctx: 'Fluid handling for terminals and transfer systems with practical maintenance in mind.', families: ['Resilient Seated', 'High Performance', 'Automated Packages'] },
 ];
 
 export const WHY = [

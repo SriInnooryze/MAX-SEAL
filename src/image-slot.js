@@ -169,8 +169,8 @@
 
   // ── Custom element ──────────────────────────────────────────────────────
   const stylesheet =
-    ':host{display:inline-block;position:relative;vertical-align:top;' +
-    '  font:13px/1.3 system-ui,-apple-system,sans-serif;color:rgba(0,0,0,.55);width:240px;height:160px}' +
+    ':host{display:block;position:relative;vertical-align:top;' +
+    '  font:13px/1.3 system-ui,-apple-system,sans-serif;color:rgba(0,0,0,.55);width:100%;height:100%}' +
     '.frame{position:absolute;inset:0;overflow:hidden;background:rgba(0,0,0,.04)}' +
     // .frame img (clipped) and .spill (unclipped ghost + handles) share the
     // same left/top/width/height in frame-%, computed by _applyView(), so the
@@ -199,32 +199,19 @@
     ':host([data-reframe]) .frame{box-shadow:0 0 0 2px #c96442}' +
     '.empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;' +
     '  justify-content:center;gap:6px;text-align:center;padding:12px;box-sizing:border-box;' +
-    '  cursor:pointer;user-select:none}' +
+    '  cursor:default;user-select:none}' +
     '.empty svg{opacity:.45}' +
     '.empty .cap{max-width:90%;font-weight:500;letter-spacing:.01em}' +
-    '.empty .sub{font-size:11px}' +
-    '.empty .sub u{text-underline-offset:2px;text-decoration-color:rgba(0,0,0,.25)}' +
-    '.empty:hover .sub u{color:rgba(0,0,0,.75);text-decoration-color:currentColor}' +
+    '.empty .sub{display:none}' +
     ':host([data-over]) .frame{outline:2px solid #c96442;outline-offset:-2px;' +
     '  background:rgba(201,100,66,.10)}' +
-    '.ring{position:absolute;inset:0;pointer-events:none;border:1.5px dashed rgba(0,0,0,.25);' +
+    '.ring{position:absolute;inset:0;pointer-events:none;border:1.5px dashed rgba(0,0,0,.18);' +
     '  transition:border-color .12s}' +
     ':host([data-over]) .ring{border-color:#c96442}' +
     ':host([data-filled]) .ring{display:none}' +
-    // Controls sit BELOW the mask (top:100%), absolutely positioned so the
-    // author-declared slot height is unaffected. The gap is padding, not a
-    // top offset, so the hover target stays contiguous with the frame.
-    '.ctl{position:absolute;top:100%;left:50%;transform:translateX(-50%);padding-top:8px;' +
-    '  display:flex;gap:6px;opacity:0;pointer-events:none;transition:opacity .12s;z-index:2;' +
-    '  white-space:nowrap}' +
-    ':host([data-filled][data-editable]:hover) .ctl,:host([data-reframe]) .ctl' +
-    '  {opacity:1;pointer-events:auto}' +
-    '.ctl button{appearance:none;border:0;border-radius:6px;padding:5px 10px;cursor:pointer;' +
-    '  background:rgba(0,0,0,.65);color:#fff;font:11px/1 system-ui,-apple-system,sans-serif;' +
-    '  backdrop-filter:blur(6px)}' +
-    '.ctl button:hover{background:rgba(0,0,0,.8)}' +
-    '.err{position:absolute;left:8px;bottom:8px;right:8px;color:#b3261e;font-size:11px;' +
-    '  background:rgba(255,255,255,.85);padding:4px 6px;border-radius:5px;pointer-events:none}';
+    ':host([data-filled]) .frame{background:#ffffff}' +
+    '.ctl{display:none}' +
+    '.err{display:none}';
 
   const icon =
     '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
@@ -248,49 +235,28 @@
         '  <img part="image" alt="" draggable="false" style="display:none">' +
         '  <div class="empty" part="empty">' + icon +
         '    <div class="cap"></div>' +
-        '    <div class="sub">or <u>browse files</u></div></div>' +
+        '  </div>' +
         '  <div class="ring" part="ring"></div>' +
         '</div>' +
         '<div class="spill">' +
         '  <img class="ghost" alt="" draggable="false">' +
         '  <div class="handle" data-c="nw"></div><div class="handle" data-c="ne"></div>' +
         '  <div class="handle" data-c="sw"></div><div class="handle" data-c="se"></div>' +
-        '</div>' +
-        '<div class="ctl"><button data-act="replace" title="Replace image">Replace</button>' +
-        '  <button data-act="clear" title="Remove image">Remove</button></div>' +
-        '<input type="file" accept="' + ACCEPT.join(',') + '" hidden>';
+        '</div>';
       this._frame = root.querySelector('.frame');
       this._ring = root.querySelector('.ring');
       this._img = root.querySelector('.frame img');
       this._empty = root.querySelector('.empty');
       this._cap = root.querySelector('.cap');
-      this._sub = root.querySelector('.sub');
       this._spill = root.querySelector('.spill');
       this._ghost = root.querySelector('.ghost');
       this._err = null;
-      this._input = root.querySelector('input');
       this._depth = 0;
       this._gen = 0;
       this._view = { s: 1, x: 0, y: 0 };
       this._subFn = () => this._render();
       // Shadow-DOM listeners live with the shadow DOM — bound once here so
       // disconnect/reconnect (e.g. React remount) doesn't stack handlers.
-      this._empty.addEventListener('click', () => this._input.click());
-      root.addEventListener('click', (e) => {
-        const act = e.target && e.target.getAttribute && e.target.getAttribute('data-act');
-        if (act === 'replace') { this._exitReframe(true); this._input.click(); }
-        if (act === 'clear') {
-          this._exitReframe(false);
-          this._gen++;
-          this._local = null;
-          if (this.id) setSlot(this.id, null); else this._render();
-        }
-      });
-      this._input.addEventListener('change', () => {
-        const f = this._input.files && this._input.files[0];
-        if (f) this._ingest(f);
-        this._input.value = '';
-      });
       // naturalWidth/Height aren't known until load — re-apply so the cover
       // baseline is computed from real dimensions, not the 100%×100% fallback.
       this._img.addEventListener('load', () => this._applyView());
@@ -387,23 +353,7 @@
     }
 
     connectedCallback() {
-      // Warn once per page — an id-less slot works for the session but
-      // cannot persist, and two id-less slots would share nothing.
-      if (!this.id && !ImageSlot._warned) {
-        ImageSlot._warned = true;
-        console.warn('<image-slot> without an id will not persist its dropped image.');
-      }
-      this.addEventListener('dragenter', this);
-      this.addEventListener('dragover', this);
-      this.addEventListener('dragleave', this);
-      this.addEventListener('drop', this);
       subs.add(this._subFn);
-      // width%/height% in _applyView encode the frame aspect at call time —
-      // a host resize (responsive grid, pane divider) would stretch the
-      // image until the next _render. Re-render on size change: _render()
-      // re-seeds _view from stored before clamp/apply, so a shrink→grow
-      // cycle round-trips instead of ratcheting x/y toward the narrower
-      // frame's clamp range.
       this._ro = new ResizeObserver(() => this._render());
       this._ro.observe(this);
       load();
@@ -412,67 +362,10 @@
 
     disconnectedCallback() {
       subs.delete(this._subFn);
-      this.removeEventListener('dragenter', this);
-      this.removeEventListener('dragover', this);
-      this.removeEventListener('dragleave', this);
-      this.removeEventListener('drop', this);
       if (this._ro) { this._ro.disconnect(); this._ro = null; }
-      this._exitReframe(false);
-    }
-
-    _enterReframe() {
-      if (this.hasAttribute('data-reframe')) return;
-      this.setAttribute('data-reframe', '');
-      this._applyView();
-      // Close on click outside (the spill handler stopPropagation()s so
-      // in-image drags don't reach this) and on Escape. Listeners are held
-      // on the instance so _exitReframe / disconnectedCallback can detach
-      // exactly what was attached.
-      this._outside = (e) => {
-        if (e.composedPath && e.composedPath().includes(this)) return;
-        this._exitReframe(true);
-      };
-      this._esc = (e) => { if (e.key === 'Escape') this._exitReframe(true); };
-      document.addEventListener('pointerdown', this._outside, true);
-      document.addEventListener('keydown', this._esc, true);
-    }
-
-    _exitReframe(commit) {
-      if (!this.hasAttribute('data-reframe')) return;
-      if (this._dragUp) this._dragUp();
-      this.removeAttribute('data-reframe');
-      this.removeAttribute('data-panning');
-      if (this._outside) document.removeEventListener('pointerdown', this._outside, true);
-      if (this._esc) document.removeEventListener('keydown', this._esc, true);
-      this._outside = this._esc = null;
-      if (commit) this._commitView();
     }
 
     attributeChangedCallback() { if (this.shadowRoot) this._render(); }
-
-    // handleEvent — one listener object for all four drag events keeps the
-    // add/remove symmetric and the depth counter correct.
-    handleEvent(e) {
-      if (e.type === 'dragenter' || e.type === 'dragover') {
-        // Without preventDefault the browser never fires 'drop'.
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
-        if (e.type === 'dragenter') this._depth++;
-        this.setAttribute('data-over', '');
-      } else if (e.type === 'dragleave') {
-        // dragenter/leave fire for every descendant crossing — count depth
-        // so hovering the icon inside the empty state doesn't flicker.
-        if (--this._depth <= 0) { this._depth = 0; this.removeAttribute('data-over'); }
-      } else if (e.type === 'drop') {
-        e.preventDefault();
-        e.stopPropagation();
-        this._depth = 0;
-        this.removeAttribute('data-over');
-        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-        if (f) this._ingest(f);
-      }
-    }
 
     async _ingest(file) {
       this._setError(null);
@@ -543,33 +436,15 @@
     }
 
     _applyView() {
-      const g = this._geom();
       const fit = this.getAttribute('fit') || 'cover';
-      if (fit !== 'cover' || !g) {
-        // Non-cover, or dimensions not known yet (before img load).
-        this._img.style.width = '100%';
-        this._img.style.height = '100%';
-        this._img.style.left = '50%';
-        this._img.style.top = '50%';
-        this._img.style.objectFit = fit;
-        this._img.style.objectPosition = this.getAttribute('position') || '50% 50%';
-        return;
-      }
-      // Cover baseline: img fills the frame on its tighter axis at s=1, so
-      // pan works immediately on the overflowing axis without zooming first.
-      // Width/height and left/top are all frame-% — depends only on the
-      // frame aspect ratio, so a responsive resize keeps the same crop. The
-      // spill layer mirrors the same box so its corners = image corners.
-      const k = g.base * this._view.s;
-      const w = (g.iw * k / g.fw * 100) + '%';
-      const h = (g.ih * k / g.fh * 100) + '%';
-      const l = (50 + this._view.x) + '%';
-      const t = (50 + this._view.y) + '%';
-      this._img.style.width = w; this._img.style.height = h;
-      this._img.style.left = l; this._img.style.top = t;
-      this._img.style.objectFit = '';
-      this._spill.style.width = w; this._spill.style.height = h;
-      this._spill.style.left = l; this._spill.style.top = t;
+      const pos = this.getAttribute('position') || 'center top';
+      this._img.style.width = '100%';
+      this._img.style.height = '100%';
+      this._img.style.left = '0';
+      this._img.style.top = '0';
+      this._img.style.transform = 'none';
+      this._img.style.objectFit = fit;
+      this._img.style.objectPosition = pos;
     }
 
     _commitView() {
@@ -603,7 +478,6 @@
       // Controls and reframe entry gate on this so share links stay read-only.
       const editable = !!(window.omelette && window.omelette.writeFile);
       this.toggleAttribute('data-editable', editable);
-      this._sub.style.display = editable ? '' : 'none';
 
       // Content. The sidecar is also writable by the agent's write_file
       // tool, so its value isn't guaranteed canvas-originated — only accept

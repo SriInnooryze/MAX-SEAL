@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="chem-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#041410"/>
+      <stop offset="60%" stop-color="#0c2d23"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+    <filter id="glow-chem"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="800" height="500" fill="url(#chem-bg)"/>
+  <!-- PTFE Lined Chemical Piping Network -->
+  <path d="M 80 0 L 80 220 L 720 220 L 720 500" fill="none" stroke="#10b981" stroke-width="16" stroke-linejoin="round" filter="url(#glow-chem)"/>
+  <path d="M 80 220 L 80 440 L 450 440" fill="none" stroke="#34d399" stroke-width="10" stroke-linejoin="round"/>
+  <!-- Glass Reactor Vessel -->
+  <rect x="280" y="100" width="240" height="240" rx="30" fill="#0b382c" stroke="#10b981" stroke-width="3"/>
+  <circle cx="400" cy="220" r="60" fill="#042119" stroke="#34d399" stroke-width="2"/>
+  <!-- Acid Resistance Indicator -->
+  <g transform="translate(400, 220)">
+    <polygon points="0,-30 26,15 -26,15" fill="#34d399" filter="url(#glow-chem)"/>
+    <text x="0" y="8" text-anchor="middle" fill="#041410" font-weight="bold" font-size="16">pH</text>
+  </g>
+  <!-- PFA Lined Valve Symbol -->
+  <g transform="translate(720, 340)">
+    <circle cx="0" cy="0" r="30" fill="#10b981" stroke="#fff" stroke-width="3"/>
+    <path d="M -15 -15 L 15 15 M -15 15 L 15 -15" stroke="#fff" stroke-width="4"/>
+  </g>
+  <text x="400" y="475" text-anchor="middle" fill="#34d399" font-family="monospace" font-size="14" letter-spacing="4">SPECIALTY CHEMICAL &amp; CORROSIVE MEDIA</text>
+</svg>

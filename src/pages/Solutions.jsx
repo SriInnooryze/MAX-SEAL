@@ -1,198 +1,33 @@
 /* Max-Seal — Solutions page. */
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import useSiteChrome from '../hooks/useSiteChrome';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import PageHero from '../components/PageHero';
-import { ArrowRight, Settings, Compass, Layers, Gauge, Headset, Check, Info } from '../icons/icons';
-import { routes } from '../router/paths';
+import useRecommendation from '../hooks/useRecommendation';
+
+import HeroSection from '../components/solutions/HeroSection';
+import SolutionTabs from '../components/solutions/SolutionTabs';
+import ApplicationsTab from '../components/solutions/ApplicationsTab';
+import ProductSeriesTab from '../components/solutions/ProductSeriesTab';
+import EngineeringServicesTab from '../components/solutions/EngineeringServicesTab';
+import PartnersTab from '../components/solutions/PartnersTab';
+import QuickSelectionAssistant from '../components/solutions/QuickSelectionAssistant';
+import VideoSection from '../components/solutions/VideoSection';
+import ClosingCTA from '../components/solutions/ClosingCTA';
 
 export default function Solutions() {
+  useSiteChrome();
   const [activeTab, setActiveTab] = useState('applications');
-  const [sizingMedia, setSizingMedia] = useState('utility');
-  const [sizingPressure, setSizingPressure] = useState('low');
-  const [sizingOperation, setSizingOperation] = useState('manual');
 
-  const solutions = [
-    {
-      id: 'reliable-isolation',
-      icon: <Check size={22} />,
-      title: 'Reliable Isolation & Utility',
-      desc: 'Repeatable bubble-tight shutoff and general utility service. Engineered with resilient seats to deliver zero-leakage performance under standard operating cycles.',
-      linkText: 'Explore resilient seated valves',
-      href: routes.products({ type: 'resilient' })
-    },
-    {
-      id: 'severe-service',
-      icon: <Gauge size={22} />,
-      title: 'Severe Service & High Pressure',
-      desc: 'Double-offset high performance and triple-offset metal-seated valves designed to withstand high pressure drops, extreme temperatures, and severe process cycles.',
-      linkText: 'Explore high performance range',
-      href: routes.products({ type: 'high-performance' })
-    },
-    {
-      id: 'corrosive-media',
-      icon: <Layers size={22} />,
-      title: 'Corrosive & Aggressive Media',
-      desc: 'Fully wetted parts protection utilizing PFA lining and exotic special alloy bodies (marine, chemical processing, petrochemical) built to resist hostile chemicals.',
-      linkText: 'Explore lined and alloy options',
-      href: routes.products({ type: 'lined' })
-    },
-    {
-      id: 'automation',
-      icon: <Settings size={22} />,
-      title: 'Automated Valve Packages',
-      desc: 'Fully configured and pre-tested valve-actuator packages. Integrated with pneumatic, electric, or hydraulic actuators, limit switches, and positioners for immediate installation.',
-      linkText: 'Explore automated packages',
-      href: routes.products({ type: 'automated' })
-    },
-    {
-      id: 'customized',
-      icon: <Headset size={22} />,
-      title: 'Customized Solutions',
-      desc: 'Tailor-made modifications and engineered-to-order configurations to fit specific face-to-face dimensions, custom mounting pads, or unique process conditions.',
-      linkText: 'Contact engineers for custom designs',
-      href: routes.enquiry({ intent: 'technical' })
-    }
-  ];
-
-  const seriesList = [
-    {
-      id: 'iso-series',
-      title: 'ISO Series',
-      desc: 'Heavy-duty resilient seated butterfly valves. Features an ISO 5211 mounting pad for direct automation mounting, extra-heavy shafts, and low operating torques.',
-      href: routes.products({ type: 'resilient' })
-    },
-    {
-      id: 'high-perf-series',
-      title: 'High Performance Series',
-      desc: 'Double offset high-performance series designed for steam, gas, oil, and chemical duties. Features ANSI Class 150/300/600/900 ratings with positive bubble-tight shutoff.',
-      href: routes.products({ type: 'high-performance' })
-    },
-    {
-      id: 'trimax-series',
-      title: 'High Performance Tri-Max Series',
-      desc: 'Triple offset metal-seated series built for severe services. Eliminates seat wear, ensures bidirectional zero-leakage, and operates in extreme temperatures.',
-      href: routes.products({ type: 'triple-offset' })
-    },
-    {
-      id: 'performance-series',
-      title: 'Performance Series',
-      desc: 'General industrial and commercial service resilient seated butterfly valves. Reliable construction, standard layouts, and fast delivery.',
-      href: routes.products({ type: 'resilient' })
-    },
-    {
-      id: 'hitek-series',
-      title: 'Hi-Tek Series',
-      desc: 'High performance control and automation valves engineered for modulating control, offering precise flow coefficients and tight shutoff.',
-      href: routes.products({ type: 'automated' })
-    },
-    {
-      id: 'chem-flo-series',
-      title: 'Chem Flo Series',
-      desc: 'Lined industrial butterfly valves protecting wetted parts from hostile chemicals, acids, and high purity wetted medias.',
-      href: routes.products({ type: 'lined' })
-    },
-    {
-      id: 'chem-tek-series',
-      title: 'Chem Tek Series',
-      desc: 'Robust wetted protection and lined options designed for chemical processing and industrial manufacturing.',
-      href: routes.products({ type: 'lined' })
-    },
-    {
-      id: 'actuators-gear',
-      title: 'Gear Ops & Pneumatic Actuators',
-      desc: 'Pneumatic double-acting and spring-return actuators, manual gear operators, limit switches, and positioners pre-tested for immediate deployment.',
-      href: routes.products({ type: 'automated' })
-    }
-  ];
-
-  const engineeringServices = [
-    {
-      title: 'Custom Stem Extensions',
-      desc: 'Engineered stem and shaft extensions for insulated pipes, buried services, or high-temperature lines. Built to match your specific torque and height needs.'
-    },
-    {
-      title: 'Mounting Brackets & Hardware',
-      desc: 'Custom mounting brackets, couplings, and adapter plates designed and machined in-house for seamless valve-to-actuator pairing.'
-    },
-    {
-      title: 'Valve & Actuator Repair',
-      desc: 'Full refurbishment, seat replacement, actuator recalibration, and leak testing services at our Lumberton and Houston depots.'
-    },
-    {
-      title: 'Custom Testing & QA',
-      desc: 'API 598 pressure testing, shell/leak tests, and custom certification reports for compliance and severe service verification.'
-    }
-  ];
-
-  const affiliates = [
-    {
-      name: 'Flo-Tite Valves',
-      desc: 'Partner brand supplying ball valves, control valves, check valves, and specialty wetted options. A leading name in process valve engineering.',
-      link: 'https://flotite.com'
-    },
-    {
-      name: 'Titan FCI',
-      desc: 'Leading manufacturer of industrial piping strainers (Y-strainers, basket strainers), check valves, and duplex strainers.',
-      link: 'http://www.titanfci.com'
-    },
-    {
-      name: 'Aircon Actuators',
-      desc: 'High-quality pneumatic actuators, limit switches, solenoids, and positioners built for process automation packages.',
-      link: 'http://www.airconactuators.com'
-    },
-    {
-      name: 'IV-Controls (IVC)',
-      desc: 'Valve automation and controls, assembling complex multi-valve automated manifolds and process packages.',
-      link: 'http://iv-controls.com'
-    },
-    {
-      name: 'International Valve Tech (IVT)',
-      desc: 'Specialized valve technologies, custom fabrications, and niche industrial application engineering.',
-      link: 'http://www.internationalvalvetech.com'
-    }
-  ];
-
-  const getRecommendation = () => {
-    if (sizingMedia === 'corrosive') {
-      return {
-        title: "PFA Lined (Chem Flo/Chem Tek) or Special Alloy Series",
-        desc: "Designed specifically to protect wetted parts from aggressive chemicals, acids, and exotic media. We recommend wetted w/ PFA liners or special alloy construction (Monel, Hastelloy, Duplex) to resist corrosion.",
-        link: routes.products({ type: 'lined' }),
-        linkText: "Explore Lined Valves",
-        ctaText: "Ask Chemical Engineers"
-      };
-    }
-    if (sizingMedia === 'process' || sizingPressure === 'high') {
-      return {
-        title: "High Performance Double Offset or Tri-Max Triple Offset Series",
-        desc: "Engineered for high temperature, steam, oil, and gas applications. The Tri-Max Series features a metal-to-metal torque-seated design for severe service zero-leakage shutoff.",
-        link: routes.products({ type: 'high-performance' }),
-        linkText: "Explore High Performance",
-        ctaText: "Request High-Pressure Quote"
-      };
-    }
-    if (sizingMedia === 'slurry') {
-      return {
-        title: "Heavy-Duty Resilient Seated or Custom Engineered Valve",
-        desc: "For slurry, mining, and abrasive processes, we recommend a heavy-duty resilient seated valve with specialized abrasion-resistant liners and customized disc coatings to maximize service life.",
-        link: routes.products({ type: 'resilient' }),
-        linkText: "Explore Resilient Valves",
-        ctaText: "Consult Application Engineer"
-      };
-    }
-    // Default utility or low/medium pressure
-    return {
-      title: "Resilient Seated ISO Series or Performance Series",
-      desc: "Perfect for everyday water, air, HVAC, and general utility isolation. The ISO Series includes direct ISO 5211 mounting pads for easy, low-cost actuator installation.",
-      link: routes.products({ type: 'resilient' }),
-      linkText: "Explore Resilient Valves",
-      ctaText: "Request Sizing Quote"
-    };
-  };
-
-  const rec = getRecommendation();
+  const {
+    sizingMedia,
+    setSizingMedia,
+    sizingPressure,
+    setSizingPressure,
+    sizingOperation,
+    setSizingOperation,
+    recommendation,
+  } = useRecommendation();
 
   return (
     <>
@@ -544,267 +379,41 @@ export default function Solutions() {
       `}</style>
       <Header current="solutions" />
       <main>
-        <PageHero
-          kicker="Solutions"
-          title="Engineered Solutions & Applications"
-          lead="From standard isolation duties to extreme severe service, Max-Seal designs, configures, and automates butterfly valves to fit your specific operating window."
-          crumbs={[{ label: 'Home', href: routes.home }, { label: 'Solutions' }]}
-          mediaId="solutions-hero"
-          mediaPlaceholder="Solutions engineering and application overview"
-        />
+        <HeroSection />
 
         <section className="section">
           <div className="wrap">
             <div className="solutions-intro reveal">
-              <p>We work from your application parameters back to the valve, matching material selections, pressure ratings, and automation packages to the duty cycle. Explore our solutions, specific product series, and engineering capabilities below.</p>
+              <p>
+                We work from your application parameters back to the valve, matching material selections, pressure ratings, and automation packages to the duty cycle. Explore our solutions, specific product series, and engineering capabilities below.
+              </p>
             </div>
 
-            {/* Tab Switcher */}
-            <div className="solutions-tabs-nav reveal" role="tablist" aria-label="Solutions navigation tabs">
-              <button
-                role="tab"
-                aria-selected={activeTab === 'applications'}
-                className={`solutions-tab-btn ${activeTab === 'applications' ? 'on' : ''}`}
-                onClick={() => setActiveTab('applications')}
-              >
-                Applications
-              </button>
-              <button
-                role="tab"
-                aria-selected={activeTab === 'series'}
-                className={`solutions-tab-btn ${activeTab === 'series' ? 'on' : ''}`}
-                onClick={() => setActiveTab('series')}
-              >
-                Product Series
-              </button>
-              <button
-                role="tab"
-                aria-selected={activeTab === 'services'}
-                className={`solutions-tab-btn ${activeTab === 'services' ? 'on' : ''}`}
-                onClick={() => setActiveTab('services')}
-              >
-                Engineering & Services
-              </button>
-              <button
-                role="tab"
-                aria-selected={activeTab === 'affiliates'}
-                className={`solutions-tab-btn ${activeTab === 'affiliates' ? 'on' : ''}`}
-                onClick={() => setActiveTab('affiliates')}
-              >
-                Partners & Affiliates
-              </button>
-            </div>
+            {/* Four-tab Navigation */}
+            <SolutionTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-            {/* Tab content 1: Applications */}
-            {activeTab === 'applications' && (
-              <div className="solutions-grid tab-content">
-                {solutions.map((s) => (
-                  <div key={s.id} className="solution-card">
-                    <div className="solution-card__ic">{s.icon}</div>
-                    <h3 className="solution-card__title">{s.title}</h3>
-                    <p className="solution-card__desc">{s.desc}</p>
-                    <div>
-                      <Link className="link-arrow" to={s.href}>{s.linkText} <ArrowRight size={15} /></Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* Tab Contents */}
+            {activeTab === 'applications' && <ApplicationsTab />}
+            {activeTab === 'series' && <ProductSeriesTab />}
+            {activeTab === 'services' && <EngineeringServicesTab />}
+            {activeTab === 'affiliates' && <PartnersTab />}
 
-            {/* Tab content 2: Product Series */}
-            {activeTab === 'series' && (
-              <div className="solutions-grid tab-content">
-                {seriesList.map((s) => (
-                  <div key={s.id} className="series-card">
-                    <div>
-                      <h3 className="series-card__title"><Settings size={18} style={{ color: 'var(--azure-500)' }} /> {s.title}</h3>
-                      <p className="series-card__desc">{s.desc}</p>
-                    </div>
-                    <div>
-                      <Link className="link-arrow" to={s.href}>View series specifications <ArrowRight size={15} /></Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Tab content 3: Engineering Services */}
-            {activeTab === 'services' && (
-              <div className="services-grid tab-content">
-                {engineeringServices.map((s, idx) => (
-                  <div key={idx} className="service-item">
-                    <h4>{s.title}</h4>
-                    <p>{s.desc}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Tab content 4: Partners & Affiliates */}
-            {activeTab === 'affiliates' && (
-              <div className="affiliates-grid tab-content">
-                {affiliates.map((a, idx) => (
-                  <div key={idx} className="affiliate-card">
-                    <div>
-                      <div className="affiliate-card__name">{a.name}</div>
-                      <p className="affiliate-card__desc">{a.desc}</p>
-                    </div>
-                    <div>
-                      <a className="link-arrow" href={a.link} target="_blank" rel="noopener noreferrer">
-                        Visit brand website <ArrowRight size={15} />
-                      </a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Sizing Assistant Tool */}
-            <div className="sizing-tool reveal">
-              <div className="sizing-tool__grid">
-                <div>
-                  <h3 className="sizing-tool__title"><Compass size={22} style={{ color: 'var(--azure-500)' }} /> Quick Selection Assistant</h3>
-                  <p className="sizing-tool__subtitle">Select your system wetted media, pressure limits, and actuation preference to identify the recommended valve class.</p>
-
-                  <div className="sizing-selector">
-                    <div className="sizing-selector__label">1. Wetted Media</div>
-                    <div className="sizing-chips">
-                      <button
-                        className={`sizing-chip-btn ${sizingMedia === 'utility' ? 'on' : ''}`}
-                        onClick={() => setSizingMedia('utility')}
-                      >
-                        Water / HVAC / Utility
-                      </button>
-                      <button
-                        className={`sizing-chip-btn ${sizingMedia === 'process' ? 'on' : ''}`}
-                        onClick={() => setSizingMedia('process')}
-                      >
-                        Steam / Oil / Gas
-                      </button>
-                      <button
-                        className={`sizing-chip-btn ${sizingMedia === 'corrosive' ? 'on' : ''}`}
-                        onClick={() => setSizingMedia('corrosive')}
-                      >
-                        Corrosive Chemicals
-                      </button>
-                      <button
-                        className={`sizing-chip-btn ${sizingMedia === 'slurry' ? 'on' : ''}`}
-                        onClick={() => setSizingMedia('slurry')}
-                      >
-                        Slurry / Abrasives
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="sizing-selector">
-                    <div className="sizing-selector__label">2. Pressure Class</div>
-                    <div className="sizing-chips">
-                      <button
-                        className={`sizing-chip-btn ${sizingPressure === 'low' ? 'on' : ''}`}
-                        onClick={() => setSizingPressure('low')}
-                      >
-                        Low (PN10 / PN16 / 150 PSI)
-                      </button>
-                      <button
-                        className={`sizing-chip-btn ${sizingPressure === 'medium' ? 'on' : ''}`}
-                        onClick={() => setSizingPressure('medium')}
-                      >
-                        Medium (ANSI 150#)
-                      </button>
-                      <button
-                        className={`sizing-chip-btn ${sizingPressure === 'high' ? 'on' : ''}`}
-                        onClick={() => setSizingPressure('high')}
-                      >
-                        High (ANSI 300#+)
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="sizing-selector">
-                    <div className="sizing-selector__label">3. Operation Method</div>
-                    <div className="sizing-chips">
-                      <button
-                        className={`sizing-chip-btn ${sizingOperation === 'manual' ? 'on' : ''}`}
-                        onClick={() => setSizingOperation('manual')}
-                      >
-                        Manual Handle / Gear
-                      </button>
-                      <button
-                        className={`sizing-chip-btn ${sizingOperation === 'automated' ? 'on' : ''}`}
-                        onClick={() => setSizingOperation('automated')}
-                      >
-                        Automated Actuator
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="sizing-rec">
-                  <div>
-                    <div className="sizing-rec__header"><Info size={14} /> Recommended Configuration</div>
-                    <h4 className="sizing-rec__title">{rec.title}</h4>
-                    <p className="sizing-rec__desc">{rec.desc}</p>
-                    {sizingOperation === 'automated' && (
-                      <p style={{ fontSize: '0.85rem', color: 'var(--azure-500)', marginTop: '-1rem', marginBottom: '1.5rem', fontWeight: 600 }}>
-                        ★ Recommended with pre-tested pneumatic or electric actuator package.
-                      </p>
-                    )}
-                  </div>
-                  <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-                    <Link className="ms-btn ms-btn--primary ms-btn--sm" to={rec.link}>
-                      {rec.linkText} <ArrowRight size={15} />
-                    </Link>
-                    <Link className="ms-btn ms-btn--outline ms-btn--on-dark ms-btn--sm" to={routes.enquiry({ intent: 'technical' })}>
-                      {rec.ctaText}
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Quick Selection Assistant */}
+            <QuickSelectionAssistant
+              sizingMedia={sizingMedia}
+              onMediaChange={setSizingMedia}
+              sizingPressure={sizingPressure}
+              onPressureChange={setSizingPressure}
+              sizingOperation={sizingOperation}
+              onOperationChange={setSizingOperation}
+              recommendation={recommendation}
+            />
 
             {/* Video Demos Section */}
-            <div className="video-section reveal">
-              <div className="shead">
-                <div className="kicker">Demonstrations</div>
-                <h3 className="shead__title">Product Design & Operation Videos</h3>
-              </div>
-              <div className="video-grid">
-                <div className="video-card">
-                  <div className="video-wrapper">
-                    <iframe
-                      src="https://www.youtube.com/embed/Br-8P-sG6Ws"
-                      title="Max-Seal Valve Design and Capabilities Overview"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                  <h4 className="video-card__title">Design & Capabilities Overview</h4>
-                  <p className="video-card__desc">A detailed walkthrough of Max-Seal's design features including heavy-duty stems, ISO mounting pads, and low torque sealing mechanisms.</p>
-                </div>
-                <div className="video-card">
-                  <div className="video-wrapper">
-                    <iframe
-                      src="https://www.youtube.com/embed/LyE8vXhN3m4"
-                      title="Automated Process Valve Demonstration"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-                  <h4 className="video-card__title">Automated Process Valve Demo</h4>
-                  <p className="video-card__desc">Watch Max-Seal automated valve packages in operation, showing smooth pneumatic cycling and positioner responses for process loops.</p>
-                </div>
-              </div>
-            </div>
+            <VideoSection />
 
-            {/* General CTA */}
-            <div className="contact-cta reveal" style={{ marginTop: '4.5rem' }}>
-              <h3>Need a customized sizing or selection?</h3>
-              <p>Work directly with our North Carolina and Texas-based engineers to configure the right valve, seat material, and actuator packages for your process conditions.</p>
-              <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                <Link className="ms-btn ms-btn--primary" to={routes.enquiry({ intent: 'technical' })}>Request Engineering Support <ArrowRight size={16} /></Link>
-                <Link className="ms-btn ms-btn--outline" to={routes.contact}>Find a Partner</Link>
-              </div>
-            </div>
+            {/* Closing CTA */}
+            <ClosingCTA />
           </div>
         </section>
       </main>

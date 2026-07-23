@@ -7,7 +7,7 @@ import useSiteChrome from '../hooks/useSiteChrome';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageHero from '../components/PageHero';
-import { INDUSTRIES, FAMILIES, APP_NEEDS } from '../data/data';
+import { INDUSTRIES, FAMILIES, APP_NEEDS, HERO_INDUSTRY_IMAGE } from '../data/data';
 import { ArrowRight, Headset, Compass, ChevronRight, Layers } from '../icons/icons';
 import { routes } from '../router/paths';
 
@@ -48,7 +48,7 @@ export default function Industries() {
           title="Explore the operating environments behind every valve decision"
           lead="Select an industry, application need, or operating condition to explore the Max-Seal product families connected to that requirement."
           crumbs={[{ label: 'Home', href: routes.home }, { label: 'Industries' }]}
-          mediaId="industries-hero" mediaPlaceholder="Industrial application visual">
+          mediaId="industries-hero" mediaSrc={HERO_INDUSTRY_IMAGE} mediaPlaceholder="Industrial application visual">
           <div className="phero__actions">
             <button className="ms-btn ms-btn--primary ms-btn--lg" onClick={() => workspaceRef.current && workspaceRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })}>Explore the Matrix <ArrowRight size={16} /></button>
             <Link className="ms-btn ms-btn--on-dark ms-btn--lg" to={routes.enquiry({ intent: 'technical' })}>Ask a Technical Question</Link>
@@ -89,7 +89,7 @@ export default function Industries() {
                 <div className="mx__media">
                   {INDUSTRIES.map(x => (
                     <div key={x.id} className={'mx__img' + (x.id === activeInd ? ' on' : '')} aria-hidden={x.id !== activeInd}>
-                      <image-slot id={'mx-ind-' + x.id} shape="rect" fit="cover" placeholder={x.name + ' application image'} />
+                      <image-slot id={'mx-ind-' + x.id} shape="rect" fit="cover" src={x.image} placeholder={x.name + ' application image'} />
                     </div>
                   ))}
                   <div className="mx__media-scrim" />

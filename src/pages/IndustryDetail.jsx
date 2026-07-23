@@ -26,7 +26,7 @@ export default function IndustryDetail() {
       <main>
         <PageHero kicker="Industry" title={ind.name} lead={ind.ctx}
           crumbs={[{ label: 'Home', href: routes.home }, { label: 'Industries', href: routes.industries() }, { label: ind.name }]}
-          mediaId={'inddetail-' + ind.id} mediaPlaceholder={ind.name + ' application visual'} />
+          mediaId={'inddetail-' + ind.id} mediaSrc={ind.image} mediaPlaceholder={ind.name + ' application visual'} />
 
         <section className="section">
           <div className="wrap idet">
@@ -50,7 +50,7 @@ export default function IndustryDetail() {
 
               {/* Featured story placeholder (CMS-ready) */}
               <div className="idet__story">
-                <div className="idet__story-media"><image-slot id={'idet-story-' + ind.id} shape="rect" fit="cover" placeholder="Project or application photo" /><span className="proofx__badge">{PROOF.type}</span></div>
+                <div className="idet__story-media"><image-slot id={'idet-story-' + ind.id} shape="rect" fit="cover" src={ind.image} placeholder="Project or application photo" /><span className="proofx__badge">{PROOF.type}</span></div>
                 <div className="idet__story-body">
                   <div className="idet__story-k">Featured story · placeholder</div>
                   <h3 className="idet__story-t">{PROOF.title}</h3>
