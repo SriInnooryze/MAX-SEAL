@@ -9,7 +9,7 @@ export default function PageHero({ kicker, title, lead, crumbs, mediaId, mediaSr
       <div className="page-hero__scrim" />
       <div className="wrap">
         <div className="page-hero__inner">
-          {crumbs && (
+          {crumbs ? (
             <nav className="breadcrumbs" aria-label="Breadcrumb">
               {crumbs.map((c, i) => (
                 <Fragment key={i}>
@@ -18,8 +18,9 @@ export default function PageHero({ kicker, title, lead, crumbs, mediaId, mediaSr
                 </Fragment>
               ))}
             </nav>
-          )}
-          {kicker && <div className="kicker kicker--ondark" style={{ marginTop: crumbs ? '1.1rem' : 0 }}>{kicker}</div>}
+          ) : kicker ? (
+            <div className="kicker kicker--ondark">{kicker}</div>
+          ) : null}
           <h1 className="page-hero__title">{title}</h1>
           {lead && <p className="page-hero__lead">{lead}</p>}
           {children}

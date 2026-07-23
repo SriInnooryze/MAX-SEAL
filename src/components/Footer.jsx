@@ -32,7 +32,7 @@ export default function Footer() {
           <div className="foot__col"><h5>Resources</h5>{colResources.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
         </div>
         <div className="foot__bottom">
-          <span style={{ color: 'var(--steel-500)' }}>© 2026 Max-Seal Inc. All rights reserved.</span>
+          <span className="foot__copyright">© 2026 Max-Seal Inc. All rights reserved.</span>
           <div className="foot__legal">
             <Link to={routes.terms}>Terms and Conditions</Link>
             <Link to={routes.privacy}>Privacy Policy</Link>

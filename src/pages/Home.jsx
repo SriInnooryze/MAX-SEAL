@@ -539,7 +539,7 @@ export default function Home() {
   return (
     <>
       <Header current="home" />
-      <main>
+      <main className="home-page">
         <VideoHero />
         <ProductPreview />
         <IndustryPreview />

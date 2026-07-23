@@ -830,6 +830,7 @@
   .mx__col--stage .mx__coltitle, .mx__apps .mx__coltitle { display: flex; }
 }
 @media (max-width: 620px) {
+  .paths, .pick-grid { grid-template-columns: 1fr; }
   .rrow { grid-template-columns: auto 1fr; }
   .rrow__thumb, .rrow__meta { display: none; }
   .doc-row { grid-template-columns: 40px 1fr; gap: 0.7rem 0.9rem; }

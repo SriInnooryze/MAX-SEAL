@@ -41,8 +41,28 @@ export default function MobileNav({ open, onClose, current }) {
 
   useEffect(() => {
     if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    // iOS Safari does not honor `overflow: hidden` on <body> as a scroll
+    // lock — the background page still rubber-bands/pans under the fixed
+    // drawer, which steals real (non-zero-movement) touches meant for the
+    // dropdown toggles/links inside it. Pinning body with `position: fixed`
+    // at the current scroll offset is the standard cross-browser fix; we
+    // restore the exact scroll position on close.
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const prevStyle = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
     const onKey = (e) => {
       if (e.key === 'Escape') { onClose(); return; }
       if (e.key === 'Tab' && panelRef.current) {
@@ -55,7 +75,17 @@ export default function MobileNav({ open, onClose, current }) {
     };
     document.addEventListener('keydown', onKey);
     const raf = requestAnimationFrame(() => { if (firstRef.current) firstRef.current.focus(); });
-    return () => { document.body.style.overflow = prevOverflow; document.removeEventListener('keydown', onKey); cancelAnimationFrame(raf); };
+    return () => {
+      body.style.position = prevStyle.position;
+      body.style.top = prevStyle.top;
+      body.style.left = prevStyle.left;
+      body.style.right = prevStyle.right;
+      body.style.width = prevStyle.width;
+      body.style.overflow = prevStyle.overflow;
+      window.scrollTo(0, scrollY);
+      document.removeEventListener('keydown', onKey);
+      cancelAnimationFrame(raf);
+    };
   }, [open]);
 
   const toggleSection = (id) => setExpanded(e => ({ ...e, [id]: !e[id] }));
@@ -72,16 +102,33 @@ export default function MobileNav({ open, onClose, current }) {
           {MOBILE_NAV.map(n => (
             <div className="mnav__item" key={n.id}>
               <div className="mnav__row">
-                <Link className={'mnav__link' + (current === n.id ? ' active' : '')} to={n.href} onClick={onClose} aria-current={current === n.id ? 'page' : undefined}>{n.label}</Link>
+                <Link
+                  className={'mnav__link' + (current === n.id ? ' active' : '')}
+                  to={n.href}
+                  onClick={onClose}
+                  aria-current={current === n.id ? 'page' : undefined}
+                >
+                  {n.label}
+                </Link>
                 {n.children && (
-                  <button className={'mnav__toggle' + (expanded[n.id] ? ' open' : '')} aria-label={(expanded[n.id] ? 'Collapse ' : 'Expand ') + n.label} aria-expanded={!!expanded[n.id]} onClick={() => toggleSection(n.id)}>
+                  <button
+                    type="button"
+                    className={'mnav__toggle' + (expanded[n.id] ? ' open' : '')}
+                    aria-label={(expanded[n.id] ? 'Collapse ' : 'Expand ') + n.label}
+                    aria-expanded={!!expanded[n.id]}
+                    onClick={() => toggleSection(n.id)}
+                  >
                     <ChevronDown size={20} />
                   </button>
                 )}
               </div>
               {n.children && (
                 <div className={'mnav__sub' + (expanded[n.id] ? ' open' : '')}>
-                  {n.children.map(c => <Link key={c.label} className={'mnav__sublink' + (c.all ? ' mnav__sublink--all' : '')} to={c.href} onClick={onClose}>{c.label}</Link>)}
+                  {n.children.map(c => (
+                    <Link key={c.label} className={'mnav__sublink' + (c.all ? ' mnav__sublink--all' : '')} to={c.href} onClick={onClose}>
+                      {c.label}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
