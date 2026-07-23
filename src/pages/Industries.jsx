@@ -101,9 +101,9 @@ export default function Industries() {
                 <div className="mx__apps">
                   <div className="mx__coltitle">Application need <span className="mx__hint">select to refine</span></div>
                   <div className="mx__appchips" role="tablist" aria-label="Application needs">
-                    <button role="tab" aria-selected={!activeApp} className={'mx__appchip' + (!activeApp ? ' on' : '')} onClick={() => setActiveApp(null)}>All needs</button>
+                    <button role="tab" aria-selected={!activeApp} className={'mx__appchip' + (!activeApp ? ' on' : '')} onClick={(e) => { setActiveApp(null); if (e.currentTarget) e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }}>All needs</button>
                     {apps.map(a => (
-                      <button key={a.id} role="tab" aria-selected={a.id === activeApp} className={'mx__appchip' + (a.id === activeApp ? ' on' : '')} onClick={() => setActiveApp(a.id === activeApp ? null : a.id)}>{a.l}</button>
+                      <button key={a.id} role="tab" aria-selected={a.id === activeApp} className={'mx__appchip' + (a.id === activeApp ? ' on' : '')} onClick={(e) => { setActiveApp(a.id === activeApp ? null : a.id); if (e.currentTarget) e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }}>{a.l}</button>
                     ))}
                   </div>
                 </div>
