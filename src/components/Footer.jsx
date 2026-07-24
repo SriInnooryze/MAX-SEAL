@@ -36,6 +36,7 @@ export default function Footer() {
         </div>
         <div className="foot__bottom">
           <span className="foot__copyright">© 2026 Max-Seal Inc. All rights reserved.</span>
+          <span className="foot__attribution">Where Experience Meets Innovation - InnooRyze</span>
           <div className="foot__legal">
             <Link to={routes.terms}>Terms and Conditions</Link>
             <Link to={routes.privacy}>Privacy Policy</Link>
