@@ -188,7 +188,35 @@
   animation: heroAmbientGlowPulse 12s ease-in-out infinite alternate;
 }
 
+/* Hero Focal Point: Max-Seal Product Valve Silhouette */
+.vhero__silhouette {
+  position: absolute;
+  top: 45%;
+  right: 5%;
+  transform: translateY(-50%);
+  width: clamp(340px, 38vw, 540px);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  filter: brightness(0) invert(0.85) drop-shadow(0 0 45px rgba(31, 163, 229, 0.35));
+  will-change: transform, opacity;
+  animation: heroSilhouetteFloat 24s ease-in-out infinite alternate;
+}
+
+.vhero__silhouette img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
 /* Independent Asynchronous Keyframe Animations */
+@keyframes heroSilhouetteFloat {
+  0% { transform: translateY(-50%) translate3d(0, 0, 0) rotate(0deg); opacity: 0.10; }
+  50% { transform: translateY(-50%) translate3d(-10px, -8px, 0) rotate(1.2deg); opacity: 0.14; }
+  100% { transform: translateY(-50%) translate3d(8px, 6px, 0) rotate(-1deg); opacity: 0.11; }
+}
 @keyframes heroDarkGradShift {
   0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.85; }
   50% { transform: translate3d(-25px, 18px, 0) scale(1.05); opacity: 1; }
@@ -219,13 +247,18 @@
   100% { transform: scale(0.94) translate3d(8px, -6px, 0); opacity: 0.65; }
 }
 
+@media (max-width: 900px) {
+  .vhero__silhouette { width: clamp(240px, 45vw, 360px); right: 2%; opacity: 0.08; }
+}
+
 @media (max-width: 768px) {
   .vhero__l2-blobs { width: 90%; opacity: 0.6; }
   .vhero__l5-ambient { width: 280px; height: 280px; right: 2%; }
+  .vhero__silhouette { opacity: 0.06; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .vhero__l1-grad, .vhero__l2-blobs, .vhero__l3-rays, .vhero__l4-grid, .vhero__l5-ambient {
+  .vhero__l1-grad, .vhero__l2-blobs, .vhero__l3-rays, .vhero__l4-grid, .vhero__l5-ambient, .vhero__silhouette {
     animation: none !important;
   }
 }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import highPerformanceImg from '../assets/products/high-performance.png';
 import { FAMILIES, WHY, PRODUCT_STORIES, INDUSTRY_STORIES, PROOF, RESOURCE_LIBS } from '../data/data';
 import { ArrowRight, ArrowLeft, Play, Pause, Volume, VolumeOff, Headset, MessageCircle, X, FileText, Eye, Download } from '../icons/icons';
 import { routes } from '../router/paths';
@@ -73,6 +74,9 @@ function VideoHero() {
         <div className="vhero__l3-rays" />
         <div className="vhero__l4-grid" />
         <div className="vhero__l5-ambient" />
+        <div className="vhero__silhouette">
+          <img src={highPerformanceImg} alt="" />
+        </div>
       </div>
 
       <div className="vhero__inner">
