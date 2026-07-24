@@ -1,20 +1,20 @@
 /* Max-Seal — shared content data. */
 import { routes } from '../router/paths';
 
-import dataCentersImg from '../assets/industries/data-centers.svg';
-import oilGasImg from '../assets/industries/oil-gas.svg';
-import refiningImg from '../assets/industries/refining.svg';
-import petrochemicalImg from '../assets/industries/petrochemical.svg';
-import chemicalImg from '../assets/industries/chemical.svg';
-import powerImg from '../assets/industries/power.svg';
-import pulpPaperImg from '../assets/industries/pulp-paper.svg';
-import miningImg from '../assets/industries/mining.svg';
-import marineImg from '../assets/industries/marine.svg';
-import hvacImg from '../assets/industries/hvac.svg';
-import foodBeverageImg from '../assets/industries/food-beverage.svg';
-import pharmaImg from '../assets/industries/pharma.svg';
-import transportationImg from '../assets/industries/transportation.svg';
-import industryHeroImg from '../assets/industries/hero.svg';
+import dataCentersImg from '../assets/industries/data-centers.png';
+import oilGasImg from '../assets/industries/oil-gas.png';
+import refiningImg from '../assets/industries/refining.png';
+import petrochemicalImg from '../assets/industries/petrochemical.png';
+import chemicalImg from '../assets/industries/chemical.png';
+import powerImg from '../assets/industries/power.png';
+import pulpPaperImg from '../assets/industries/pulp-paper.png';
+import miningImg from '../assets/industries/mining.png';
+import marineImg from '../assets/industries/marine.png';
+import hvacImg from '../assets/industries/hvac.png';
+import foodBeverageImg from '../assets/industries/food-beverage.png';
+import pharmaImg from '../assets/industries/pharma.png';
+import transportationImg from '../assets/industries/transportation.png';
+import industryHeroImg from '../assets/industries/hero.png';
 import resilientSeatedImg from '../assets/products/resilient-seated.png';
 import highPerformanceImg from '../assets/products/high-performance.png';
 import tripleOffsetImg from '../assets/products/triple-offset.png';
@@ -151,42 +151,48 @@ export const PRODUCT_STORIES = [
     teaser: 'Dependable shutoff for systems that run the same way every time. Resilient seated and high performance valves handle repeatable isolation, with automated packages where duties cycle often.',
     line: 'Dependable shutoff and control for systems that must operate consistently.',
     story: 'Many systems simply need to start and stop flow without fuss, every time they are asked to. Max-Seal builds resilient seated and high performance valves around that need for repeatable shutoff. Where duties cycle often, automated packages help keep operation steady.',
-    families: ['resilient', 'high-performance', 'automated'], app: 'Water, HVAC, building services and general utility isolation'
+    families: ['resilient', 'high-performance', 'automated'], app: 'Water, HVAC, building services and general utility isolation',
+    image: resilientSeatedImg
   },
   {
     id: 'performance-pressure', title: 'Performance under pressure',
     teaser: 'Some duties ask more than everyday service. High performance and triple offset designs are configured for demanding pressure and temperature, with seat and trim matched to the application.',
     line: 'Valve configurations designed for demanding service conditions and application requirements.',
     story: 'Some service conditions ask more of a valve than everyday duties. High performance and triple offset designs are configured for demanding pressure and temperature ranges. The right seat and trim choice is matched to each application.',
-    families: ['high-performance', 'triple-offset'], app: 'Process, refining and power duties across a wide range'
+    families: ['high-performance', 'triple-offset'], app: 'Process, refining and power duties across a wide range',
+    image: highPerformanceImg
   },
   {
     id: 'corrosive-service', title: 'Corrosive service',
     teaser: 'When media is aggressive, material choice decides valve life. PFA lined and special alloy constructions protect wetted parts, guided by the chemistry of your process.',
     line: 'Material and lining options for environments where media compatibility matters.',
     story: 'When the media is aggressive, material compatibility decides how long a valve keeps working. PFA lined and special alloy constructions protect wetted parts in corrosive environments. Selections are guided by the chemistry of your process.',
-    families: ['pfa-lined', 'special-alloy'], app: 'Chemical, petrochemical and other aggressive media'
+    families: ['pfa-lined', 'special-alloy'], app: 'Chemical, petrochemical and other aggressive media',
+    image: pfaLinedImg
   },
   {
     id: 'automated-control', title: 'Automated control',
     teaser: 'Control systems need valves that respond predictably. Max-Seal prepares valve and actuator packages around control, response and operating needs, with accessories suited to the duty.',
     line: 'Valve and actuator packages prepared around control, response, and operating needs.',
     story: 'Control systems need valves that respond predictably and integrate cleanly. Max-Seal assembles valve and actuator packages around control, response and operating needs. Accessories and controls are prepared to suit the duty.',
-    families: ['automated', 'high-performance', 'customized'], app: 'Process automation and control loops'
+    families: ['automated', 'high-performance', 'customized'], app: 'Process automation and control loops',
+    image: automatedImg
   },
   {
     id: 'application-specific', title: 'Application-specific solutions',
     teaser: 'Not every requirement fits a standard configuration. Customized solutions are engineered to order with practical input, working from your application to the valve.',
     line: 'Customized configurations supported by practical engineering input.',
     story: 'Not every requirement fits a standard configuration. Customized solutions are engineered to order with practical input from our team. We work from your application to the valve, not the other way around.',
-    families: ['customized', 'special-alloy'], app: 'Project specific requirements'
+    families: ['customized', 'special-alloy'], app: 'Project specific requirements',
+    image: customizedImg
   },
   {
     id: 'engineered-support', title: 'Engineered support',
     teaser: 'Choosing the right valve is easier with engineering alongside it. We help match series, seat and trim to your service condition, from selection through configuration.',
     line: 'Practical engineering input from selection through configuration.',
     story: 'Choosing the right valve is easier with engineering input alongside it. Max-Seal helps match series, seat and trim to your service condition. Support continues from selection through sizing and configuration.',
-    families: ['customized', 'automated', 'high-performance'], app: 'Selection, sizing and application support'
+    families: ['customized', 'automated', 'high-performance'], app: 'Selection, sizing and application support',
+    image: specialAlloyImg
   },
 ];
 
@@ -197,7 +203,8 @@ export const INDUSTRY_STORIES = [
     line: 'Flow control for sites that cannot afford downtime.',
     story: 'Critical facilities depend on cooling and water systems that need to run without interruption. Dependable isolation helps keep these environments operating around the clock. Automated packages support the steady control these sites rely on.',
     sectors: ['Data centers', 'HVAC'], families: ['resilient', 'high-performance', 'automated'],
-    app: 'Cooling loops and water distribution for critical sites'
+    app: 'Cooling loops and water distribution for critical sites',
+    image: dataCentersImg
   },
   {
     id: 'energy-refining', title: 'Energy and refining',
@@ -205,7 +212,8 @@ export const INDUSTRY_STORIES = [
     line: 'Robust shutoff across energy and refining service.',
     story: 'Energy and refining operations work across a wide range of pressures and temperatures. Robust isolation and control are matched to each service condition. The aim is dependable performance across demanding duties.',
     sectors: ['Oil and gas', 'Refining', 'Power'], families: ['triple-offset', 'high-performance', 'automated'],
-    app: 'Isolation and control across energy and refining duties'
+    app: 'Isolation and control across energy and refining duties',
+    image: oilGasImg
   },
   {
     id: 'process-industries', title: 'Process industries',
@@ -213,7 +221,8 @@ export const INDUSTRY_STORIES = [
     line: 'Material and sealing choices for demanding media.',
     story: 'Process plants handle aggressive media and frequent cycling. Material and sealing choices are matched to the chemistry of each process. Lined and alloy constructions help protect wetted parts.',
     sectors: ['Petrochemical', 'Chemical processing', 'Pulp and paper'], families: ['pfa-lined', 'special-alloy', 'triple-offset'],
-    app: 'Corrosive media and cycling process duties'
+    app: 'Corrosive media and cycling process duties',
+    image: chemicalImg
   },
   {
     id: 'food-life-sciences', title: 'Food and life sciences',
@@ -221,7 +230,8 @@ export const INDUSTRY_STORIES = [
     line: 'Careful material selection for safe, consistent production.',
     story: 'Production environments place careful demands on material selection and cleanliness. Valve choices support consistent, safe operation across these sectors. Configurations are matched to the needs of each process.',
     sectors: ['Food and beverage', 'Pharmaceuticals'], families: ['resilient', 'pfa-lined', 'customized'],
-    app: 'Clean and utility duties with careful material choices'
+    app: 'Clean and utility duties with careful material choices',
+    image: foodBeverageImg
   },
   {
     id: 'marine-transportation', title: 'Marine and transportation',
@@ -229,7 +239,8 @@ export const INDUSTRY_STORIES = [
     line: 'Rugged, corrosion-aware designs for tough service.',
     story: 'Marine and transport systems face corrosion, vibration and heavy-duty service. Corrosion-aware materials and rugged construction are matched to the duty. Designs keep practical maintenance in mind.',
     sectors: ['Marine', 'Transportation', 'Mining'], families: ['special-alloy', 'resilient', 'customized'],
-    app: 'Seawater, transfer and heavy-duty service'
+    app: 'Seawater, transfer and heavy-duty service',
+    image: marineImg
   },
   {
     id: 'industrial-automation', title: 'Industrial automation',
@@ -237,21 +248,23 @@ export const INDUSTRY_STORIES = [
     line: 'Flow control built to integrate with automated systems.',
     story: 'Automated operations need flow control that integrates with wider systems. Valve and actuator packages are prepared around control and response. The result supports reliable, repeatable operation.',
     sectors: ['Manufacturing', 'Automated systems'], families: ['automated', 'high-performance', 'customized'],
-    app: 'Manufacturing and automated process operations'
+    app: 'Manufacturing and automated process operations',
+    image: powerImg
   },
 ];
 
 /* Featured proof story — clearly labelled placeholder until CMS content is approved. */
 export const PROOF = {
   type: 'Project story',
-  industry: 'Industry placeholder',
-  customer: 'Customer or distributor placeholder',
-  title: 'A featured story will appear here',
-  summary: 'This space previews how an approved customer, distributor or completed project story will be presented once the content is confirmed for publication.',
+  industry: 'Data Centers',
+  customer: 'Data Center Cooling Partner',
+  title: 'Data Center Cooling Loop Valve Solution',
+  summary: 'High-availability butterfly valve packages engineered for critical data center cooling loops, ensuring 100% uptime and bubble-tight isolation.',
+  image: dataCentersImg,
   details: [
-    { k: 'Challenge', v: 'The operational challenge will be summarized here.' },
-    { k: 'Max-Seal support', v: 'How Max-Seal supported the application will appear here.' },
-    { k: 'Outcome', v: 'The approved outcome will be shown here.' },
+    { k: 'Challenge', v: 'Maintain continuous cooling loop circulation with reliable isolation under strict uptime requirements.' },
+    { k: 'Max-Seal support', v: 'Supplied high performance and resilient seated automated valve assemblies.' },
+    { k: 'Outcome', v: 'Zero downtime and dependable automated flow control across primary cooling circuits.' },
   ],
 };
 

@@ -168,7 +168,7 @@ function ProductPreview() {
               return (
                 <div key={'pos' + pos} className={'ptile' + (center ? ' ptile--center' : ' ptile--side') + (center && open ? ' is-open' : '')}>
                   <div className="ptile__img">
-                    <image-slot id={'home-ptile-' + s.id} shape="rect" fit="cover" placeholder={s.title + ' media'} />
+                    <image-slot id={'home-ptile-' + s.id} shape="rect" fit="contain" src={s.image} placeholder={s.title + ' media'} />
                   </div>
                   <div className="ptile__grad" />
                   <button
@@ -286,7 +286,7 @@ function IndustryPreview() {
           <div className={'isplit__stage' + (open ? ' is-open' : '')}>
             {stories.map((s, idx) => (
               <div key={s.id} className={'isplit__img' + (idx === active ? ' on' : '')} aria-hidden={idx !== active}>
-                <image-slot id={'home-ind-' + s.id} shape="rect" fit="cover" placeholder={s.title + ' application image'} />
+                <image-slot id={'home-ind-' + s.id} shape="rect" fit="cover" src={s.image} placeholder={s.title + ' application image'} />
               </div>
             ))}
             <div className="isplit__topgrad" />
@@ -374,7 +374,7 @@ function ProofStory() {
         </div>
         <div className="proofx__card reveal">
           <div className="proofx__media">
-            <image-slot id="home-proof-media" shape="rect" fit="cover" placeholder="Project, facility or end-user photo" />
+            <image-slot id="home-proof-media" shape="rect" fit="cover" src={PROOF.image} placeholder="Project, facility or end-user photo" />
             <span className="proofx__badge">{PROOF.type}</span>
           </div>
           <div className="proofx__body">

@@ -35,10 +35,40 @@ if (fs.existsSync(srcApImg)) fs.copyFileSync(srcApImg, destApImg);
 if (fs.existsSync(srcCsImg)) fs.copyFileSync(srcCsImg, destCsImg);
 if (fs.existsSync(srcAboutTeamImg)) fs.copyFileSync(srcAboutTeamImg, destAboutTeamImg);
 
+const destIndDir = path.resolve(__dirname, 'src/assets/industries');
+if (!fs.existsSync(destIndDir)) fs.mkdirSync(destIndDir, { recursive: true });
+
+const brainDir = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/b9997ae3-38e3-40ec-9c32-64d8bde703f2';
+const industryMap = {
+  'data-centers.png': 'data_centers_photo_1784866133121.png',
+  'oil-gas.png': 'oil_gas_photo_1784866146819.png',
+  'refining.png': 'refining_photo_1784866161162.png',
+  'petrochemical.png': 'petrochemical_photo_1784866174648.png',
+  'chemical.png': 'chemical_photo_1784866188452.png',
+  'power.png': 'power_photo_1784866202074.png',
+  'pulp-paper.png': 'pulp_paper_photo_1784866214429.png',
+  'mining.png': 'mining_photo_1784866228416.png',
+  'marine.png': 'marine_photo_1784866241440.png',
+  'hvac.png': 'hvac_photo_1784866255605.png',
+  'food-beverage.png': 'food_beverage_photo_1784866268599.png',
+  'pharma.png': 'pharma_photo_1784866280879.png',
+  'transportation.png': 'transportation_photo_1784866295902.png',
+  'hero.png': 'refining_photo_1784866161162.png'
+};
+
+for (const [targetName, srcName] of Object.entries(industryMap)) {
+  const srcFile = path.join(brainDir, srcName);
+  const destFile = path.join(destIndDir, targetName);
+  if (fs.existsSync(srcFile)) {
+    fs.copyFileSync(srcFile, destFile);
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   base: '/',
 })
+
 
 

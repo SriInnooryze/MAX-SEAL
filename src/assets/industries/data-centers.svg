@@ -42,5 +42,5 @@
     <circle cx="0" cy="0" r="28" fill="#0055ff" stroke="#00d2ff" stroke-width="3"/>
     <path d="M -14 -10 L 14 10 M -14 10 L 14 -10" stroke="#fff" stroke-width="4"/>
   </g>
-  <text x="400" y="470" text-anchor="middle" fill="#00d2ff" font-family="monospace" font-size="14" letter-spacing="4">DATA CENTER COOLING & INFRASTRUCTURE</text>
+  <text x="400" y="470" text-anchor="middle" fill="#00d2ff" font-family="monospace" font-size="14" letter-spacing="4">DATA CENTER COOLING &amp; INFRASTRUCTURE</text>
 </svg>
