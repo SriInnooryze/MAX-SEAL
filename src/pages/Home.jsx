@@ -33,9 +33,34 @@ function VideoHero() {
 
   const pct = (t / DURATION) * 100;
   const seek = (e) => { const r = e.currentTarget.getBoundingClientRect(); setT(((e.clientX - r.left) / r.width) * DURATION); };
+  const heroRef = useRef(null);
+
+  // Lightweight scroll parallax for hero background layers
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const rect = hero.getBoundingClientRect();
+          if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+            const parallaxOffset = Math.min(30, Math.max(0, -rect.top * 0.12));
+            hero.style.setProperty('--scroll-parallax', `${parallaxOffset.toFixed(1)}px`);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <section className="vhero" aria-label="Max-Seal product film">
+    <section className="vhero" ref={heroRef} aria-label="Max-Seal product film">
       <div className="vhero__media">
         <image-slot id="home-hero-video" shape="rect" fit="cover" placeholder="Drop product film, manufacturing video or high-quality still" />
       </div>

@@ -100,6 +100,27 @@
   z-index: 1;
   pointer-events: none;
   overflow: hidden;
+  transform: translate3d(0, var(--scroll-parallax, 0px), 0);
+  will-change: transform;
+}
+
+/* Entrance Micro-Animations for Hero Content (Plays ONCE on load) */
+@media (prefers-reduced-motion: no-preference) {
+  .vhero__eyebrow { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .vhero__title { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+  .vhero__lead { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both; }
+  .vhero__cta { animation: heroScaleUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both; }
+  .vhero__ask { animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both; }
+}
+
+@keyframes heroFadeUp {
+  0% { opacity: 0; transform: translate3d(0, 20px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes heroScaleUp {
+  0% { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.98); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 
 /* Layer 1: Slow Moving Dark Gradient (30s) */
