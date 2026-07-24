@@ -412,7 +412,7 @@ function ProofStory() {
               ))}
             </div>
             <div className="proofx__foot">
-              <a className="ms-btn ms-btn--primary" href="#">View Story <ArrowRight size={16} /></a>
+              <Link className="ms-btn ms-btn--primary" to={routes.industryDetail('data-centers')}>View Story <ArrowRight size={16} /></Link>
             </div>
           </div>
         </div>
