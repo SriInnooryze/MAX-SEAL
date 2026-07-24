@@ -21,15 +21,18 @@ export default function Footer() {
           <div className="foot__brand">
             <img src={logo} alt="Max-Seal" />
             <p className="foot__tagline">Highly engineered butterfly valves and automation packages, supplied to distributors and industrial teams worldwide since 2008.</p>
+          </div>
+          <div className="foot__col"><h5>Products</h5>{colProducts.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
+          <div className="foot__col"><h5>Company</h5>{colCompany.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
+          <div className="foot__col"><h5>Resources</h5>{colResources.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
+          <div className="foot__col">
+            <h5>Contact</h5>
             <div className="foot__contacts">
               <Link to={routes.contact}><Phone size={16} /> Call our team</Link>
               <Link to={routes.contact}><Mail size={16} /> Email an enquiry</Link>
               <Link to={routes.contact}><MessageCircle size={16} /> Message on WhatsApp</Link>
             </div>
           </div>
-          <div className="foot__col"><h5>Products</h5>{colProducts.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
-          <div className="foot__col"><h5>Company</h5>{colCompany.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
-          <div className="foot__col"><h5>Resources</h5>{colResources.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
         </div>
         <div className="foot__bottom">
           <span className="foot__copyright">© 2026 Max-Seal Inc. All rights reserved.</span>
