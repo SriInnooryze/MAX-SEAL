@@ -13,7 +13,7 @@
 .page-section { padding-block: var(--section-y); }
 .lead-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 4vw, 4rem); align-items: start; }
 .prose { max-width: 60ch; }
-.prose p { color: var(--steel-600); line-height: 1.7; font-size: 1.05rem; }
+.prose p { color: var(--steel-600); line-height: 1.6; font-size: 1.05rem; font-weight: var(--weight-regular); }
 .prose p + p { margin-top: 1rem; }
 .facts-rail { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); }
 .facts-rail .fact { background: var(--paper-0); padding: 1.5rem 1.6rem; }
@@ -61,7 +61,7 @@
 .feature__series { position: absolute; top: 14px; left: 14px; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; color: var(--steel-600); background: rgba(255,255,255,0.85); padding: 3px 8px; }
 .feature__body { padding: clamp(1.5rem, 2.5vw, 2.4rem); display: flex; flex-direction: column; }
 .feature__name { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.4rem); line-height: 1; color: var(--graphite-900); }
-.feature__purpose { color: var(--steel-600); font-size: 1.02rem; line-height: 1.6; margin-top: 0.9rem; }
+.feature__purpose { color: var(--steel-600); font-size: 0.95rem; line-height: 1.55; font-weight: var(--weight-regular); margin-top: 0.9rem; }
 .feature__specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-divider); border: 1px solid var(--color-divider); margin: 1.4rem 0; }
 .feature__spec { background: var(--paper-0); padding: 0.8rem 1rem; }
 .feature__spec dt { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-400); }
@@ -85,7 +85,7 @@
 .rrow__thumb { width: 84px; height: 64px; background: var(--titanium-100); border: 1px solid var(--steel-150); overflow: hidden; }
 .rrow__thumb image-slot { width: 100%; height: 100%; display: block; }
 .rrow__name { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; line-height: 1; color: var(--graphite-900); }
-.rrow__purpose { font-size: 0.86rem; color: var(--steel-500); line-height: 1.4; margin-top: 4px; max-width: 52ch; }
+.rrow__purpose { font-size: 0.85rem; color: var(--steel-500); line-height: 1.45; margin-top: 4px; max-width: 52ch; }
 .rrow__meta { font-family: var(--font-mono); font-size: 0.72rem; color: var(--steel-500); text-align: right; white-space: nowrap; }
 .rempty { padding: 3rem 1.5rem; text-align: center; border: 1px dashed var(--steel-200); background: var(--paper-0); }
 .rempty p { color: var(--steel-500); font-size: 0.95rem; }
@@ -126,7 +126,7 @@
 .intent__ic svg { width: 20px; height: 20px; }
 .intent__txt { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
 .intent__t { font-family: var(--font-body); font-weight: 500; font-size: 1.02rem; color: var(--graphite-900); line-height: 1.3; letter-spacing: -0.005em; }
-.intent__d { font-family: var(--font-body); font-weight: 400; font-size: 0.9rem; color: var(--steel-600); line-height: 1.5; text-wrap: pretty; }
+.intent__d { font-family: var(--font-body); font-weight: var(--weight-regular); font-size: 0.95rem; color: var(--steel-600); line-height: 1.55; text-wrap: pretty; }
 .enq__aside { margin-top: 2rem; padding-top: 1.6rem; border-top: 1px solid var(--color-border); }
 .enq__aside h4 { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel-500); margin-bottom: 0.9rem; }
 .enq__contact { display: flex; flex-direction: column; gap: 0.7rem; }
@@ -137,7 +137,7 @@
 .qform { background: var(--paper-0); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: clamp(1.6rem, 3vw, 2.6rem); }
 .qform__lbl { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-700); }
 .qform__h { font-family: var(--font-display); font-weight: 600; font-size: 1.7rem; color: var(--graphite-900); margin: 0.4rem 0 0.5rem; line-height: 1; }
-.qform__lead { color: var(--steel-600); font-size: 0.98rem; line-height: 1.55; margin-bottom: 1.6rem; max-width: 52ch; }
+.qform__lead { color: var(--steel-600); font-size: 1.05rem; line-height: 1.6; font-weight: var(--weight-regular); margin-bottom: 1.6rem; max-width: 52ch; }
 .qgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
 .qgrid .full { grid-column: 1 / -1; }
 .qform__actions { display: flex; align-items: center; gap: 0.8rem; margin-top: 1.4rem; flex-wrap: wrap; }
@@ -158,7 +158,7 @@
 .contact-map image-slot { width: 100%; height: 100%; display: block; }
 .contact-cta { padding: clamp(1.8rem, 3vw, 3rem); display: flex; flex-direction: column; justify-content: center; background: var(--titanium-50); }
 .contact-cta h3 { font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; color: var(--graphite-900); line-height: 1.05; }
-.contact-cta p { color: var(--steel-600); margin: 0.7rem 0 1.4rem; line-height: 1.55; }
+.contact-cta p { color: var(--steel-600); font-size: 0.95rem; margin: 0.7rem 0 1.4rem; line-height: 1.55; font-weight: var(--weight-regular); }
 
 /* ============================================================
    RESOURCE LIBRARY (Catalog / Marketing / Price Lists pages)
@@ -255,7 +255,7 @@
 .pstage2__where { font-size: 0.92rem; color: var(--steel-600); margin-top: 0.7rem; }
 .pstage2__fam { margin: 1.1rem 0 0.2rem; color: var(--steel-500); }
 .pstage2__name { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); line-height: 1.05; color: var(--graphite-900); letter-spacing: -0.01em; }
-.pstage2__purpose { color: var(--steel-600); font-size: 0.98rem; line-height: 1.55; margin-top: 0.6rem; }
+.pstage2__purpose { color: var(--steel-600); font-size: 0.95rem; line-height: 1.55; font-weight: var(--weight-regular); margin-top: 0.6rem; }
 .pstage2__specs { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-divider); border: 1px solid var(--color-divider); margin: 1.3rem 0; }
 .pstage2__specs > div { background: var(--paper-0); padding: 0.7rem 0.95rem; }
 .pstage2__specs dt { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-400); }
@@ -299,7 +299,7 @@
 .jpanel { animation: pdFade 360ms var(--ease-out, cubic-bezier(.16,1,.3,1)); }
 .jpanel__head { max-width: 60ch; margin-bottom: clamp(1.4rem, 2.5vw, 2rem); }
 .jpanel__h { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.1; letter-spacing: -0.01em; color: var(--graphite-900); margin: 0.7rem 0 0; }
-.jpanel__lead { color: var(--steel-600); font-size: 1.04rem; line-height: 1.55; margin-top: 0.8rem; }
+.jpanel__lead { color: var(--steel-600); font-size: 1.05rem; line-height: 1.6; font-weight: var(--weight-regular); margin-top: 0.8rem; }
 
 .pick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
 .pick { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; text-align: left; background: var(--paper-0); border: 1px solid var(--steel-200); border-radius: var(--radius-md); padding: 1.2rem 1.3rem; cursor: pointer; transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease; }
@@ -309,7 +309,7 @@
 .pick__check { width: 42px; height: 42px; display: grid; place-items: center; background: var(--titanium-100); border: 1px solid var(--steel-150); color: var(--graphite-800); border-radius: var(--radius-sm); flex: none; }
 .pick.on .pick__check { background: var(--azure-500); border-color: var(--azure-500); color: #fff; }
 .pick__t { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--graphite-900); line-height: 1.15; letter-spacing: -0.005em; }
-.pick__d { display: block; font-size: 0.92rem; color: var(--steel-600); line-height: 1.45; margin-top: 0.35rem; }
+.pick__d { display: block; font-size: 0.95rem; color: var(--steel-600); line-height: 1.55; font-weight: var(--weight-regular); margin-top: 0.35rem; }
 .pick__tip { display: grid; place-items: center; width: 30px; height: 30px; color: var(--steel-400); border-radius: var(--radius-sm); cursor: help; flex: none; }
 .pick__tip:hover, .pick__tip:focus-visible { color: var(--azure-600); outline: none; }
 
@@ -509,7 +509,7 @@
 .cat-feature__cover image-slot { width: 100%; height: 100%; display: block; }
 .cat-feature__body { padding: clamp(1.6rem, 3vw, 2.6rem); display: flex; flex-direction: column; justify-content: center; }
 .cat-feature__t { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem); line-height: 1.08; letter-spacing: -0.01em; color: var(--graphite-900); margin: 0.5rem 0 0.6rem; }
-.cat-feature__d { color: var(--steel-600); line-height: 1.6; max-width: 52ch; }
+.cat-feature__d { color: var(--steel-600); font-size: 1.05rem; line-height: 1.6; font-weight: var(--weight-regular); max-width: 52ch; }
 .cat-feature__actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.4rem; }
 .cat-recent { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: clamp(2rem, 3.5vw, 2.8rem); }
 .cat-recent__card { text-align: left; background: var(--paper-0); border: 1px solid var(--color-border); padding: 0; cursor: pointer; transition: box-shadow 200ms ease, transform 200ms ease; overflow: hidden; }
@@ -953,7 +953,7 @@
 .pcard__fitk { font-family: var(--font-body); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--azure-700); }
 .pcard__fit p { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.25rem); line-height: 1.25; color: var(--graphite-900); margin-top: 0.2rem; }
 .pcard__name { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.7rem); line-height: 1.05; letter-spacing: -0.01em; color: var(--graphite-900); margin-top: 0.3rem; }
-.pcard__desc { font-family: var(--font-body); font-size: 0.96rem; color: var(--steel-600); line-height: 1.55; }
+.pcard__desc { font-family: var(--font-body); font-size: 0.95rem; font-weight: var(--weight-regular); color: var(--steel-600); line-height: 1.55; }
 .pcard__apps { font-family: var(--font-body); font-size: 0.9rem; color: var(--graphite-700); line-height: 1.5; }
 .pcard__appk { display: block; font-weight: 600; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--steel-500); margin-bottom: 0.15rem; }
 .pcard__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-top: auto; padding-top: 0.6rem; }

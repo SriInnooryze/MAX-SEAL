@@ -40,6 +40,16 @@ function VideoHero() {
         <image-slot id="home-hero-video" shape="rect" fit="cover" placeholder="Drop product film, manufacturing video or high-quality still" />
       </div>
       <div className="vhero__scrim" />
+      
+      {/* 5-Layer Continuous Autonomous Motion Background System */}
+      <div className="vhero__layers" aria-hidden="true">
+        <div className="vhero__l1-grad" />
+        <div className="vhero__l2-blobs" />
+        <div className="vhero__l3-rays" />
+        <div className="vhero__l4-grid" />
+        <div className="vhero__l5-ambient" />
+      </div>
+
       <div className="vhero__inner">
         <div className="wrap">
           <div className="vhero__content">
@@ -168,7 +178,7 @@ function ProductPreview() {
               return (
                 <div key={'pos' + pos} className={'ptile' + (center ? ' ptile--center' : ' ptile--side') + (center && open ? ' is-open' : '')}>
                   <div className="ptile__img">
-                    <image-slot id={'home-ptile-' + s.id} shape="rect" fit="contain" src={s.image} placeholder={s.title + ' media'} />
+                    <image-slot id={'home-ptile-' + s.id} shape="rect" fit="contain" position="center" src={s.image} placeholder={s.title + ' media'} />
                   </div>
                   <div className="ptile__grad" />
                   <button
@@ -395,7 +405,6 @@ function ProofStory() {
             </div>
             <div className="proofx__foot">
               <a className="ms-btn ms-btn--primary" href="#">View Story <ArrowRight size={16} /></a>
-              <span className="proofx__note"><span className="pdot" /> Placeholder content, connects to CMS story</span>
             </div>
           </div>
         </div>

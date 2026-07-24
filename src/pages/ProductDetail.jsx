@@ -82,7 +82,7 @@ export default function ProductDetail() {
             <div className="pdet">
               {/* Gallery */}
               <div className="pdet__gallery">
-                <div className="pdet__main"><image-slot id={'pd-media-' + f.id + '-' + shot} src={f.image} shape="rect" fit="contain" placeholder={f.name + ' · ' + shots[shot]} /><span className="feature__series">{f.code} SERIES</span></div>
+                <div className="pdet__main"><image-slot id={'pd-media-' + f.id + '-' + shot} src={f.image} shape="rect" fit="contain" placeholder={f.name + ' · ' + shots[shot]} /></div>
                 <div className="pdet__thumbs">
                   {shots.map((s, i) => (
                     <button key={i} className={'pdet__thumb' + (i === shot ? ' on' : '')} aria-label={s} aria-pressed={i === shot} onClick={() => setShot(i)}>

@@ -198,7 +198,6 @@ export default function Products() {
     <article className="pcard" key={r.id}>
       <div className="pcard__media">
         <image-slot id={'pcard-' + r.id} src={r.image} shape="rect" fit="contain" placeholder={r.name + ' image'} />
-        <span className="pcard__series">{r.code} SERIES</span>
       </div>
       <div className="pcard__body">
         <div className="pcard__fit">

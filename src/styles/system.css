@@ -11,8 +11,6 @@
    etc. are used across the whole site.
    ============================================================ */
 
-@import url("https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
-
 /* Global horizontal overflow prevention for mobile & tablet */
 html, body {
   width: 100%;
@@ -35,6 +33,26 @@ img, video, svg, iframe, image-slot {
   --font-display: "Saira Condensed", "Archivo", system-ui, sans-serif;
   --font-body: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* ---- Typography System Tokens ---- */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  --lh-none: 1;
+  --lh-tight: 1.08;
+  --lh-heading: 1.18;
+  --lh-snug: 1.35;
+  --lh-body: 1.55;
+  --lh-loose: 1.65;
+
+  --tracking-tight: -0.015em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.08em;
+  --tracking-widest: 0.14em;
 
   /* ---- Azure accent (Pantone 2995 C, controlled) ---- */
   --azure-700: #0072a8; --azure-600: #0089c2; --azure-500: #009fda; --azure-400: #38b4e6;
@@ -153,19 +171,21 @@ image-slot { display: block; width: 100%; height: 100%; }
 
 .link-arrow { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-body); font-weight: 500; font-size: 0.9rem; color: var(--azure-700); }
 .link-arrow svg { width: 17px; height: 17px; transition: transform var(--dur-fast, 160ms) var(--ease-standard, ease); }
-.link-arrow:hover svg { transform: translateX(4px); }
-.link-arrow--ondark { color: var(--azure-300); }
+.link-arrow--ondark { color: rgba(255,255,255,0.9); transition: color 160ms ease; }
+.link-arrow--ondark:hover { color: var(--azure-400); }
 
 /* ============================================================
    HEADER — utility bar + sticky main row + dropdown nav
    ============================================================ */
-.topbar { background: var(--graphite-900); color: var(--text-on-dark-muted); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; }
+.topbar { background: var(--navy-900); color: #ffffff; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.04em; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
 .topbar__row { display: flex; align-items: center; justify-content: space-between; height: 38px; gap: 1.5rem; }
-.topbar a { color: var(--text-on-dark-muted); display: inline-flex; align-items: center; gap: 0.45rem; }
-.topbar a:hover { color: #fff; }
-.topbar svg { width: 14px; height: 14px; }
+.topbar__tagline { color: #ffffff; font-weight: 500; }
+.topbar a { color: rgba(255, 255, 255, 0.92); display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 500; transition: color 160ms ease; }
+.topbar a:hover { color: var(--azure-400); }
+.topbar svg { width: 14px; height: 14px; color: var(--azure-400); transition: color 160ms ease, transform 160ms ease; }
+.topbar a:hover svg { color: var(--azure-300); transform: translateY(-1px); }
 .topbar__group { display: flex; align-items: center; gap: 1.5rem; }
-.topbar__sep { width: 1px; height: 14px; background: rgba(255,255,255,0.16); }
+.topbar__sep { width: 1px; height: 14px; background: rgba(255,255,255,0.22); }
 
 .site-header { position: sticky; top: 0; z-index: var(--z-header, 100); background: rgba(255,255,255,0.94); backdrop-filter: saturate(1.1) blur(8px); border-bottom: 1px solid var(--color-border); }
 .site-header__row { display: flex; align-items: center; gap: 2.5rem; height: var(--header-h); }
@@ -174,12 +194,13 @@ image-slot { display: block; width: 100%; height: 100%; }
 
 .mainnav { display: flex; align-items: stretch; gap: 0.25rem; margin-left: auto; height: 100%; }
 .navitem { position: relative; display: flex; align-items: center; }
-.navitem > a { display: inline-flex; align-items: center; gap: 0.3rem; height: 100%; padding: 0 0.85rem; font-family: var(--font-body); font-size: 0.92rem; font-weight: 500; color: var(--graphite-700); white-space: nowrap; }
-.navitem > a:hover { color: var(--graphite-900); }
-.navitem > a svg { width: 15px; height: 15px; transition: transform 180ms ease; color: var(--steel-400); }
+.navitem > a { display: inline-flex; align-items: center; gap: 0.3rem; height: 100%; padding: 0 0.85rem; font-family: var(--font-body); font-size: 0.92rem; font-weight: 500; color: var(--graphite-700); white-space: nowrap; transition: color 180ms ease; position: relative; }
+.navitem > a:hover, .navitem.open > a { color: var(--azure-600); }
+.navitem > a svg { width: 15px; height: 15px; transition: transform 180ms ease, color 180ms ease; color: var(--steel-400); }
+.navitem > a:hover svg, .navitem.open > a svg { color: var(--azure-500); }
 .navitem.open > a svg { transform: rotate(180deg); }
-.navitem.active > a { color: var(--graphite-900); }
-.navitem.active > a::after { content: ""; position: absolute; left: 0.85rem; right: 0.85rem; bottom: -1px; height: 2px; background: var(--azure-500); }
+.navitem.active > a { color: var(--azure-700); font-weight: 600; }
+.navitem.active > a::after { content: ""; position: absolute; left: 0.85rem; right: 0.85rem; bottom: -1px; height: 2.5px; background: var(--azure-500); border-radius: 2px 2px 0 0; }
 
 .header__actions { display: flex; align-items: center; gap: 0.75rem; flex: none; }
 .menu-toggle { display: none; }
@@ -233,22 +254,25 @@ image-slot { display: block; width: 100%; height: 100%; }
    FOOTER
    ============================================================ */
 .site-footer { background: var(--navy-900); color: var(--text-on-dark-muted); font-family: var(--font-body); border-top: 1px solid rgba(255, 255, 255, 0.15); }
-.site-footer a { color: var(--text-on-dark-muted); font-family: var(--font-body); }
-.site-footer a:hover { color: #fff; }
-.foot { padding-block: clamp(3rem, 5vw, 4.5rem) 2rem; }
-.foot__top { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.12); align-items: start; }
-.foot__brand img { height: 72px; filter: saturate(0.2) brightness(1.5); }
+.site-footer a { color: var(--text-on-dark-muted); font-family: var(--font-body); transition: color 160ms ease; }
+.site-footer a:hover { color: var(--azure-400); }
+.foot { padding-block: clamp(2rem, 3.5vw, 2.8rem) 2rem; }
+.foot__top { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.8rem, 3vw, 3.2rem); padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.12); align-items: start; }
+.foot__brand img { height: clamp(42px, 4.5vw, 54px); }
 .foot__tagline { color: var(--text-on-dark-muted); font-size: 0.92rem; line-height: 1.6; margin-top: 1.4rem; max-width: 34ch; }
 .foot__contacts { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.4rem; }
-.foot__contacts a { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-mono); font-size: 0.82rem; }
-.foot__contacts svg { width: 16px; height: 16px; color: var(--azure-400); }
-.foot__col h5 { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel-400); margin: 0 0 1.1rem 0; line-height: 1; }
-.foot__col a { display: block; padding: 0.38rem 0; font-family: var(--font-body); font-size: 0.9rem; }
+.foot__contacts a { display: inline-flex; align-items: center; gap: 0.6rem; font-family: var(--font-mono); font-size: 0.82rem; transition: color 160ms ease; }
+.foot__contacts a:hover { color: var(--azure-400); }
+.foot__contacts svg { width: 16px; height: 16px; color: var(--azure-400); transition: color 160ms ease, transform 160ms ease; }
+.foot__contacts a:hover svg { color: var(--azure-300); transform: translateX(3px); }
+.foot__col h5 { font-family: var(--font-mono); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #ffffff; margin: 0 0 1.1rem 0; line-height: 1; }
+.foot__col a { display: block; padding: 0.38rem 0; font-family: var(--font-body); font-size: 0.9rem; transition: color 160ms ease; }
+.foot__col a:hover { color: var(--azure-400); }
 .foot__bottom { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; padding-top: 1.8rem; font-size: 0.84rem; font-family: var(--font-body); }
 .foot__copyright { color: var(--steel-500); }
 .foot__legal { display: flex; align-items: center; gap: 1.6rem; }
-.foot__legal a { color: var(--text-on-dark-muted); transition: color 140ms ease; }
-.foot__legal a:hover { color: #fff; }
+.foot__legal a { color: var(--text-on-dark-muted); transition: color 160ms ease; }
+.foot__legal a:hover { color: var(--azure-400); }
 
 /* ============================================================
    MOBILE CTA USABILITY (shared) — full-width, stacked, 44px targets

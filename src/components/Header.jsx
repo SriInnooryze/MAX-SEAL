@@ -18,7 +18,7 @@ export default function Header({ current }) {
     <>
       <div className="topbar">
         <div className="wrap topbar__row">
-          <span style={{ color: 'var(--steel-400)' }}>US based manufacturer and supplier of industrial butterfly valves</span>
+          <span className="topbar__tagline">US based manufacturer and supplier of industrial butterfly valves</span>
           <div className="topbar__group">
             <Link to={routes.contact}><Phone size={14} /> Call</Link>
             <span className="topbar__sep" />
