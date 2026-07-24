@@ -78,22 +78,24 @@
    HERO — single video-led, fluid, editorial offset
    ============================================================ */
 .vhero { position: relative; height: clamp(600px, 92vh, 960px); overflow: hidden; background: radial-gradient(125% 105% at 78% 22%, #313a41 0%, #1b2125 42%, #0d1012 100%); }
-.vhero__media { position: absolute; inset: 0; z-index: 0; }
+.vhero__media { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; }
 .vhero__media image-slot { width: 100%; height: 100%; display: block; }
 /* readability-only: darker low-left, clear upper-right so background stays visible */
-.vhero__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    linear-gradient(to top, rgba(12,15,17,0.74) 0%, rgba(12,15,17,0.34) 26%, rgba(12,15,17,0.04) 52%, rgba(12,15,17,0) 70%),
-    linear-gradient(95deg, rgba(12,15,17,0.55) 0%, rgba(12,15,17,0.12) 40%, rgba(12,15,17,0) 62%); }
+.vhero__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(0, 0, 0, 0.6); }
+.hero-video { position: absolute; top: 50%; left: 50%; min-width: 101%; min-height: 101%; width: auto; height: auto; transform: translate(-50%, -50%); display: block; object-fit: cover; object-position: center 20%; pointer-events: none; z-index: 0; }
+
+/* Pause / Play toggle — bottom-right, glass pill */
+.vhero__pause { position: absolute; z-index: 3; right: clamp(1.2rem, 4vw, 2.5rem); bottom: clamp(1.2rem, 3vh, 2rem); display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(12, 15, 17, 0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: var(--radius-sm, 6px); color: #fff; cursor: pointer; transition: background 180ms ease, border-color 180ms ease; }
+.vhero__pause:hover { background: rgba(12, 15, 17, 0.65); border-color: rgba(255, 255, 255, 0.36); }
+.vhero__pause svg { width: 18px; height: 18px; }
 
 /* ------------------------------------------------------------
-   HOME HERO · 5-LAYER CONTINUOUS AUTONOMOUS ANIMATION SYSTEM
-   Layer 1: Slow Moving Dark Gradient (30s)
-   Layer 2: Blurred Blue Light Blobs (18s)
-   Layer 3: Soft Light Ray Sweep (22s)
-   Layer 4: Animated Engineering Grid (40s)
-   Layer 5: Ambient Glow Pulse (12s)
+   HOME HERO · 5-LAYER CONTINUOUS AUTONOMOUS ANIMATION SYSTEM (disabled – replaced by video background)
    ------------------------------------------------------------ */
+/*
+   The original animation layers have been removed in favor of a looping background video.
+   Retained here as comments for reference.
+*/
 .vhero__layers {
   position: absolute;
   inset: 0;

@@ -6,35 +6,27 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import highPerformanceImg from '../assets/products/high-performance.png';
 import { FAMILIES, WHY, PRODUCT_STORIES, INDUSTRY_STORIES, PROOF, RESOURCE_LIBS } from '../data/data';
-import { ArrowRight, ArrowLeft, Play, Pause, Volume, VolumeOff, Headset, MessageCircle, X, FileText, Eye, Download } from '../icons/icons';
+import { ArrowRight, ArrowLeft, Play, Pause, Headset, MessageCircle, X, FileText, Eye, Download } from '../icons/icons';
 import { routes } from '../router/paths';
+import heroVideo from '../assets/home/Max-Seal.mp4';
 
-function fmtTime(s) { const m = Math.floor(s / 60); const r = Math.floor(s % 60); return m + ':' + String(r).padStart(2, '0'); }
+
 function famShort(id) { const f = FAMILIES.find(x => x.id === id); return f ? f.name : id; }
 function prefersReducedMotion() {
   return typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 function VideoHero() {
-  const DURATION = 38;
-  const [playing, setPlaying] = useState(true);
-  const [muted, setMuted] = useState(true);
-  const [t, setT] = useState(0);
-  const raf = useRef(null); const last = useRef(null);
-
-  useEffect(() => {
-    if (!playing) { last.current = null; return; }
-    const tick = (now) => {
-      if (last.current != null) setT(prev => (prev + (now - last.current) / 1000) % DURATION);
-      last.current = now; raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
-  }, [playing]);
-
-  const pct = (t / DURATION) * 100;
-  const seek = (e) => { const r = e.currentTarget.getBoundingClientRect(); setT(((e.clientX - r.left) / r.width) * DURATION); };
   const heroRef = useRef(null);
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(true);
+
+  const togglePlay = () => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    if (vid.paused) { vid.play(); setPlaying(true); }
+    else { vid.pause(); setPlaying(false); }
+  };
 
   // Lightweight scroll parallax for hero background layers
   useEffect(() => {
@@ -63,21 +55,19 @@ function VideoHero() {
   return (
     <section className="vhero" ref={heroRef} aria-label="Max-Seal product film">
       <div className="vhero__media">
-        <image-slot id="home-hero-video" shape="rect" fit="cover" placeholder="Drop product film, manufacturing video or high-quality still" />
+        <video
+          ref={videoRef}
+          className="hero-video"
+          src={heroVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
       </div>
       <div className="vhero__scrim" />
-      
-      {/* 5-Layer Continuous Autonomous Motion Background System */}
-      <div className="vhero__layers" aria-hidden="true">
-        <div className="vhero__l1-grad" />
-        <div className="vhero__l2-blobs" />
-        <div className="vhero__l3-rays" />
-        <div className="vhero__l4-grid" />
-        <div className="vhero__l5-ambient" />
-        <div className="vhero__silhouette">
-          <img src={highPerformanceImg} alt="" />
-        </div>
-      </div>
 
       <div className="vhero__inner">
         <div className="wrap">
@@ -101,20 +91,9 @@ function VideoHero() {
           </div>
         </div>
       </div>
-      <div className="vhero__controls">
-        <div className="vhero__controls-row">
-          <span className="vhero__time">{fmtTime(t)} / {fmtTime(DURATION)}</span>
-          <div className="vhero__progress" onClick={seek} role="slider" aria-label="Video progress" aria-valuenow={Math.round(pct)}>
-            <div className="vhero__progress-fill" style={{ width: pct + '%' }} />
-          </div>
-          <button className="vctl" aria-label={muted ? 'Unmute' : 'Mute'} aria-pressed={muted} onClick={() => setMuted(m => !m)}>
-            {muted ? <VolumeOff size={18} /> : <Volume size={18} />}
-          </button>
-          <button className="vctl" aria-label={playing ? 'Pause' : 'Play'} aria-pressed={!playing} onClick={() => setPlaying(p => !p)}>
-            {playing ? <Pause size={18} /> : <Play size={18} />}
-          </button>
-        </div>
-      </div>
+      <button className="vhero__pause" aria-label={playing ? 'Pause video' : 'Play video'} onClick={togglePlay}>
+        {playing ? <Pause size={18} /> : <Play size={18} />}
+      </button>
     </section>
   );
 }
