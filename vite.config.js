@@ -26,14 +26,14 @@ const destAboutTeamImg = path.join(destAboutDir, 'team-photo.jpg');
 
 if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
 if (!fs.existsSync(destAboutDir)) fs.mkdirSync(destAboutDir, { recursive: true });
-if (fs.existsSync(srcImg)) fs.copyFileSync(srcImg, destImg);
-if (fs.existsSync(srcHpImg)) fs.copyFileSync(srcHpImg, destHpImg);
-if (fs.existsSync(srcToImg)) fs.copyFileSync(srcToImg, destToImg);
-if (fs.existsSync(srcPlImg)) fs.copyFileSync(srcPlImg, destPlImg);
-if (fs.existsSync(srcSaImg)) fs.copyFileSync(srcSaImg, destSaImg);
-if (fs.existsSync(srcApImg)) fs.copyFileSync(srcApImg, destApImg);
-if (fs.existsSync(srcCsImg)) fs.copyFileSync(srcCsImg, destCsImg);
-if (fs.existsSync(srcAboutTeamImg)) fs.copyFileSync(srcAboutTeamImg, destAboutTeamImg);
+if (!fs.existsSync(destImg) && fs.existsSync(srcImg)) fs.copyFileSync(srcImg, destImg);
+if (!fs.existsSync(destHpImg) && fs.existsSync(srcHpImg)) fs.copyFileSync(srcHpImg, destHpImg);
+if (!fs.existsSync(destToImg) && fs.existsSync(srcToImg)) fs.copyFileSync(srcToImg, destToImg);
+if (!fs.existsSync(destPlImg) && fs.existsSync(srcPlImg)) fs.copyFileSync(srcPlImg, destPlImg);
+if (!fs.existsSync(destSaImg) && fs.existsSync(srcSaImg)) fs.copyFileSync(srcSaImg, destSaImg);
+if (!fs.existsSync(destApImg) && fs.existsSync(srcApImg)) fs.copyFileSync(srcApImg, destApImg);
+if (!fs.existsSync(destCsImg) && fs.existsSync(srcCsImg)) fs.copyFileSync(srcCsImg, destCsImg);
+if (!fs.existsSync(destAboutTeamImg) && fs.existsSync(srcAboutTeamImg)) fs.copyFileSync(srcAboutTeamImg, destAboutTeamImg);
 
 const destIndDir = path.resolve(__dirname, 'src/assets/industries');
 if (!fs.existsSync(destIndDir)) fs.mkdirSync(destIndDir, { recursive: true });
@@ -59,20 +59,20 @@ const industryMap = {
 for (const [targetName, srcName] of Object.entries(industryMap)) {
   const srcFile = path.join(brainDir, srcName);
   const destFile = path.join(destIndDir, targetName);
-  if (fs.existsSync(srcFile)) {
+  if (!fs.existsSync(destFile) && fs.existsSync(srcFile)) {
     fs.copyFileSync(srcFile, destFile);
   }
 }
 
 const catalogCoverSrc = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/8c7d0bd8-4a2e-4615-90ba-e0ffd9e42de6/resilient_seated_catalog_cover_1786531987334.png';
 const catalogCoverDest = path.resolve(__dirname, 'src/assets/home/performance-series-catalog-cover.png');
-if (fs.existsSync(catalogCoverSrc)) {
+if (!fs.existsSync(catalogCoverDest) && fs.existsSync(catalogCoverSrc)) {
   fs.copyFileSync(catalogCoverSrc, catalogCoverDest);
 }
 
 const globalPartnersSrc = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/8c7d0bd8-4a2e-4615-90ba-e0ffd9e42de6/global_partners_world_map_1786537033428.png';
 const globalPartnersDest = path.resolve(__dirname, 'src/assets/home/global-partners-card.png');
-if (fs.existsSync(globalPartnersSrc)) {
+if (!fs.existsSync(globalPartnersDest) && fs.existsSync(globalPartnersSrc)) {
   fs.copyFileSync(globalPartnersSrc, globalPartnersDest);
 }
 
