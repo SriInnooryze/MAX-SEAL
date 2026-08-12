@@ -11,6 +11,8 @@ import { routes } from '../router/paths';
 import heroVideo from '../assets/home/Max-Seal.mp4';
 import catalogPdf from '../assets/home/Resilient Seated Butterfly Valves — Performance Series.pdf';
 import catalogCoverImg from '../assets/home/performance-series-catalog-cover.png';
+import globalPartnersImg from '../assets/home/global-partners-card.png';
+import homeAboutImg from '../assets/home/Home-About.png';
 
 
 function famShort(id) { const f = FAMILIES.find(x => x.id === id); return f ? f.name : id; }
@@ -425,7 +427,6 @@ function ProofStory() {
 
 function ResourcesPreview() {
   const cat = RESOURCE_LIBS.find(r => r.id === 'catalog');
-  const mkt = RESOURCE_LIBS.find(r => r.id === 'marketing');
   const pl = RESOURCE_LIBS.find(r => r.id === 'pricelists');
   return (
     <section className="section section--titanium">
@@ -463,21 +464,21 @@ function ResourcesPreview() {
             </div>
           </article>
 
-          {/* Marketing — visual content treatment */}
+          {/* Global Partners — about entry point */}
           <article className="resx__card resx--marketing">
             <div className="resx__visual">
-              <image-slot id="home-res-marketing" shape="rect" fit="cover" placeholder="Brochure or application image" />
-              <div className="resx__visual-cap">
-                <span className="resx__type">{mkt.resType}</span>
-                <h3 className="resx__title resx__title--ondark">{mkt.latest}</h3>
-              </div>
+              <img
+                src={globalPartnersImg}
+                alt="Global Partnership Locations & Distribution Network Map"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+              />
             </div>
             <div className="resx__body">
-              <div className="resx__eyebrow">Marketing Resources</div>
-              <p className="resx__desc">Visual brochures and application material. Related to {mkt.related}.</p>
+              <div className="resx__eyebrow">ABOUT MAX-SEAL</div>
+              <h3 className="resx__title">Built on strong global partnerships</h3>
+              <p className="resx__desc">Our global partnerships help Max-Seal deliver dependable valve solutions, technical support, and responsive service to customers across markets.</p>
               <div className="resx__actions">
-                <Link className="link-arrow" to={mkt.href}><Eye size={16} /> Preview</Link>
-                <Link className="link-arrow" to={mkt.href}>View Marketing Resources <ArrowRight size={16} /></Link>
+                <Link className="link-arrow" to={routes.partners}>Explore Our Global Partners <ArrowRight size={16} /></Link>
               </div>
             </div>
           </article>
@@ -513,7 +514,11 @@ function CompanyStoryPreview() {
       <div className="wrap">
         <div className="aboutx reveal">
           <div className="aboutx__media">
-            <image-slot id="home-company-media" shape="rect" fit="cover" placeholder="Facility or team photo" />
+            <img
+              src={homeAboutImg}
+              alt="Max-Seal facility and engineering team"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+            />
             <span className="corner-tick tl" />
           </div>
           <div className="aboutx__panel">

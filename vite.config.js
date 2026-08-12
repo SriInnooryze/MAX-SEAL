@@ -70,6 +70,12 @@ if (fs.existsSync(catalogCoverSrc)) {
   fs.copyFileSync(catalogCoverSrc, catalogCoverDest);
 }
 
+const globalPartnersSrc = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/8c7d0bd8-4a2e-4615-90ba-e0ffd9e42de6/global_partners_world_map_1786537033428.png';
+const globalPartnersDest = path.resolve(__dirname, 'src/assets/home/global-partners-card.png');
+if (fs.existsSync(globalPartnersSrc)) {
+  fs.copyFileSync(globalPartnersSrc, globalPartnersDest);
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
