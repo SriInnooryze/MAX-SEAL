@@ -13,6 +13,7 @@ import catalogPdf from '../assets/home/Resilient Seated Butterfly Valves — Per
 import catalogCoverImg from '../assets/home/performance-series-catalog-cover.png';
 import globalPartnersImg from '../assets/home/global-partners-card.png';
 import homeAboutImg from '../assets/home/Home-About.png';
+import homeWhyImg from '../assets/home/Home-Why max-seal.png';
 
 
 function famShort(id) { const f = FAMILIES.find(x => x.id === id); return f ? f.name : id; }
@@ -356,7 +357,11 @@ function WhyMaxSeal() {
   return (
     <section className="why">
       <div className="why__media reveal">
-        <image-slot id="home-why-media" shape="rect" fit="cover" placeholder="Manufacturing or product detail photo" />
+          <img
+            src={homeWhyImg}
+            alt="Max-Seal manufacturing and engineering support detail"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+          />
         <div className="why__tagstrip"><span>SINCE 2008</span><span>UNITED STATES</span></div>
       </div>
       <div className="why__body reveal">
