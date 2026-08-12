@@ -73,15 +73,15 @@ function VideoHero() {
         <div className="wrap">
           <div className="vhero__content">
             <div className="kicker kicker--ondark vhero__eyebrow">
-              Over 40 Years of Engineering Excellence
+              ENGINEERED FOR PERFORMANCE. BUILT FOR INDUSTRY.
             </div>
 
             <h1 className="vhero__title">
-              Our Valves Are Highly Engineered in Their Designs
+              Engineered Butterfly Valves. Built for Performance.
             </h1>
 
             <p className="vhero__lead">
-              Backed by over 40 years of research and development, our butterfly valves are engineered to deliver reliable performance, precision, and durability for demanding industrial applications.
+              Max-Seal designs and manufactures high-quality butterfly valves and valve automation solutions for critical industrial applications. From standard service to severe-duty requirements, our engineered solutions deliver reliable performance, durability, and precise control.
             </p>
             <div className="vhero__cta">
               <Link className="ms-btn ms-btn--primary ms-btn--lg" to={routes.products()}>Explore Products <ArrowRight size={16} /></Link>
@@ -174,7 +174,7 @@ function ProductPreview() {
         <div className="shead cine-head reveal">
           <div className="kicker">What We Engineer</div>
           <h2 className="shead__title cine-title">Flow control built around the conditions that matter</h2>
-          <p className="cine-lead">From everyday isolation duties to demanding process environments, Max-Seal brings together valve design, automation, materials, and engineering support around each application.</p>
+          <p className="cine-lead">From everyday isolation duties to demanding process environments, Max-Seal combines valve design, automation, materials, and engineering expertise to deliver reliable flow-control solutions engineered for each application.</p>
         </div>
       </div>
       <div className="wrap wrap--wide">
@@ -276,8 +276,8 @@ function IndustryPreview() {
       <div className="wrap">
         <div className="shead cine-head reveal">
           <div className="kicker">Where We Perform</div>
-          <h2 className="shead__title cine-title">Engineered for the systems industries depend on</h2>
-          <p className="cine-lead">Every operation brings different pressures, media, safety needs, and service conditions. Explore how Max-Seal supports the environments where dependable flow control matters.</p>
+          <h2 className="shead__title cine-title">Engineered for the industries that depend on reliable flow control</h2>
+          <p className="cine-lead">Every industry brings different pressures, media, safety requirements, and operating conditions. Max-Seal provides dependable valve and automation solutions engineered to perform across demanding industrial environments.</p>
         </div>
       </div>
       <div className="wrap wrap--wide">

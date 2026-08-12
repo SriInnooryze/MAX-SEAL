@@ -209,7 +209,7 @@ export const INDUSTRY_STORIES = [
   {
     id: 'energy-refining', title: 'Energy and refining',
     teaser: 'Energy and refining work across a wide range of pressures and temperatures. Robust isolation and control are matched to each service condition for dependable performance.',
-    line: 'Robust shutoff across energy and refining service.',
+    line: 'Reliable valve solutions for demanding energy and refining applications.',
     story: 'Energy and refining operations work across a wide range of pressures and temperatures. Robust isolation and control are matched to each service condition. The aim is dependable performance across demanding duties.',
     sectors: ['Oil and gas', 'Refining', 'Power'], families: ['triple-offset', 'high-performance', 'automated'],
     app: 'Isolation and control across energy and refining duties',
@@ -218,7 +218,7 @@ export const INDUSTRY_STORIES = [
   {
     id: 'process-industries', title: 'Process industries',
     teaser: 'Process plants handle aggressive media and frequent cycling. Material and sealing choices are matched to the chemistry of each process, with lined and alloy options protecting wetted parts.',
-    line: 'Material and sealing choices for demanding media.',
+    line: 'Engineered for demanding process and refining environments.',
     story: 'Process plants handle aggressive media and frequent cycling. Material and sealing choices are matched to the chemistry of each process. Lined and alloy constructions help protect wetted parts.',
     sectors: ['Petrochemical', 'Chemical processing', 'Pulp and paper'], families: ['pfa-lined', 'special-alloy', 'triple-offset'],
     app: 'Corrosive media and cycling process duties',
@@ -227,7 +227,7 @@ export const INDUSTRY_STORIES = [
   {
     id: 'food-life-sciences', title: 'Food and life sciences',
     teaser: 'Production environments place careful demands on material selection and cleanliness. Valve choices support consistent, safe operation, matched to the needs of each process.',
-    line: 'Careful material selection for safe, consistent production.',
+    line: 'Reliable flow control for food, beverage, pharmaceutical, and life science applications.',
     story: 'Production environments place careful demands on material selection and cleanliness. Valve choices support consistent, safe operation across these sectors. Configurations are matched to the needs of each process.',
     sectors: ['Food and beverage', 'Pharmaceuticals'], families: ['resilient', 'pfa-lined', 'customized'],
     app: 'Clean and utility duties with careful material choices',
@@ -236,7 +236,7 @@ export const INDUSTRY_STORIES = [
   {
     id: 'marine-transportation', title: 'Marine and transportation',
     teaser: 'Marine and transport systems face corrosion, vibration and heavy service. Corrosion aware materials and rugged construction are matched to the duty, with practical maintenance in mind.',
-    line: 'Rugged, corrosion-aware designs for tough service.',
+    line: 'Durable solutions for demanding marine and transportation systems.',
     story: 'Marine and transport systems face corrosion, vibration and heavy-duty service. Corrosion-aware materials and rugged construction are matched to the duty. Designs keep practical maintenance in mind.',
     sectors: ['Marine', 'Transportation', 'Mining'], families: ['special-alloy', 'resilient', 'customized'],
     app: 'Seawater, transfer and heavy-duty service',
@@ -245,7 +245,7 @@ export const INDUSTRY_STORIES = [
   {
     id: 'industrial-automation', title: 'Industrial automation',
     teaser: 'Automated operations need flow control that integrates cleanly. Valve and actuator packages are prepared around control and response for reliable, repeatable operation.',
-    line: 'Flow control built to integrate with automated systems.',
+    line: 'Precision valve and automation solutions for integrated industrial systems.',
     story: 'Automated operations need flow control that integrates with wider systems. Valve and actuator packages are prepared around control and response. The result supports reliable, repeatable operation.',
     sectors: ['Manufacturing', 'Automated systems'], families: ['automated', 'high-performance', 'customized'],
     app: 'Manufacturing and automated process operations',
