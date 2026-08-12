@@ -33,7 +33,7 @@ export default function DocDrawer({ doc, onClose, usage, kind }) {
               {usage && <p className="drawer__usage"><span className="pdot" /> Approved for distributor and sales use. Usage notes connect through the CMS.</p>}
             </div>
             <div className="drawer__foot">
-              <a className="ms-btn ms-btn--primary ms-btn--block" href="#"><Download size={16} /> {lab.download}</a>
+              <a className="ms-btn ms-btn--primary ms-btn--block" href={doc.pdfAsset || '#'} download={doc.pdfAsset ? true : undefined} target={doc.pdfAsset ? '_blank' : undefined} rel={doc.pdfAsset ? 'noopener noreferrer' : undefined}><Download size={16} /> {lab.download}</a>
               <Link className="ms-btn ms-btn--outline ms-btn--block" to={routes.documentPreview(doc.id)}><Eye size={15} /> Open full preview</Link>
               <Link className="ms-btn ms-btn--outline ms-btn--block" to={routes.documentPreview(doc.id)} target="_blank" rel="noopener">Open in new window <ArrowRight size={15} /></Link>
               <Link className="ms-btn ms-btn--ghost ms-btn--block" to={routes.enquiry({ intent: 'general' })}>Request help finding a document</Link>

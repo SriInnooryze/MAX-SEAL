@@ -50,7 +50,7 @@ export default function ProductDetail() {
           <div className="doc-ic"><FileText size={20} /></div>
           <div className="doc-main"><div className="doc-main__t">{d.title}</div><div className="doc-main__m"><span>{d.type}</span><span>Updated {d.date}</span><span>PDF · {d.size}</span></div></div>
           <span className="doc-fam">{d.fam}</span>
-          <div className="doc-actions"><Link className="doc-mini" to={routes.catalog} aria-label="Download"><Download size={17} /></Link></div>
+          <div className="doc-actions"><Link className="doc-mini" to={routes.catalog()} aria-label="Download"><Download size={17} /></Link></div>
         </div>
       ))}
     </div>

@@ -6,6 +6,8 @@ import PageHero from '../components/PageHero';
 import { RESOURCE_LIBS, DOCS, PRICE_LISTS } from '../data/data';
 import { ArrowRight, FileText, Eye } from '../icons/icons';
 import { routes } from '../router/paths';
+import catalogPdf from '../assets/home/Resilient Seated Butterfly Valves — Performance Series.pdf';
+import catalogCoverImg from '../assets/home/performance-series-catalog-cover.png';
 
 export default function Resources() {
   const cat = RESOURCE_LIBS.find(r => r.id === 'catalog');
@@ -28,20 +30,24 @@ export default function Resources() {
               {/* Catalog — technical document treatment */}
               <article className="resx__card resx--catalog">
                 <div className="resx__cover">
-                  <image-slot id="res-catalog-cover" shape="rect" fit="cover" placeholder="Catalog cover" />
+                  <img
+                    src={catalogCoverImg}
+                    alt="Resilient Seated Butterfly Valves — Performance Series Catalog Cover"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
+                  />
                   <span className="resx__filetag">{cat.fileType}</span>
                 </div>
                 <div className="resx__body">
-                  <div className="resx__eyebrow">Catalog</div>
+                  <div className="resx__eyebrow">CATALOG</div>
                   <h2 className="resx__title">Technical product information and selection documents</h2>
                   <dl className="resx__spec">
                     <div><dt>Latest</dt><dd>{cat.latest}</dd></div>
-                    <div><dt>Updated</dt><dd>{cat.date}</dd></div>
-                    <div><dt>Bulletin</dt><dd>{bulletin ? bulletin.date : 'See library'}</dd></div>
+                    <div><dt>Family</dt><dd>{cat.family}</dd></div>
+                    <div><dt>Pages</dt><dd>{cat.pages}</dd></div>
                   </dl>
                   <div className="resx__actions">
-                    <Link className="link-arrow" to={routes.catalog}><Eye size={16} /> Preview</Link>
-                    <Link className="link-arrow" to={routes.catalog}>View Catalog <ArrowRight size={16} /></Link>
+                    <a className="link-arrow" href={catalogPdf} target="_blank" rel="noopener noreferrer"><Eye size={16} /> Preview</a>
+                    <Link className="link-arrow" to={routes.catalog({ catalog: 'resilient-seated' })}>View Catalog <ArrowRight size={16} /></Link>
                   </div>
                 </div>
               </article>

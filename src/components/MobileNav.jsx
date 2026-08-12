@@ -18,7 +18,7 @@ const MOBILE_NAV = [
   { id: 'solutions', label: 'Solutions', href: routes.solutions },
   {
     id: 'resources', label: 'Resources', href: routes.resources, children: [
-      { label: 'Catalog', href: routes.catalog },
+      { label: 'Catalog', href: routes.catalog() },
       { label: 'Marketing Resources', href: routes.marketing },
       { label: 'Price Lists', href: routes.priceLists },
     ]

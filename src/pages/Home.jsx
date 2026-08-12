@@ -9,6 +9,8 @@ import { FAMILIES, WHY, PRODUCT_STORIES, INDUSTRY_STORIES, PROOF, RESOURCE_LIBS 
 import { ArrowRight, ArrowLeft, Play, Pause, Headset, MessageCircle, X, FileText, Eye, Download } from '../icons/icons';
 import { routes } from '../router/paths';
 import heroVideo from '../assets/home/Max-Seal.mp4';
+import catalogPdf from '../assets/home/Resilient Seated Butterfly Valves — Performance Series.pdf';
+import catalogCoverImg from '../assets/home/performance-series-catalog-cover.png';
 
 
 function famShort(id) { const f = FAMILIES.find(x => x.id === id); return f ? f.name : id; }
@@ -357,9 +359,9 @@ function WhyMaxSeal() {
       </div>
       <div className="why__body reveal">
         <div className="why__inner">
-          <div className="kicker">Why Max-Seal</div>
+          <div className="kicker">WHY MAX-SEAL</div>
           <h2 className="why__title">Engineering support behind every valve</h2>
-          <p className="why__intro">A focused valve supplier working closely with distributors and industrial teams.</p>
+          <p className="why__intro">From product selection to application requirements, Max-Seal combines valve expertise, engineering support, and responsive service to help customers find the right flow-control solution.</p>
           <div className="why__points">
             {WHY.map((w, i) => (
               <div key={w.k} className="why__pt">
@@ -372,7 +374,7 @@ function WhyMaxSeal() {
               </div>
             ))}
           </div>
-          <p className="why__cue">A US based valve supplier since 2008, serving distributors and industrial teams worldwide.</p>
+          <p className="why__cue">A US-based valve manufacturer and supplier serving distributors and industrial customers with engineered flow-control solutions.</p>
           <div className="why__cta">
             <Link className="ms-btn ms-btn--secondary" to={routes.about}>More about Max-Seal <ArrowRight size={16} /></Link>
           </div>
@@ -388,7 +390,7 @@ function ProofStory() {
       <div className="wrap">
         <div className="shead reveal">
           <div className="kicker kicker--ondark">Proof</div>
-          <h2 className="shead__title shead--dark proofx__head">One featured story, ready for the CMS</h2>
+          <h2 className="shead__title shead--dark proofx__head">Engineered solutions for demanding applications</h2>
         </div>
         <div className="proofx__card reveal">
           <div className="proofx__media">
@@ -440,20 +442,23 @@ function ResourcesPreview() {
           {/* Catalog — technical document treatment */}
           <article className="resx__card resx--catalog">
             <div className="resx__cover">
-              <image-slot id="home-res-catalog" shape="rect" fit="cover" placeholder="Catalog cover" />
+              <img
+                src={catalogCoverImg}
+                alt="Resilient Seated Butterfly Valves — Performance Series Catalog Cover"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
+              />
               <span className="resx__filetag">{cat.fileType}</span>
             </div>
             <div className="resx__body">
-              <div className="resx__eyebrow">Catalog</div>
+              <div className="resx__eyebrow">CATALOG</div>
               <h3 className="resx__title">{cat.latest}</h3>
               <dl className="resx__spec">
                 <div><dt>Family</dt><dd>{cat.family}</dd></div>
-                <div><dt>Updated</dt><dd>{cat.date}</dd></div>
                 <div><dt>Pages</dt><dd>{cat.pages}</dd></div>
               </dl>
               <div className="resx__actions">
-                <Link className="link-arrow" to={cat.href}><Eye size={16} /> Preview</Link>
-                <Link className="link-arrow" to={cat.href}>View Catalog <ArrowRight size={16} /></Link>
+                <a className="link-arrow" href={catalogPdf} target="_blank" rel="noopener noreferrer"><Eye size={16} /> Preview</a>
+                <Link className="link-arrow" to={routes.catalog({ catalog: 'resilient-seated' })}>View Catalog <ArrowRight size={16} /></Link>
               </div>
             </div>
           </article>

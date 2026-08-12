@@ -11,7 +11,7 @@ export default function Footer() {
     { label: 'Global Partners', href: routes.partners }, { label: 'Contact', href: routes.contact },
   ];
   const colResources = [
-    { label: 'Catalog', href: routes.catalog }, { label: 'Marketing Resources', href: routes.marketing },
+    { label: 'Catalog', href: routes.catalog() }, { label: 'Marketing Resources', href: routes.marketing },
     { label: 'Price Lists', href: routes.priceLists }, { label: 'Request a Quote', href: routes.enquiry({ intent: 'pricing' }) },
   ];
   return (

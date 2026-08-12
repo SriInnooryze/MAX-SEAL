@@ -1,6 +1,6 @@
 /* Max-Seal — Catalog: enterprise technical document library. */
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageHero from '../components/PageHero';
@@ -11,6 +11,9 @@ import { routes } from '../router/paths';
 
 export default function Catalog() {
   const docs = DOCS;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const catalogSlug = searchParams.get('catalog');
+
   const [q, setQ] = useState('');
   const [fam, setFam] = useState('All');
   const [type, setType] = useState('All');
@@ -20,7 +23,19 @@ export default function Catalog() {
 
   const fams = ['All', ...FAMILIES.map(f => f.name), 'All families'];
   const types = ['All', ...DOC_TYPES, 'Datasheet', 'Brochure'];
-  const featured = docs.find(d => d.type === 'Catalog') || docs[0];
+
+  // Single source of truth: URL query parameter ?catalog=<slug> drives featured selection
+  const featured = useMemo(() => {
+    if (catalogSlug) {
+      const match = docs.find(d => d.slug === catalogSlug);
+      if (match) return match;
+    }
+    return docs.find(d => d.type === 'Catalog') || docs[0];
+  }, [docs, catalogSlug]);
+
+  const selectCatalogDoc = (selected) => {
+    setSearchParams({ catalog: selected.slug });
+  };
 
   const norm = (t) => (t === 'Product Catalog' ? 'Catalog' : t);
   const shown = useMemo(() => docs
@@ -44,20 +59,49 @@ export default function Catalog() {
           <div className="wrap">
             {/* Featured catalog */}
             <div className="cat-feature">
-              <div className="cat-feature__cover"><image-slot id="cat-feature-cover" shape="rect" fit="cover" placeholder="Featured catalog cover" /><span className="resx__filetag">PDF</span></div>
+              <div className="cat-feature__cover">
+                {featured.coverAsset ? (
+                  <img
+                    src={featured.coverAsset}
+                    alt={featured.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
+                  />
+                ) : (
+                  <image-slot id={'cat-feature-cover-' + featured.id} shape="rect" fit="cover" placeholder="Featured catalog cover" />
+                )}
+                <span className="resx__filetag">{featured.fileType || 'PDF'}</span>
+              </div>
               <div className="cat-feature__body">
-                <div className="kicker">Featured catalog</div>
+                <div className="kicker">FEATURED CATALOGS</div>
                 <h2 className="cat-feature__t">{featured.title}</h2>
-                <p className="cat-feature__d">The current product catalog for the {featured.fam} family. Preview the pages or download the full PDF.</p>
+                <p className="cat-feature__d">
+                  {featured.desc || `The current product document for the ${featured.fam} family. Preview the pages or download the PDF.`}
+                </p>
                 <dl className="pstage2__specs" style={{ maxWidth: '420px' }}>
                   <div><dt>Family</dt><dd>{featured.fam}</dd></div>
                   <div><dt>Updated</dt><dd>{featured.date}</dd></div>
                   <div><dt>Pages</dt><dd>{featured.pages}</dd></div>
-                  <div><dt>File</dt><dd>PDF · {featured.size}</dd></div>
+                  <div><dt>File</dt><dd>{featured.fileType || 'PDF'} · {featured.size}</dd></div>
                 </dl>
                 <div className="cat-feature__actions">
-                  <button className="ms-btn ms-btn--primary" onClick={() => setDoc(featured)}><Eye size={16} /> Preview catalog</button>
-                  <a className="ms-btn ms-btn--secondary" href="#"><Download size={16} /> Download PDF</a>
+                  {featured.pdfAsset ? (
+                    <a className="ms-btn ms-btn--primary" href={featured.pdfAsset} target="_blank" rel="noopener noreferrer">
+                      <Eye size={16} /> Preview catalog
+                    </a>
+                  ) : (
+                    <button className="ms-btn ms-btn--primary" onClick={() => setDoc(featured)}>
+                      <Eye size={16} /> Preview catalog
+                    </button>
+                  )}
+                  {featured.pdfAsset ? (
+                    <a className="ms-btn ms-btn--secondary" href={featured.pdfAsset} download>
+                      <Download size={16} /> Download PDF
+                    </a>
+                  ) : (
+                    <a className="ms-btn ms-btn--secondary" href="#" onClick={(e) => { e.preventDefault(); setDoc(featured); }}>
+                      <Download size={16} /> Download PDF
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -66,8 +110,18 @@ export default function Catalog() {
             <div className="kicker" style={{ margin: '0 0 1rem' }}>Recently updated</div>
             <div className="cat-recent">
               {recent.map(d => (
-                <button className="cat-recent__card" key={d.id} onClick={() => setDoc(d)}>
-                  <div className="cat-recent__thumb"><image-slot id={'cat-rec-' + d.id} shape="rect" fit="cover" placeholder={d.type} /></div>
+                <button className="cat-recent__card" key={d.id} onClick={() => selectCatalogDoc(d)}>
+                  <div className="cat-recent__thumb">
+                    {d.coverAsset ? (
+                      <img
+                        src={d.coverAsset}
+                        alt={d.title}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
+                      />
+                    ) : (
+                      <image-slot id={'cat-rec-' + d.id} shape="rect" fit="cover" placeholder={d.type} />
+                    )}
+                  </div>
                   <div className="cat-recent__type">{d.type}</div>
                   <div className="cat-recent__t">{d.title}</div>
                   <div className="cat-recent__m">Updated {d.date} · PDF · {d.size}</div>
@@ -99,18 +153,67 @@ export default function Catalog() {
             {/* Document list */}
             <div className="results__count" style={{ margin: '0 0 1rem' }}><b>{shown.length}</b> documents</div>
             <div className="doc-list">
-              {shown.map(d => (
-                <div className="doc-row" key={d.id} onClick={() => setDoc(d)} role="button" tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter') setDoc(d); }}>
-                  <div className="doc-ic"><FileText size={20} /></div>
-                  <div className="doc-main"><div className="doc-main__t">{d.title}</div><div className="doc-main__m"><span>{d.type}</span><span>Updated {d.date}</span><span>PDF · {d.size}</span><span>{d.pages} pages</span></div></div>
-                  <span className="doc-fam">{d.fam}</span>
-                  <div className="doc-actions">
-                    <button className="doc-mini" aria-label="Preview" onClick={(e) => { e.stopPropagation(); setDoc(d); }}><Eye size={17} /></button>
-                    <a className="doc-mini" aria-label="Download" href="#" onClick={(e) => e.stopPropagation()}><Download size={17} /></a>
+              {shown.map(d => {
+                const isSelected = d.slug === featured.slug;
+                return (
+                  <div
+                    className={'doc-row' + (isSelected ? ' doc-row--selected' : '')}
+                    key={d.id}
+                    onClick={() => selectCatalogDoc(d)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter') selectCatalogDoc(d); }}
+                  >
+                    <div className="doc-ic"><FileText size={20} /></div>
+                    <div className="doc-main">
+                      <div className="doc-main__t">{d.title}</div>
+                      <div className="doc-main__m">
+                        <span>{d.type}</span>
+                        <span>Updated {d.date}</span>
+                        <span>PDF · {d.size}</span>
+                        <span>{d.pages} pages</span>
+                      </div>
+                    </div>
+                    <span className="doc-fam">{d.fam}</span>
+                    <div className="doc-actions">
+                      <button
+                        className="doc-mini"
+                        aria-label="Preview"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          selectCatalogDoc(d);
+                          if (!d.pdfAsset) setDoc(d);
+                        }}
+                      >
+                        <Eye size={17} />
+                      </button>
+                      {d.pdfAsset ? (
+                        <a
+                          className="doc-mini"
+                          aria-label="Download"
+                          href={d.pdfAsset}
+                          download
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Download size={17} />
+                        </a>
+                      ) : (
+                        <button
+                          className="doc-mini"
+                          aria-label="Download"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            selectCatalogDoc(d);
+                            setDoc(d);
+                          }}
+                        >
+                          <Download size={17} />
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {shown.length === 0 && <p className="mx__empty" style={{ padding: '1.5rem' }}>No documents match. Try clearing the search or filters.</p>}
             </div>
             <div style={{ marginTop: '1.6rem' }}>

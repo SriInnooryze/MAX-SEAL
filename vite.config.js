@@ -64,6 +64,12 @@ for (const [targetName, srcName] of Object.entries(industryMap)) {
   }
 }
 
+const catalogCoverSrc = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/8c7d0bd8-4a2e-4615-90ba-e0ffd9e42de6/resilient_seated_catalog_cover_1786531987334.png';
+const catalogCoverDest = path.resolve(__dirname, 'src/assets/home/performance-series-catalog-cover.png');
+if (fs.existsSync(catalogCoverSrc)) {
+  fs.copyFileSync(catalogCoverSrc, catalogCoverDest);
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],

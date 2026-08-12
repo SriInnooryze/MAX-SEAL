@@ -15,7 +15,7 @@ export default function SearchResults() {
     const items = [];
     FAMILIES.forEach(f => items.push({ type: 'Product', title: f.name + ' Butterfly Valve', excerpt: f.short, href: routes.productDetail(f.id), date: '' }));
     INDUSTRIES.forEach(x => items.push({ type: 'Industry', title: x.name, excerpt: x.ctx, href: routes.industryDetail(x.id), date: '' }));
-    DOCS.forEach(d => items.push({ type: 'Catalog', title: d.title, excerpt: d.type + ' · ' + d.fam, href: routes.catalog, date: d.date }));
+    DOCS.forEach(d => items.push({ type: 'Catalog', title: d.title, excerpt: d.type + ' · ' + d.fam, href: routes.catalog({ catalog: d.slug }), date: d.date }));
     PRICE_LISTS.forEach(p => items.push({ type: 'Price List', title: p.title, excerpt: 'Effective ' + p.effective + ' · ' + p.version, href: routes.priceLists, date: p.updated }));
     [['About Max-Seal', 'Company overview, history and leadership', routes.about], ['Global Partners', 'Worldwide distributor network', routes.partners], ['Contact', 'Reach the Max-Seal team', routes.contact], ['Marketing Resources', 'Approved sales and application materials', routes.marketing]]
       .forEach(([t, e, h]) => items.push({ type: 'Company', title: t, excerpt: e, href: h, date: '' }));

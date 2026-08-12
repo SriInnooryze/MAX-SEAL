@@ -21,7 +21,7 @@ export const routes = {
   about: '/about',
   contact: '/contact',
   resources: '/resources',
-  catalog: '/resources/catalog',
+  catalog: (params) => withQuery('/resources/catalog', params),
   marketing: '/resources/marketing',
   priceLists: '/resources/price-lists',
   search: (params) => withQuery('/search', params),

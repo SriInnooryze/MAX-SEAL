@@ -22,6 +22,8 @@ import pfaLinedImg from '../assets/products/pfa-lined.png';
 import specialAlloyImg from '../assets/products/special-alloy.png';
 import automatedImg from '../assets/products/automated.png';
 import customizedImg from '../assets/products/customized.png';
+import catalogPdf from '../assets/home/Resilient Seated Butterfly Valves — Performance Series.pdf';
+import catalogCoverImg from '../assets/home/performance-series-catalog-cover.png';
 
 export const HERO_INDUSTRY_IMAGE = industryHeroImg;
 
@@ -138,9 +140,9 @@ export const INDUSTRIES = [
 ];
 
 export const WHY = [
-  { k: 'Range', t: 'Seven product families', d: 'Resilient seated through triple offset, lined, alloy, automated and customized solutions.' },
-  { k: 'Support', t: 'Practical engineering support', d: 'Help to match the right series, seat and trim to your service condition.' },
-  { k: 'Supply', t: 'Responsive worldwide supply', d: 'Distributor and industrial support across more than a dozen markets.' },
+  { k: 'ENGINEERING', t: 'Engineered for demanding applications', d: 'Custom valve designs, special materials, and engineering support for complex piping configurations and severe service conditions.' },
+  { k: 'EXPERTISE', t: 'Practical valve engineering support', d: 'Experienced valve professionals help customers select the right valve, materials, actuator, and configuration for their application.' },
+  { k: 'SERVICE', t: 'Responsive supply and support', d: 'A broad product inventory, automation capabilities, and technical sales support help keep projects moving from selection through delivery.' },
 ];
 
 /* Story-led groupings for the homepage cinematic stages.
@@ -269,16 +271,16 @@ export const PROOF = {
 };
 
 export const DOCS = [
-  { id: 'd1', type: 'Catalog', title: 'Resilient Seated Series Catalog', fam: 'Resilient Seated', date: 'May 2025', size: '4.2 MB', pages: 28 },
-  { id: 'd2', type: 'Datasheet', title: 'Triple Offset Technical Datasheet', fam: 'Triple Offset', date: 'Apr 2025', size: '1.8 MB', pages: 6 },
-  { id: 'd3', type: 'Catalog', title: 'High Performance Series Catalog', fam: 'High Performance', date: 'Mar 2025', size: '3.6 MB', pages: 22 },
-  { id: 'd4', type: 'Brochure', title: 'PFA Lined Valves Overview', fam: 'PFA Lined', date: 'Feb 2025', size: '2.1 MB', pages: 12 },
-  { id: 'd5', type: 'Selection Guide', title: 'Automated Packages Selection Guide', fam: 'Automated Packages', date: 'Jan 2025', size: '2.7 MB', pages: 16 },
-  { id: 'd6', type: 'Datasheet', title: 'Special Alloy Materials Reference', fam: 'Special Alloy', date: 'Dec 2024', size: '1.4 MB', pages: 8 },
-  { id: 'd7', type: 'Technical Bulletin', title: 'Seat Selection Bulletin (sample)', fam: 'Resilient Seated', date: 'May 2025', size: '0.6 MB', pages: 3 },
-  { id: 'd8', type: 'Installation Document', title: 'Installation and Handling (sample)', fam: 'All families', date: 'Apr 2025', size: '1.1 MB', pages: 10 },
-  { id: 'd9', type: 'Maintenance Document', title: 'Maintenance and Service (sample)', fam: 'All families', date: 'Mar 2025', size: '1.0 MB', pages: 9 },
-  { id: 'd10', type: 'Application Guide', title: 'Chemical Processing Application Guide (sample)', fam: 'PFA Lined', date: 'Feb 2025', size: '1.9 MB', pages: 14 },
+  { id: 'd1', slug: 'resilient-seated', type: 'Catalog', title: 'Resilient Seated Series Catalog', fam: 'Resilient Seated', date: 'May 2025', size: '0.7 MB', pages: 4, pdfAsset: catalogPdf, coverAsset: catalogCoverImg },
+  { id: 'd2', slug: 'triple-offset', type: 'Datasheet', title: 'Triple Offset Technical Datasheet', fam: 'Triple Offset', date: 'Apr 2025', size: '1.8 MB', pages: 6, pdfAsset: null, coverAsset: null },
+  { id: 'd3', slug: 'high-performance', type: 'Catalog', title: 'High Performance Series Catalog', fam: 'High Performance', date: 'Mar 2025', size: '3.6 MB', pages: 22, pdfAsset: null, coverAsset: null },
+  { id: 'd4', slug: 'pfa-lined', type: 'Brochure', title: 'PFA Lined Valves Overview', fam: 'PFA Lined', date: 'Feb 2025', size: '2.1 MB', pages: 12, pdfAsset: null, coverAsset: null },
+  { id: 'd5', slug: 'automated-packages', type: 'Selection Guide', title: 'Automated Packages Selection Guide', fam: 'Automated Packages', date: 'Jan 2025', size: '2.7 MB', pages: 16, pdfAsset: null, coverAsset: null },
+  { id: 'd6', slug: 'special-alloy', type: 'Datasheet', title: 'Special Alloy Materials Reference', fam: 'Special Alloy', date: 'Dec 2024', size: '1.4 MB', pages: 8, pdfAsset: null, coverAsset: null },
+  { id: 'd7', slug: 'seat-selection', type: 'Technical Bulletin', title: 'Seat Selection Bulletin (sample)', fam: 'Resilient Seated', date: 'May 2025', size: '0.6 MB', pages: 3, pdfAsset: null, coverAsset: null },
+  { id: 'd8', slug: 'installation', type: 'Installation Document', title: 'Installation and Handling (sample)', fam: 'All families', date: 'Apr 2025', size: '1.1 MB', pages: 10, pdfAsset: null, coverAsset: null },
+  { id: 'd9', slug: 'maintenance', type: 'Maintenance Document', title: 'Maintenance and Service (sample)', fam: 'All families', date: 'Mar 2025', size: '1.0 MB', pages: 9, pdfAsset: null, coverAsset: null },
+  { id: 'd10', slug: 'chemical-processing', type: 'Application Guide', title: 'Chemical Processing Application Guide (sample)', fam: 'PFA Lined', date: 'Feb 2025', size: '1.9 MB', pages: 14, pdfAsset: null, coverAsset: null },
 ];
 export const DOC_TYPES = ['Product Catalog', 'Technical Bulletin', 'Selection Guide', 'Installation Document', 'Maintenance Document', 'Application Guide'];
 
@@ -341,8 +343,8 @@ export const PRICE_LISTS = [
 
 export const RESOURCE_LIBS = [
   {
-    id: 'catalog', href: routes.catalog, label: 'Catalog', desc: 'Product catalogs and technical datasheets by family.',
-    latest: 'Resilient Seated Series Catalog', family: 'Resilient Seated', date: 'May 2025', fileType: 'PDF', size: '4.2 MB', pages: 28
+    id: 'catalog', href: routes.catalog(), label: 'Catalog', desc: 'Product catalogs and technical datasheets by family.',
+    latest: 'Resilient Seated Butterfly Valves — Performance Series', family: 'Performance Series', fileType: 'PDF', pages: '4 pages', catalogDocSlug: 'resilient-seated'
   },
   {
     id: 'marketing', href: routes.marketing, label: 'Marketing Resources', desc: 'Brochures, presentations and approved brand assets.',

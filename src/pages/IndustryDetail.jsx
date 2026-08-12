@@ -75,7 +75,7 @@ export default function IndustryDetail() {
               </div>
               <div className="idet__railcard">
                 <div className="kicker" style={{ marginBottom: '0.9rem' }}>Documents</div>
-                <Link className="idet__doc" to={routes.catalog}><FileText size={17} /> Catalog and datasheets</Link>
+                <Link className="idet__doc" to={routes.catalog()}><FileText size={17} /> Catalog and datasheets</Link>
                 <Link className="idet__doc" to={routes.resources}><FileText size={17} /> Marketing resources</Link>
               </div>
               <div className="idet__railcta">

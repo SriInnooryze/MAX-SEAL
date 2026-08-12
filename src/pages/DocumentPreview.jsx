@@ -25,7 +25,7 @@ export default function DocumentPreview() {
           <div className="wrap page-hero__inner" style={{ maxWidth: 'none' }}>
             <nav className="breadcrumbs" aria-label="Breadcrumb">
               <Link to={routes.home}>Home</Link><span className="sep">/</span>
-              <Link to={routes.catalog}>Catalog</Link><span className="sep">/</span><span className="cur">{doc.title}</span>
+              <Link to={routes.catalog()}>Catalog</Link><span className="sep">/</span><span className="cur">{doc.title}</span>
             </nav>
           </div>
         </section>
