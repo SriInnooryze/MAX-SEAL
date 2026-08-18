@@ -1,0 +1,13 @@
+/* ============================================================
+   Max-Seal Design System — global entry point
+   Consumers link ONLY this file. It is a manifest of @import
+   lines; all real declarations live in the imported files.
+   ============================================================ */
+
+@import url("./tokens/fonts.css");
+@import url("./tokens/colors.css");
+@import url("./tokens/typography.css");
+@import url("./tokens/spacing.css");
+@import url("./tokens/radius-shadow-motion.css");
+@import url("./tokens/base.css");
+@import url("./components/components.css");

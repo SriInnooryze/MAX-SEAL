@@ -1,0 +1,119 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import fs from 'fs'
+import path from 'path'
+import { execSync } from 'child_process'
+import { fileURLToPath } from 'url'
+
+const __dirname_cfg = path.dirname(fileURLToPath(import.meta.url))
+
+/* Watches catalog/MAXSEAL_CATALOG.xlsx during `npm run dev` and re-runs the
+ * Excel -> JSON generator + full-reloads the browser whenever it's saved,
+ * so editing the workbook doesn't require restarting the dev server. */
+function catalogWatcherPlugin() {
+  const xlsxPath = path.join(__dirname_cfg, 'catalog/MAXSEAL_CATALOG.xlsx')
+  return {
+    name: 'maxseal-catalog-watcher',
+    configureServer(server) {
+      server.watcher.add(xlsxPath)
+      server.watcher.on('change', (file) => {
+        if (file !== xlsxPath) return
+        try {
+          execSync('node scripts/generate-catalog.mjs', { cwd: __dirname_cfg, stdio: 'inherit' })
+          server.ws.send({ type: 'full-reload' })
+        } catch (e) {
+          console.error('[maxseal-catalog-watcher] catalog:generate failed, browser not reloaded')
+        }
+      })
+    },
+  }
+}
+
+const srcImg = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/95b38b68-e8e9-466b-88ef-9e034456fa56/media__1784798786720.png';
+const srcHpImg = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/95b38b68-e8e9-466b-88ef-9e034456fa56/media__1784799363349.png';
+const srcToImg = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/95b38b68-e8e9-466b-88ef-9e034456fa56/media__1784799547230.png';
+const srcPlImg = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/95b38b68-e8e9-466b-88ef-9e034456fa56/media__1784799615081.png';
+const srcSaImg = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/95b38b68-e8e9-466b-88ef-9e034456fa56/media__1784799817189.png';
+const srcApImg = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/95b38b68-e8e9-466b-88ef-9e034456fa56/media__1784799913361.png';
+const srcCsImg = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/95b38b68-e8e9-466b-88ef-9e034456fa56/media__1784799979986.png';
+const srcAboutTeamImg = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/95b38b68-e8e9-466b-88ef-9e034456fa56/media__1784801081130.png';
+
+const destDir = path.resolve(__dirname, 'src/assets/products');
+const destAboutDir = path.resolve(__dirname, 'src/assets/about');
+const destImg = path.join(destDir, 'resilient-seated.png');
+const destHpImg = path.join(destDir, 'high-performance.png');
+const destToImg = path.join(destDir, 'triple-offset.png');
+const destPlImg = path.join(destDir, 'pfa-lined.png');
+const destSaImg = path.join(destDir, 'special-alloy.png');
+const destApImg = path.join(destDir, 'automated.png');
+const destCsImg = path.join(destDir, 'customized.png');
+const destAboutTeamImg = path.join(destAboutDir, 'team-photo.jpg');
+
+if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
+if (!fs.existsSync(destAboutDir)) fs.mkdirSync(destAboutDir, { recursive: true });
+if (!fs.existsSync(destImg) && fs.existsSync(srcImg)) fs.copyFileSync(srcImg, destImg);
+if (!fs.existsSync(destHpImg) && fs.existsSync(srcHpImg)) fs.copyFileSync(srcHpImg, destHpImg);
+if (!fs.existsSync(destToImg) && fs.existsSync(srcToImg)) fs.copyFileSync(srcToImg, destToImg);
+if (!fs.existsSync(destPlImg) && fs.existsSync(srcPlImg)) fs.copyFileSync(srcPlImg, destPlImg);
+if (!fs.existsSync(destSaImg) && fs.existsSync(srcSaImg)) fs.copyFileSync(srcSaImg, destSaImg);
+if (!fs.existsSync(destApImg) && fs.existsSync(srcApImg)) fs.copyFileSync(srcApImg, destApImg);
+if (!fs.existsSync(destCsImg) && fs.existsSync(srcCsImg)) fs.copyFileSync(srcCsImg, destCsImg);
+if (!fs.existsSync(destAboutTeamImg) && fs.existsSync(srcAboutTeamImg)) fs.copyFileSync(srcAboutTeamImg, destAboutTeamImg);
+
+const destIndDir = path.resolve(__dirname, 'src/assets/industries');
+if (!fs.existsSync(destIndDir)) fs.mkdirSync(destIndDir, { recursive: true });
+
+const brainDir = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/b9997ae3-38e3-40ec-9c32-64d8bde703f2';
+const industryMap = {
+  'data-centers.png': 'data_centers_photo_1784866133121.png',
+  'oil-gas.png': 'oil_gas_photo_1784866146819.png',
+  'refining.png': 'refining_photo_1784866161162.png',
+  'petrochemical.png': 'petrochemical_photo_1784866174648.png',
+  'chemical.png': 'chemical_photo_1784866188452.png',
+  'power.png': 'power_photo_1784866202074.png',
+  'pulp-paper.png': 'pulp_paper_photo_1784866214429.png',
+  'mining.png': 'mining_photo_1784866228416.png',
+  'marine.png': 'marine_photo_1784866241440.png',
+  'hvac.png': 'hvac_photo_1784866255605.png',
+  'food-beverage.png': 'food_beverage_photo_1784866268599.png',
+  'pharma.png': 'pharma_photo_1784866280879.png',
+  'transportation.png': 'transportation_photo_1784866295902.png',
+  'hero.png': 'refining_photo_1784866161162.png'
+};
+
+for (const [targetName, srcName] of Object.entries(industryMap)) {
+  const srcFile = path.join(brainDir, srcName);
+  const destFile = path.join(destIndDir, targetName);
+  if (!fs.existsSync(destFile) && fs.existsSync(srcFile)) {
+    fs.copyFileSync(srcFile, destFile);
+  }
+}
+
+const catalogCoverSrc = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/8c7d0bd8-4a2e-4615-90ba-e0ffd9e42de6/resilient_seated_catalog_cover_1786531987334.png';
+const catalogCoverDest = path.resolve(__dirname, 'src/assets/home/performance-series-catalog-cover.png');
+if (!fs.existsSync(catalogCoverDest) && fs.existsSync(catalogCoverSrc)) {
+  fs.copyFileSync(catalogCoverSrc, catalogCoverDest);
+}
+
+const globalPartnersSrc = 'C:/Users/SriBalaji/.gemini/antigravity-ide/brain/8c7d0bd8-4a2e-4615-90ba-e0ffd9e42de6/global_partners_world_map_1786537033428.png';
+const globalPartnersDest = path.resolve(__dirname, 'src/assets/home/global-partners-card.png');
+if (!fs.existsSync(globalPartnersDest) && fs.existsSync(globalPartnersSrc)) {
+  fs.copyFileSync(globalPartnersSrc, globalPartnersDest);
+}
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), catalogWatcherPlugin()],
+  base: '/',
+  server: {
+    watch: {
+      // LibreOffice/Excel create transient temp + lock files in catalog/ while
+      // saving (e.g. lu16808bi74gm.tmp, .~lock.*#); watching those races their
+      // own create/delete and can crash the dev server with EBUSY on Windows.
+      ignored: ['**/catalog/*.tmp', '**/catalog/.~lock.*', '**/catalog/~$*', '**/catalog/backups/**'],
+    },
+  },
+})
+
+
+

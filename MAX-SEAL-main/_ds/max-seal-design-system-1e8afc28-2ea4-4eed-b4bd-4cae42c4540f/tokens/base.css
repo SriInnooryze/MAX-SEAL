@@ -1,0 +1,78 @@
+/* ============================================================
+   Max-Seal — Base element styles & utilities
+   Sensible defaults that consume the tokens. Components and
+   UI kits inherit from these.
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--text-strong);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-tight);
+  font-weight: var(--weight-bold);
+  margin: 0;
+}
+
+p { margin: 0; }
+
+a {
+  color: var(--color-primary-press);
+  text-decoration: none;
+}
+a:hover { color: var(--color-primary); }
+
+::selection {
+  background: var(--azure-200);
+  color: var(--navy-900);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ---- Utility roles ---- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--role-eyebrow-size);
+  font-weight: var(--role-eyebrow-weight);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--color-primary-press);
+}
+
+.display-xl { font-family: var(--font-display); font-size: var(--text-display-xl); font-weight: var(--weight-extrabold); line-height: var(--leading-tight); letter-spacing: var(--tracking-tighter); color: var(--text-strong); }
+.display-l  { font-family: var(--font-display); font-size: var(--text-display-l);  font-weight: var(--weight-bold); line-height: var(--leading-tight); letter-spacing: var(--tracking-tighter); color: var(--text-strong); }
+.display-m  { font-family: var(--font-display); font-size: var(--text-display-m);  font-weight: var(--weight-bold); line-height: var(--leading-snug); letter-spacing: var(--tracking-tight); color: var(--text-strong); }
+
+.mono { font-family: var(--font-mono); font-feature-settings: "tnum" 1; }
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}

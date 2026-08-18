@@ -1,0 +1,10 @@
+/* ============================================================
+   Max-Seal — Webfonts
+   Prototype loads from Google Fonts CDN. For production, self-host
+   these families and replace the @import with local @font-face
+   rules (see readme.md → Visual Foundations / caveats).
+   Families: Exo 2 (display/headings), IBM Plex Sans (body/UI).
+   Site-wide two-font system — no third face is loaded.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
