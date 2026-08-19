@@ -1,9 +1,15 @@
 /* Max-Seal — Industry Detail (reusable template, one representative sample). */
 import { Link, useParams } from 'react-router-dom';
 import PageHero from '../components/PageHero';
-import { INDUSTRIES, FAMILIES, APP_NEEDS, PROOF } from '../data/data';
+import { INDUSTRIES, FAMILIES, APP_NEEDS, PROOF, INDUSTRY_DETAILS } from '../data/data';
 import { ArrowRight, Headset, FileText, Compass } from '../icons/icons';
 import { routes } from '../router/paths';
+
+const GENERIC_CHALLENGES = [
+  { k: 'Service condition', v: 'Match seat, trim and body materials to the media and operating window.' },
+  { k: 'Reliability', v: 'Support dependable isolation and control across the duty cycle.' },
+  { k: 'Maintenance', v: 'Keep selection practical to install, operate and service.' },
+];
 
 export default function IndustryDetail() {
   const { id: idParam } = useParams();
@@ -12,11 +18,10 @@ export default function IndustryDetail() {
   const famObjs = ind.families.map(n => FAMILIES.find(f => f.name === n)).filter(Boolean);
   const indFams = FAMILIES.filter(f => f.industries.includes(ind.id));
   const needs = APP_NEEDS.filter(a => indFams.some(f => f.apps.includes(a.id) || f.service.includes(a.id))).slice(0, 5);
-  const challenges = [
-    { k: 'Service condition', v: 'Match seat, trim and body materials to the media and operating window.' },
-    { k: 'Reliability', v: 'Support dependable isolation and control across the duty cycle.' },
-    { k: 'Maintenance', v: 'Keep selection practical to install, operate and service.' },
-  ];
+  const detail = INDUSTRY_DETAILS[ind.id];
+  const intro = detail?.intro || `Our team can help match seat, trim and body materials to the media and operating conditions in your ${ind.name.toLowerCase()} application.`;
+  const challenges = detail?.challenges || GENERIC_CHALLENGES;
+  const story = detail?.proof || PROOF;
 
   return (
     <main>
@@ -30,7 +35,7 @@ export default function IndustryDetail() {
               <div className="kicker">Industry overview</div>
               <h2 className="idet__h">Where Max-Seal valves fit in {ind.name.toLowerCase()}</h2>
               <p className="idet__p">{ind.ctx}</p>
-              <p className="idet__p">Our team can help match seat, trim and body materials to the media and operating conditions in your {ind.name.toLowerCase()} application.</p>
+              <p className="idet__p">{intro}</p>
 
               <div className="idet__sub">Operating challenges</div>
               <div className="idet__chal">
@@ -49,8 +54,8 @@ export default function IndustryDetail() {
                 <div className="idet__story-media"><image-slot id={'idet-story-' + ind.id} shape="rect" fit="cover" src={ind.image} placeholder="Project or application photo" /><span className="proofx__badge">{PROOF.type}</span></div>
                 <div className="idet__story-body">
                   <div className="idet__story-k">Featured story · placeholder</div>
-                  <h3 className="idet__story-t">{PROOF.title}</h3>
-                  <p className="idet__story-s">{PROOF.summary}</p>
+                  <h3 className="idet__story-t">{story.title}</h3>
+                  <p className="idet__story-s">{story.summary}</p>
                   <a className="link-arrow" href="#">View story <ArrowRight size={15} /></a>
                 </div>
               </div>

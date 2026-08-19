@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-import { FAMILIES } from '../data/data';
+import { FAMILIES, SUBCATEGORIES } from '../data/data';
 import { Phone, Mail, MessageCircle } from '../icons/icons';
 import { routes } from '../router/paths';
 import logo from '../assets/maxseal-logo.png';
 
 export default function Footer() {
-  const colProducts = FAMILIES.map(f => ({ label: f.name, href: routes.productDetail(f.id) }));
+  const subNameById = Object.fromEntries(SUBCATEGORIES.map(s => [s.id, s.name]));
+  const colProducts = FAMILIES.map(f => ({ label: subNameById[f.subcategoryId] || f.name, href: routes.productDetail(f.id) }));
   const colCompany = [
     { label: 'About', href: routes.about }, { label: 'Team', href: routes.about + '#how-we-grew' },
     { label: 'End Users', href: routes.about + '#who-we-serve' }, { label: 'Global Partners', href: routes.about + '#global-partners' },

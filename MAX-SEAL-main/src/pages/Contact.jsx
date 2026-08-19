@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import PageHero from '../components/PageHero';
 import { COMPANY } from '../data/data';
-import { Phone, Mail, MessageCircle, MapPin, ArrowRight, Headset } from '../icons/icons';
+import { Phone, Mail, MessageCircle, MapPin, FileText, ArrowRight, Headset } from '../icons/icons';
 import { routes } from '../router/paths';
 
 export default function Contact() {
@@ -18,11 +18,15 @@ export default function Contact() {
               <div className="contact-info">
                 <div className="contact-block">
                   <div className="contact-block__ic"><Phone size={20} /></div>
-                  <div><h4>Call</h4><a href="tel:+10000000000">Add phone number</a><p style={{ color: 'var(--steel-500)', fontSize: '0.85rem' }}>Confirmed number loads through the CMS</p></div>
+                  <div><h4>Call</h4><a href={'tel:+1' + COMPANY.phone.replace(/\D/g, '')}>{COMPANY.phone}</a></div>
+                </div>
+                <div className="contact-block">
+                  <div className="contact-block__ic"><FileText size={20} /></div>
+                  <div><h4>Fax</h4><a href={'tel:+1' + COMPANY.fax.replace(/\D/g, '')}>{COMPANY.fax}</a></div>
                 </div>
                 <div className="contact-block">
                   <div className="contact-block__ic"><Mail size={20} /></div>
-                  <div><h4>Email</h4><a href="mailto:info@max-seal.com">info@max-seal.com</a></div>
+                  <div><h4>Email</h4><a href={'mailto:' + COMPANY.email}>{COMPANY.email}</a></div>
                 </div>
                 <div className="contact-block">
                   <div className="contact-block__ic"><MessageCircle size={20} /></div>
@@ -30,10 +34,15 @@ export default function Contact() {
                 </div>
                 <div className="contact-block">
                   <div className="contact-block__ic"><MapPin size={20} /></div>
-                  <div><h4>US locations</h4>{COMPANY.facilities.map(f => <p key={f.id}>{f.city}, {f.state}</p>)}<p style={{ color: 'var(--steel-500)', fontSize: '0.85rem' }}>Full addresses load through the CMS</p></div>
+                  <div>
+                    <h4>US locations</h4>
+                    {COMPANY.facilities.map(f => (
+                      <p key={f.id}>{f.addressLine || `${f.city}, ${f.state}`}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="contact-map"><image-slot id="contact-map" shape="rect" fit="cover" placeholder="Map or facility photo" /></div>
+              <div className="contact-map"><image-slot id="contact-map" shape="rect" fit="cover" src="/assets/maxseal/misc/contact-map.svg" placeholder="Map or facility photo" /></div>
             </div>
             <div className="contact-cta">
               <h3>Have a specific requirement?</h3>

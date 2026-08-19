@@ -202,16 +202,186 @@ export const PROOF = {
   ],
 };
 
+/* Per-industry Industry Detail page content: hand-authored, not part of the
+   generated catalog (catalog only carries id/name/image/ctx/families — see
+   scripts/generate-catalog.mjs). Keyed by INDUSTRIES id. Each entry replaces
+   the generic "Our team can help..." line, the generic three-bullet
+   "Operating challenges", and the shared PROOF story on /industry/:id with
+   copy specific to that industry. Keep claims consistent with COMPANY facts
+   below — no invented certifications or customer names. */
+export const INDUSTRY_DETAILS = {
+  'data-centers': {
+    intro: 'For data center facilities, we help match valve type, seat and trim to the redundancy and automation requirements of the cooling loop, from initial isolation duty through automated control packages.',
+    challenges: [
+      { k: 'Continuity', v: 'Support uninterrupted cooling loop operation across redundant supply paths.' },
+      { k: 'Automation readiness', v: 'Fit automated valve packages for integration with building management and control systems.' },
+      { k: 'Space constraints', v: 'Work within compact mechanical room layouts and tight pipe runs.' },
+    ],
+    proof: {
+      title: 'Butterfly Valve Support for Cooling Loop Applications',
+      summary: 'Cooling loop applications require dependable isolation, automation readiness and careful valve selection. Max-Seal supports valve packages based on service conditions, system requirements and operating needs.',
+    },
+  },
+  'oil-gas': {
+    intro: "For upstream and midstream operations, we help match valve configuration to the pressure, temperature and media range your service actually runs, not just its nameplate rating.",
+    challenges: [
+      { k: 'Wide operating range', v: 'Hold dependable shutoff across varying upstream and midstream pressure and temperature conditions.' },
+      { k: 'Media handling', v: 'Support hydrocarbon and produced-fluid service with trim matched to the stream.' },
+      { k: 'Duty severity', v: 'Stand up to demanding cycling and field operating conditions.' },
+    ],
+    proof: {
+      title: 'Valve Selection Support for Upstream and Midstream Service',
+      summary: 'Oil and gas operations run across a wide range of pressures, temperatures and media. Max-Seal supports valve configuration for dependable isolation and control across the duty range.',
+    },
+  },
+  refining: {
+    intro: "For refinery process units, we help match seat, trim and body material to each stream's temperature and cycling profile, with metal-seated options reviewed where resilient seating isn't enough.",
+    challenges: [
+      { k: 'Process severity', v: 'Maintain metal-seated performance through high-temperature, high-cycle process duty.' },
+      { k: 'Isolation integrity', v: 'Support dependable isolation at critical block points across the unit.' },
+      { k: 'Trim matching', v: 'Match seat and trim selection to the varied process streams found in a refinery.' },
+    ],
+    proof: {
+      title: 'Metal-Seated Valve Support for Refinery Process Isolation',
+      summary: 'Refinery process isolation calls for metal-seated performance across demanding temperature and cycling conditions. Max-Seal reviews seat, trim and body selection against each process stream.',
+    },
+  },
+  petrochemical: {
+    intro: 'For petrochemical sites running multiple process chemistries, we help match sealing and lining choice to each specific line, with cycling duty factored into the construction.',
+    challenges: [
+      { k: 'Media diversity', v: 'Match sealing options to a wide range of process chemistries on one site.' },
+      { k: 'Cycling duty', v: 'Support frequent operation without loss of sealing performance.' },
+      { k: 'Material selection', v: 'Select linings and trims suited to the specific process stream.' },
+    ],
+    proof: {
+      title: 'Lined and Sealing Options for Petrochemical Process Lines',
+      summary: 'Petrochemical process lines run varied media and cycling duties. Max-Seal supports sealing and lining selection matched to each process line.',
+    },
+  },
+  chemical: {
+    intro: 'For chemical processing lines, we help match lined or alloy construction to the specific process chemistry so the metal body stays fully isolated from what is flowing through it.',
+    challenges: [
+      { k: 'Corrosion protection', v: 'Fully isolate the metal body from aggressive, corrosive media.' },
+      { k: 'Construction match', v: 'Match lined or alloy construction to the exact process chemistry.' },
+      { k: 'Wetted-part life', v: 'Support longer service life for parts in continuous contact with aggressive media.' },
+    ],
+    proof: {
+      title: 'Lined and Alloy Construction for Corrosive Process Media',
+      summary: 'Chemical processing environments handle corrosive and aggressive media. Max-Seal supports lined and special alloy construction chosen to protect wetted parts.',
+    },
+  },
+  power: {
+    intro: "For power generation sites, we help match valve construction to whichever duty you're specifying for, cooling water, process or balance-of-plant, since each runs its own pressure and temperature profile.",
+    challenges: [
+      { k: 'Multi-duty coverage', v: 'Support cooling water, balance-of-plant and process duties within one facility.' },
+      { k: 'Generation type range', v: 'Fit both conventional and renewable generation configurations.' },
+      { k: 'Reliable cycling', v: 'Maintain shutoff and control performance across extended operating cycles.' },
+    ],
+    proof: {
+      title: 'Valve Packages for Cooling Water and Balance-of-Plant Duties',
+      summary: 'Power generation facilities run cooling, process and balance-of-plant systems side by side, each with its own operating conditions. Max-Seal reviews valve configuration against each duty.',
+    },
+  },
+  'pulp-paper': {
+    intro: 'For pulp and paper mills, we help match seating and construction to continuous stock, water and chemical line duty, with maintenance kept practical on a mill schedule.',
+    challenges: [
+      { k: 'Stock and chemical handling', v: 'Support stock, water and chemical line service within one mill.' },
+      { k: 'Durable seating', v: 'Provide seating that holds up to continuous, high-cycle operation.' },
+      { k: 'Practical maintenance', v: 'Keep valves serviceable within mill maintenance schedules.' },
+    ],
+    proof: {
+      title: 'Durable Seating for Continuous Mill Operation',
+      summary: 'Pulp and paper mills run stock, water and chemical lines on a continuous cycle. Max-Seal supports valve selection built for durable seating and dependable cycling.',
+    },
+  },
+  mining: {
+    intro: 'For mining operations, we help match construction to abrasive slurry duty and remote site conditions, with serviceability built in for when downtime is costly.',
+    challenges: [
+      { k: 'Abrasive service', v: 'Stand up to slurry and abrasive process duties.' },
+      { k: 'Rugged construction', v: 'Provide construction suited to remote and heavy-duty site conditions.' },
+      { k: 'Serviceability', v: 'Support practical field maintenance where downtime is costly.' },
+    ],
+    proof: {
+      title: 'Rugged Valve Construction for Slurry and Process Duty',
+      summary: 'Mining operations run slurry, water and process duties under demanding site conditions. Max-Seal supports rugged, serviceable construction built for those conditions.',
+    },
+  },
+  marine: {
+    intro: 'For marine and onboard systems, we help match material selection and footprint to the corrosion resistance and space constraints your vessel or facility runs under.',
+    challenges: [
+      { k: 'Corrosion resistance', v: 'Resist corrosion across seawater and onboard system service.' },
+      { k: 'Compact fit', v: 'Fit compact engine-room and onboard space constraints.' },
+      { k: 'Reliable operation', v: 'Support dependable operation under maritime operating conditions.' },
+    ],
+    proof: {
+      title: 'Corrosion-Aware Construction for Onboard Systems',
+      summary: 'Marine and onboard systems run seawater and utility service in a corrosive, space-constrained environment. Max-Seal supports material and construction choices matched to that duty.',
+    },
+  },
+  hvac: {
+    intro: 'For HVAC systems, we help match valve selection to your chilled and condenser water loop requirements, balancing tight shutoff with the smooth control your building system needs.',
+    challenges: [
+      { k: 'Tight shutoff', v: 'Provide bubble-tight shutoff across chilled and condenser water loops.' },
+      { k: 'Smooth control', v: 'Support smooth modulation for building control system integration.' },
+      { k: 'System reliability', v: 'Maintain consistent operation across building service cycles.' },
+    ],
+    proof: {
+      title: 'Shutoff and Control Support for Chilled Water Systems',
+      summary: 'Chilled and condenser water systems depend on tight shutoff and smooth control. Max-Seal supports valve selection matched to building service and control requirements.',
+    },
+  },
+  'food-beverage': {
+    intro: 'For food and beverage lines, we help match wetted material to hygiene requirements across both process and utility duty, with valve selection reviewed against your cleaning and production cycle.',
+    challenges: [
+      { k: 'Hygienic material selection', v: 'Select wetted materials suited to process hygiene requirements.' },
+      { k: 'Utility and process coverage', v: 'Support both process and utility line service within one facility.' },
+      { k: 'Consistent operation', v: 'Maintain reliable shutoff across cleaning and production cycles.' },
+    ],
+    proof: {
+      title: 'Material Selection Support for Process Hygiene',
+      summary: 'Food and beverage facilities run process and utility lines that depend on material choices suited to hygiene requirements. Max-Seal supports selection matched to each line.',
+    },
+  },
+  pharma: {
+    intro: 'For pharmaceutical process and utility lines, we help match material choice to your validation and consistency requirements, so performance repeats reliably run after run.',
+    challenges: [
+      { k: 'Material consistency', v: 'Select materials carefully for process and utility line service.' },
+      { k: 'Consistent performance', v: 'Support consistent, repeatable valve performance across production runs.' },
+      { k: 'Practical documentation', v: 'Provide the documentation customers need to support their own validation processes.' },
+    ],
+    proof: {
+      title: 'Material and Performance Consistency for Process Lines',
+      summary: 'Pharmaceutical process and utility lines call for careful material choices and consistent performance. Max-Seal supports valve selection matched to those requirements.',
+    },
+  },
+  transportation: {
+    intro: 'For terminal and transfer systems, we help match valve selection to practical installation, operation and maintenance needs across your transfer line duty.',
+    challenges: [
+      { k: 'Terminal and transfer duty', v: 'Support fluid handling across terminal and transfer systems.' },
+      { k: 'Practical maintenance', v: 'Keep valve selection practical to install, operate and service in transfer applications.' },
+      { k: 'Dependable isolation', v: 'Provide dependable isolation across transfer line operation.' },
+    ],
+    proof: {
+      title: 'Practical Valve Selection for Terminal and Transfer Systems',
+      summary: 'Terminal and transfer systems need fluid handling that is practical to install, operate and maintain. Max-Seal supports valve selection built around that requirement.',
+    },
+  },
+};
+
 export const DOCS = catalog.docs;
 export const DOC_TYPES = ['Product Catalog', 'Technical Bulletin', 'Selection Guide', 'Installation Document', 'Maintenance Document', 'Application Guide'];
 
 /* Confirmed company facts (client supplied). Do not add unconfirmed claims. */
 export const COMPANY = {
+  legalName: 'Max-Seal Butterfly Valves & Controls',
   founded: '2008',
   president: 'Martin Gibbons',
   experience: '35+ years of valve industry experience',
+  phone: '910-738-2866',
+  fax: '910-739-1733',
+  email: 'sales@iv-controls.com',
   facilities: [
-    { id: 'lumberton', city: 'Lumberton', state: 'North Carolina', country: 'United States', kind: 'Facility' },
+    { id: 'lumberton', city: 'Lumberton', state: 'North Carolina', country: 'United States', kind: 'Facility', addressLine: '4815 West 5th Street, Lumberton, N.C. 28358' },
     { id: 'houston', city: 'Houston', state: 'Texas', country: 'United States', kind: 'Facility' },
   ],
   salesOffices: [
