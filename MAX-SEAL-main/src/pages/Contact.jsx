@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero';
 import { COMPANY } from '../data/data';
 import { Phone, Mail, MessageCircle, MapPin, FileText, ArrowRight, Headset } from '../icons/icons';
 import { routes } from '../router/paths';
+import contactHero from '../assets/contact/Contact-Hero.png';
 
 export default function Contact() {
   return (
@@ -11,7 +12,7 @@ export default function Contact() {
         <PageHero kicker="Contact" title="Talk to Max-Seal"
           lead="Reach our team by phone, email or WhatsApp. For pricing or technical support, start an enquiry and choose your intent."
           crumbs={[{ label: 'Home', href: routes.home }, { label: 'Contact' }]}
-          mediaId="contact-hero" mediaPlaceholder="Facility visual" />
+          mediaId="contact-hero" mediaSrc={contactHero} mediaPlaceholder="Facility visual" />
         <section className="section">
           <div className="wrap">
             <div className="contact-grid">
@@ -42,7 +43,7 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-              <div className="contact-map"><image-slot id="contact-map" shape="rect" fit="cover" src="/assets/maxseal/misc/contact-map.svg" placeholder="Map or facility photo" /></div>
+              <div className="contact-map"><image-slot id="contact-map" shape="rect" fit="cover" src={contactHero} placeholder="Map or facility photo" /></div>
             </div>
             <div className="contact-cta">
               <h3>Have a specific requirement?</h3>
