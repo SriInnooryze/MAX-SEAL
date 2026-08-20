@@ -34,7 +34,6 @@ export default function IndustryDetail() {
             <div className="idet__main">
               <div className="kicker">Industry overview</div>
               <h2 className="idet__h">Where Max-Seal valves fit in {ind.name.toLowerCase()}</h2>
-              <p className="idet__p">{ind.ctx}</p>
               <p className="idet__p">{intro}</p>
 
               <div className="idet__sub">Operating challenges</div>
