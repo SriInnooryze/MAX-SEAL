@@ -386,7 +386,13 @@
 .mx__step.on { color: var(--graphite-900); font-weight: 500; }
 .mx__step.on b { background: var(--azure-500); border-color: var(--azure-500); color: #fff; }
 
-.mx { display: grid; grid-template-columns: 0.8fr 1.45fr 1fr; gap: 0; border: 1px solid var(--color-border); background: var(--paper-0); min-height: 600px; }
+/* Landing on /industries?industry=<slug> auto-scrolls this grid into view
+   (see the mount effect in Industries.jsx) — scroll-margin-top keeps it
+   clear of the sticky site-header, same convention as .about-page
+   section[id] uses elsewhere. Same --header-h value applies at every
+   breakpoint (.topbar, which sits above the header on desktop only, isn't
+   itself sticky, so it's already out of the way by the time a scroll lands). */
+.mx { display: grid; grid-template-columns: 0.8fr 1.45fr 1fr; gap: 0; border: 1px solid var(--color-border); background: var(--paper-0); min-height: 600px; scroll-margin-top: calc(var(--header-h, 82px) + 1.75rem); }
 .mx__col { display: flex; flex-direction: column; }
 .mx__col--ind { border-right: 1px solid var(--color-border); }
 .mx__col--panel { border-left: 1px solid var(--color-border); }

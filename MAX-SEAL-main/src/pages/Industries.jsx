@@ -1,7 +1,7 @@
 /* Max-Seal — Industries matrix.
    Level 1 industry  ·  Level 2 application need  ·  Level 3 families
    Click to lock. Hover only previews. Nothing auto-cycles. */
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
@@ -41,6 +41,28 @@ function IndustriesMatrix() {
   const [activeInd, setActiveInd] = useState(seedInd);
   const [activeApp, setActiveApp] = useState(null);
   const workspaceRef = useRef(null);
+  // Separate from workspaceRef: workspaceRef spans the whole section
+  // (intro paragraph + steps + the matrix grid), so scrolling it into view
+  // only brings the intro text to the top of the viewport, leaving the
+  // actual industry list/image/panel mostly below the fold. matrixRef
+  // targets the .mx grid itself, so the selected industry is what actually
+  // ends up on screen.
+  const matrixRef = useRef(null);
+
+  // Auto-scroll to the matrix only when the page was reached with a valid
+  // ?industry= — never for a bare /industries visit, and never for an
+  // unrecognized slug (which falls back to the default industry without
+  // this counting as a "specific industry" landing). IndustriesMatrix
+  // remounts fresh whenever ?industry= changes (see the key on Industries
+  // above), so this mount-time effect re-fires correctly for every
+  // dropdown click, direct URL entry, and refresh.
+  useEffect(() => {
+    const indParam = qp('industry');
+    if (indParam && INDUSTRIES.find(x => x.id === indParam) && matrixRef.current) {
+      matrixRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const ind = INDUSTRIES.find(x => x.id === activeInd) || INDUSTRIES[0];
   const apps = appsForInd(ind);
@@ -76,7 +98,7 @@ function IndustriesMatrix() {
               <span className={'mx__step' + (activeApp ? ' on' : '')}><b>3</b> View product families</span>
             </div>
 
-            <div className="mx">
+            <div className="mx" id="industries-matrix" ref={matrixRef}>
               {/* Level 1 — industries */}
               <div className="mx__col mx__col--ind">
                 <div className="mx__coltitle">Industry</div>
