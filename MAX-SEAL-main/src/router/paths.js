@@ -16,7 +16,13 @@ export const routes = {
   products: (params) => withQuery('/products', params),
   productDetail: (id) => '/products/' + id,
   industries: (params) => withQuery('/industries', params),
-  industryDetail: (id) => '/industry/' + id,
+  /* Individual industry pages were consolidated into the Industries matrix
+     (see src/pages/Industries.jsx) — this now points every existing caller
+     (nav dropdown, mobile nav, related-industries links, search results,
+     About's "Markets served" chips) at the matrix with that industry
+     pre-selected via ?industry=, instead of a separate /industry/:id page.
+     Kept the function name unchanged so no call site needed to change. */
+  industryDetail: (id) => withQuery('/industries', { industry: id }),
   solutions: '/solutions',
   about: '/about',
   contact: '/contact',

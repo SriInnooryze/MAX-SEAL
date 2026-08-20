@@ -6,10 +6,22 @@ import { Link, useSearchParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
 import { INDUSTRIES, FAMILIES, APP_NEEDS, HERO_INDUSTRY_IMAGE } from '../data/data';
-import { ArrowRight, Headset, Compass, ChevronRight, Layers } from '../icons/icons';
+import { ArrowRight, Headset, ChevronRight, Layers } from '../icons/icons';
 import { routes } from '../router/paths';
 
+/* /industries and /industries?industry=<id> are the same route, so clicking
+   a different industry in the nav dropdown while already on this page (or
+   editing the URL directly) changes the search params without unmounting —
+   the useState(seedInd) lazy initializer below would then only run once and
+   go stale. Keying IndustriesMatrix by the raw ?industry= value forces a
+   fresh mount whenever it changes, so seedInd re-runs naturally with no
+   effect/setState-in-effect needed. */
 export default function Industries() {
+  const [searchParams] = useSearchParams();
+  return <IndustriesMatrix key={searchParams.get('industry') || 'default'} />;
+}
+
+function IndustriesMatrix() {
   useSiteChrome();
   const [searchParams] = useSearchParams();
   const qp = (name) => searchParams.get(name);
@@ -126,21 +138,22 @@ export default function Industries() {
                     <Link className="ms-btn ms-btn--outline ms-btn--sm" to={routes.enquiry({ intent: 'pricing' })}>Request a Quote</Link>
                   </div>
                   <Link className="link-arrow mx__panel-ask" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask a technical question</Link>
-                  <Link className="link-arrow" to={routes.industryDetail(ind.id)}><Compass size={16} /> Full {ind.name} overview</Link>
                 </div>
               </div>
             </div>
 
-            <div className="mx__next">
-              <div>
-                <h3>Found the environment that matches yours?</h3>
-                <p>Continue to the full product range, or send your operating conditions to our team for a recommendation.</p>
-              </div>
-              <div className="mx__next-actions">
-                <Link className="ms-btn ms-btn--primary" to={exploreHref}>Continue to products <ArrowRight size={16} /></Link>
-                <Link className="ms-btn ms-btn--outline" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask a technical question</Link>
-              </div>
+          </div>
+        </section>
+
+        <section className="convert">
+          <div className="wrap convert__inner reveal">
+            <div className="kicker kicker--ondark">NEXT STEP</div>
+            <h2 className="convert__t">Found the environment that matches yours?</h2>
+            <p className="convert__lead">Continue to the full product range, or send your operating conditions to our team for a recommendation.</p>
+            <div className="convert__actions">
+              <Link className="ms-btn ms-btn--primary" to={exploreHref}>Continue to products <ArrowRight size={16} /></Link>
             </div>
+            <Link className="link-arrow link-arrow--ondark" style={{ marginTop: '1.1rem' }} to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask a technical question</Link>
           </div>
         </section>
     </main>

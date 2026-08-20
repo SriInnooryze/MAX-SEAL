@@ -305,12 +305,12 @@ image-slot { display: block; width: 100%; height: 100%; }
 @media (max-width: 600px) {
   .ms-btn--sm { height: 44px; padding: 0 1.1rem; }
   .phero__actions, .pdet__actions, .pstage2__actions, .cat-feature__actions,
-  .pl-foot__col > div, .contact-cta > div, .about__cta > div {
+  .pl-foot__col > div, .contact-cta > div, .about__cta > div, .convert__actions {
     flex-direction: column; align-items: stretch; gap: 0.7rem;
   }
   .phero__actions .ms-btn, .pdet__actions .ms-btn, .pstage2__actions .ms-btn,
   .cat-feature__actions .ms-btn, .pl-foot__col > div .ms-btn,
-  .contact-cta > div .ms-btn, .about__cta > div .ms-btn {
+  .contact-cta > div .ms-btn, .about__cta > div .ms-btn, .convert__actions .ms-btn {
     width: 100%; justify-content: center;
   }
 }

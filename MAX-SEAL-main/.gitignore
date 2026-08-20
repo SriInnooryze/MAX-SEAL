@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
+backups
 # Excel-driven catalog: generated JSON is a build artifact, workbook backups are local safety nets
 src/data/generated
 catalog/backups

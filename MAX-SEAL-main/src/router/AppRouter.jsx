@@ -6,7 +6,6 @@ import Home from '../pages/Home';
 import Products from '../pages/Products';
 import ProductDetail from '../pages/ProductDetail';
 import Industries from '../pages/Industries';
-import IndustryDetail from '../pages/IndustryDetail';
 import Solutions from '../pages/Solutions';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
@@ -42,7 +41,6 @@ export default function AppRouter() {
         <Route path="/products" element={<SiteLayout current="products"><Products /></SiteLayout>} />
         <Route path="/products/:family" element={<SiteLayout current="products"><ProductDetail /></SiteLayout>} />
         <Route path="/industries" element={<SiteLayout current="industries"><Industries /></SiteLayout>} />
-        <Route path="/industry/:id" element={<SiteLayout current="industries"><IndustryDetail /></SiteLayout>} />
         <Route path="/solutions" element={<SiteLayout current="solutions"><Solutions /></SiteLayout>} />
         <Route path="/about" element={<SiteLayout current="about"><About /></SiteLayout>} />
         <Route path="/contact" element={<SiteLayout current="contact"><Contact /></SiteLayout>} />
