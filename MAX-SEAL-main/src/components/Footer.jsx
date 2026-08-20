@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
-import { FAMILIES, SUBCATEGORIES } from '../data/data';
+import { CATEGORIES } from '../data/data';
 import { Phone, Mail, MessageCircle } from '../icons/icons';
 import { routes } from '../router/paths';
 import logo from '../assets/maxseal-logo.png';
 
 export default function Footer() {
-  const subNameById = Object.fromEntries(SUBCATEGORIES.map(s => [s.id, s.name]));
-  const colProducts = FAMILIES.map(f => ({ label: subNameById[f.subcategoryId] || f.name, href: routes.productDetail(f.id) }));
+  // Main Categories only (Excel Categories sheet), matching the Products
+  // dropdown's top level — one row per category, not per subcategory/series,
+  // so this column doesn't grow or duplicate as more series get added.
+  const colProducts = CATEGORIES.filter(c => c.status === 'active').map(c => ({ label: c.name, href: routes.products({ category: c.id }) }));
   const colCompany = [
     { label: 'About', href: routes.about }, { label: 'Team', href: routes.about + '#how-we-grew' },
     { label: 'End Users', href: routes.about + '#who-we-serve' }, { label: 'Global Partners', href: routes.about + '#global-partners' },

@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FAMILIES, RESOURCE_LIBS, INDUSTRIES } from '../data/data';
+import { CATEGORIES, SUBCATEGORIES, RESOURCE_LIBS, INDUSTRIES } from '../data/data';
 import { ArrowRight } from '../icons/icons';
 import { routes } from '../router/paths';
 
@@ -14,18 +15,65 @@ import { routes } from '../router/paths';
 export const INDUSTRY_MENU_IDS = ['data-centers', 'hvac', 'power', 'oil-gas', 'refining', 'petrochemical', 'food-beverage', 'marine', 'transportation'];
 const industryMenuItems = INDUSTRY_MENU_IDS.map(id => INDUSTRIES.find(x => x.id === id)).filter(Boolean);
 
-export default function DropdownContent({ kind, onNavigate }) {
-  if (kind === 'products') {
-    return (
-      <div className="dropdown dropdown--wide">
-        {FAMILIES.map(f => (
-          <Link key={f.id} className="drop-link" to={routes.productDetail(f.id)}>
-            <strong>{f.menuName}</strong><span>{f.menuDesc}</span>
+/* Two-level Products flyout: Categories (Sub Category-1's parent) on the
+   left, and — once a category is hovered/focused/tapped — that category's
+   active Subcategories on the right. Both columns come straight from the
+   Categories/Subcategories catalog data (CategoryId is the FK), so adding a
+   row in Excel is the only way to add or move an entry here. */
+function ProductsDropdown({ onNavigate }) {
+  const activeCategories = CATEGORIES.filter(c => c.status === 'active');
+  const [openCat, setOpenCat] = useState(null);
+  const activeCategory = activeCategories.find(c => c.id === openCat) || null;
+  const subs = activeCategory
+    ? SUBCATEGORIES.filter(s => s.categoryId === activeCategory.id && s.status === 'active')
+    : [];
+
+  return (
+    <div
+      className={'dropdown dropdown--products' + (activeCategory && subs.length ? ' has-sub' : '')}
+      onMouseLeave={() => setOpenCat(null)}
+    >
+      <div className="dropdown__col">
+        {activeCategories.map(c => (
+          <Link
+            key={c.id}
+            className={'drop-link' + (c.id === openCat ? ' on' : '')}
+            to={routes.products({ category: c.id })}
+            onMouseEnter={() => setOpenCat(c.id)}
+            onFocus={() => setOpenCat(c.id)}
+            onClick={onNavigate}
+          >
+            <strong>{c.name}</strong>
           </Link>
         ))}
-        <div className="drop-foot"><Link className="link-arrow" to={routes.products()}>Explore all products <ArrowRight size={17} /></Link></div>
+        <div className="drop-foot"><Link className="link-arrow" to={routes.products()} onClick={onNavigate}>Explore all products <ArrowRight size={17} /></Link></div>
       </div>
-    );
+      {activeCategory && subs.length > 0 && (
+        <div className="dropdown__col dropdown__col--sub" onMouseEnter={() => setOpenCat(activeCategory.id)}>
+          <div className="dropdown__col-title">{activeCategory.name}</div>
+          {subs.map(s => (
+            <Link key={s.id} className="drop-link" to={routes.productSubcategory(activeCategory.slug, s.slug)} onClick={onNavigate}>
+              <strong>{s.name}</strong>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function DropdownContent({ kind, onNavigate, isOpen }) {
+  if (kind === 'products') {
+    // Header.jsx keeps every nav item's DropdownContent mounted at all
+    // times and only toggles CSS visibility (see .navitem.open .dropdown)
+    // — this component itself never unmounts between opens/closes, so its
+    // local "hovered category" state would otherwise leak from one open
+    // session into the next (a category hovered last time would still show
+    // its Sub Category-1 panel immediately on the next open, with no hover
+    // at all). Keying on isOpen forces a real remount on every open/close
+    // transition, which resets that state via the useState initializer —
+    // the same fix already used for the Industries matrix remount.
+    return <ProductsDropdown key={isOpen ? 'open' : 'closed'} onNavigate={onNavigate} />;
   }
   if (kind === 'industries') {
     return (

@@ -15,6 +15,10 @@ export const routes = {
   home: '/',
   products: (params) => withQuery('/products', params),
   productDetail: (id) => '/products/' + id,
+  /* Category > Subcategory hierarchy page (dynamic Products navigation) —
+     shows a subcategory's own Sub Category-2 tiles (the individual product
+     series). Slugs come from the Categories/Subcategories catalog data. */
+  productSubcategory: (categorySlug, subcategorySlug) => '/products/' + categorySlug + '/' + subcategorySlug,
   industries: (params) => withQuery('/industries', params),
   /* Individual industry pages were consolidated into the Industries matrix
      (see src/pages/Industries.jsx) — this now points every existing caller

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { FAMILIES, INDUSTRIES } from '../data/data';
+import { CATEGORIES, SUBCATEGORIES, INDUSTRIES } from '../data/data';
 import { INDUSTRY_MENU_IDS } from './DropdownContent';
 import { Search, ChevronDown, Phone, Mail, MessageCircle, ArrowRight, X } from '../icons/icons';
 import { routes } from '../router/paths';
@@ -15,8 +15,18 @@ const MOBILE_NAV = [
   { id: 'home', label: 'Home', href: routes.home },
   {
     id: 'products', label: 'Products', href: routes.products(), children: [
-      ...FAMILIES.map(f => ({ label: f.menuName, href: routes.productDetail(f.id) })),
-      { label: 'Explore all products', href: routes.products(), all: true },
+      // Each active category carries its own nested children — the active
+      // Subcategories under it (CategoryId FK) — so tapping a category
+      // expands straight to its Sub Category-1 list, matching the desktop
+      // flyout. A category with no subcategories renders as a plain link.
+      ...CATEGORIES.filter(c => c.status === 'active').map(c => ({
+        id: 'cat-' + c.id,
+        label: c.name,
+        href: routes.products({ category: c.id }),
+        children: SUBCATEGORIES.filter(s => s.categoryId === c.id && s.status === 'active')
+          .map(s => ({ label: s.name, href: routes.productSubcategory(c.slug, s.slug) })),
+      })),
+      { id: 'all-products', label: 'Explore all products', href: routes.products(), all: true },
     ]
   },
   {
@@ -138,9 +148,33 @@ export default function MobileNav({ open, onClose, current }) {
               {n.children && (
                 <div className={'mnav__sub' + (expanded[n.id] ? ' open' : '')}>
                   {n.children.map(c => (
-                    <Link key={c.label} className={'mnav__sublink' + (c.all ? ' mnav__sublink--all' : '')} to={c.href} onClick={onClose}>
-                      {c.label}
-                    </Link>
+                    c.children && c.children.length > 0 ? (
+                      <div className="mnav__subitem" key={c.id}>
+                        <div className="mnav__row mnav__row--sub">
+                          <Link className="mnav__sublink" to={c.href} onClick={onClose}>{c.label}</Link>
+                          <button
+                            type="button"
+                            className={'mnav__toggle mnav__toggle--sm' + (expanded[c.id] ? ' open' : '')}
+                            aria-label={(expanded[c.id] ? 'Collapse ' : 'Expand ') + c.label}
+                            aria-expanded={!!expanded[c.id]}
+                            onClick={() => toggleSection(c.id)}
+                          >
+                            <ChevronDown size={16} />
+                          </button>
+                        </div>
+                        <div className={'mnav__sub mnav__sub--nested' + (expanded[c.id] ? ' open' : '')}>
+                          {c.children.map(cc => (
+                            <Link key={cc.label} className="mnav__sublink mnav__sublink--nested" to={cc.href} onClick={onClose}>
+                              {cc.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link key={c.id || c.label} className={'mnav__sublink' + (c.all ? ' mnav__sublink--all' : '')} to={c.href} onClick={onClose}>
+                        {c.label}
+                      </Link>
+                    )
                   ))}
                 </div>
               )}

@@ -37,7 +37,7 @@ export default function Header({ current }) {
               <div key={n.id} className={'navitem' + (n.dropdown && open === n.id ? ' open' : '') + (current === n.id ? ' active' : '')}
                 onMouseEnter={() => n.dropdown ? enter(n.id) : leave()}>
                 <Link to={n.href}>{n.label}{n.dropdown && <ChevronDown size={15} />}</Link>
-                {n.dropdown && <DropdownContent kind={n.dropdown} onNavigate={() => setOpen(null)} />}
+                {n.dropdown && <DropdownContent kind={n.dropdown} onNavigate={() => setOpen(null)} isOpen={open === n.id} />}
               </div>
             ))}
           </nav>

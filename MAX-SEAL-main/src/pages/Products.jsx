@@ -7,7 +7,7 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
-import { FAMILIES, FACETS, DOCS } from '../data/data';
+import { FAMILIES, FACETS, DOCS, CATEGORIES } from '../data/data';
 import * as Icons from '../icons/icons';
 import { Check, X, ArrowRight, ArrowLeft, Headset, Scale, Plus, Compass, ChevronDown, Sliders, Layers } from '../icons/icons';
 import { routes } from '../router/paths';
@@ -52,11 +52,18 @@ export default function Products() {
     const type = qpP('type'); if (type) s.types = [type];
     return s;
   };
-  const hasSeed = !!(qpP('industry') || qpP('application') || qpP('type') || qpP('family') || qpP('story'));
+  // Category (Products dropdown → routes.products({ category: id })) filters
+  // by the Excel Categories sheet, one level above the types/apps/service
+  // facets above — kept as its own piece of state rather than folded into
+  // EMPTY_SEL/sel since it's a Category>Subcategory>Product hierarchy level,
+  // not a product attribute facet.
+  const seedCategory = () => { const c = qpP('category'); return c && CATEGORIES.find(x => x.id === c) ? c : null; };
+  const hasSeed = !!(qpP('industry') || qpP('application') || qpP('type') || qpP('family') || qpP('story') || qpP('category'));
 
   const [phase, setPhase] = useState(hasSeed ? 'results' : 'choose'); // choose · q1 · q2 · results
   const [goal, setGoal] = useState(null);
   const [place, setPlace] = useState(null);
+  const [category, setCategory] = useState(seedCategory);
   const [adv, setAdv] = useState(seedAdv);          // applied advanced filters
   const [advDraft, setAdvDraft] = useState(seedAdv); // working copy inside refine
   const [view, setView] = useState('featured');      // featured · list
@@ -86,7 +93,8 @@ export default function Products() {
     const field = fam[FACET_TO_FIELD[facet]] || [];
     return chosen.some(v => field.includes(v));
   });
-  const results = useMemo(() => FAMILIES.filter(matchFam), [sel]);
+  const results = useMemo(() => FAMILIES.filter(f => (!category || f.categoryId === category) && matchFam(f)), [sel, category]);
+  const categoryObj = category ? CATEGORIES.find(c => c.id === category) : null;
 
   const docFor = (fam) => DOCS.find(d => d.fam === fam.name);
   const facetLabel = (facetId, v) => { const f = FACETS.find(x => x.id === facetId); const o = f && f.options.find(o => o.v === v); return o ? o.l : v; };
@@ -103,9 +111,9 @@ export default function Products() {
   const go = (p) => { setPhase(p); scrollTop(); };
 
   // Journey controls
-  const startGuided = () => { setGoal(null); setPlace(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); go('q1'); };
-  const browseAll = () => { setGoal(null); setPlace(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); go('results'); };
-  const startOver = () => { setGoal(null); setPlace(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); setRefineOpen(false); setMoreOpen(false); go('choose'); };
+  const startGuided = () => { setGoal(null); setPlace(null); setCategory(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); go('q1'); };
+  const browseAll = () => { setGoal(null); setPlace(null); setCategory(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); go('results'); };
+  const startOver = () => { setGoal(null); setPlace(null); setCategory(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); setRefineOpen(false); setMoreOpen(false); go('choose'); };
   const toResultsFromStep2 = () => { setAdv(advDraft); go('results'); }; // apply step-2 refinements
 
   // Advanced filter editing (draft only; applied via Apply)
@@ -119,6 +127,7 @@ export default function Products() {
 
   // "Your selections" chips
   const chips = [];
+  if (categoryObj) chips.push({ key: 'category', label: categoryObj.name, onRemove: () => setCategory(null) });
   if (goalObj) chips.push({ key: 'goal', label: goalObj.t, onRemove: () => setGoal(null) });
   if (placeObj && placeObj.sel.length) chips.push({ key: 'place', label: placeObj.t, onRemove: () => setPlace(null) });
   Object.keys(adv).forEach(facet => adv[facet].forEach(v => chips.push({
