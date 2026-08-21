@@ -184,7 +184,11 @@ checkUnique('Subcategories', subcategories, 'Slug');
 checkFK('Subcategories', subcategories, 'CategoryId', categoryIds);
 checkClosedValue('Subcategories', subcategories, 'Status', CATEGORY_STATUS_VALUES);
 
-requireFields('Products', products, ['Id', 'SubcategoryId', 'SKU', 'Code', 'Name', 'MenuName', 'MenuDesc', 'Short', 'ImagePath', 'Need', 'Where', 'Application', 'Sizes', 'Rating']);
+// Sizes/Rating are intentionally NOT required: a product's dimensional/
+// pressure spec is only entered once a source document confirms it, per the
+// "never invent technical specifications" rule — a blank cell means the
+// Product Detail page hides that row instead of showing a fabricated value.
+requireFields('Products', products, ['Id', 'SubcategoryId', 'SKU', 'Code', 'Name', 'MenuName', 'MenuDesc', 'Short', 'ImagePath', 'Need', 'Where', 'Application']);
 checkUnique('Products', products, 'Id');
 checkUnique('Products', products, 'SKU');
 checkFK('Products', products, 'SubcategoryId', subcategoryIds);

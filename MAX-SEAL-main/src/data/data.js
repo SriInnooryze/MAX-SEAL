@@ -76,16 +76,16 @@ export const PRODUCT_STORIES = [
     teaser: 'Dependable shutoff for repeatable service conditions, with resilient seated and high performance options configured around system requirements.',
     line: 'Dependable shutoff and control for systems that must operate consistently.',
     story: 'Many systems simply need to start and stop flow without fuss, every time they are asked to. Max-Seal builds resilient seated and high performance valves around that need for repeatable shutoff. Where duties cycle often, automated packages help keep operation steady.',
-    families: ['PROD-001', 'PROD-002', 'PROD-006'], app: 'Water, HVAC, building services and general utility isolation',
-    image: FAMILIES.find((f) => f.id === 'PROD-001').image
+    families: ['PROD-009', 'PROD-013', 'PROD-006'], app: 'Water, HVAC, building services and general utility isolation',
+    image: FAMILIES.find((f) => f.id === 'PROD-009').image
   },
   {
     id: 'performance-pressure', title: 'Performance under pressure',
     teaser: 'High performance and triple offset designs support more demanding pressure and temperature conditions, with seat and trim selections matched to the duty.',
     line: 'Valve configurations designed for demanding service conditions and application requirements.',
     story: 'Some service conditions ask more of a valve than everyday duties. High performance and triple offset designs are configured for demanding pressure and temperature ranges. The right seat and trim choice is matched to each application.',
-    families: ['PROD-002', 'PROD-003'], app: 'Process, refining and power duties across a wide range',
-    image: FAMILIES.find((f) => f.id === 'PROD-002').image
+    families: ['PROD-013', 'PROD-003'], app: 'Process, refining and power duties across a wide range',
+    image: FAMILIES.find((f) => f.id === 'PROD-013').image
   },
   {
     id: 'corrosive-service', title: 'Corrosive service',
@@ -100,7 +100,7 @@ export const PRODUCT_STORIES = [
     teaser: 'Valve and actuator packages are prepared around control needs, operating response and accessories suited to the application.',
     line: 'Valve and actuator packages prepared around control, response, and operating needs.',
     story: 'Control systems need valves that respond predictably and integrate cleanly. Max-Seal assembles valve and actuator packages around control, response and operating needs. Accessories and controls are prepared to suit the duty.',
-    families: ['PROD-006', 'PROD-002', 'PROD-007'], app: 'Process automation and control loops',
+    families: ['PROD-006', 'PROD-013', 'PROD-007'], app: 'Process automation and control loops',
     image: FAMILIES.find((f) => f.id === 'PROD-006').image
   },
   {
@@ -116,7 +116,7 @@ export const PRODUCT_STORIES = [
     teaser: 'Practical valve review helps customers evaluate series, seat, trim, materials and actuation before configuration.',
     line: 'Practical engineering input from selection through configuration.',
     story: 'Choosing the right valve is easier with engineering input alongside it. Max-Seal helps match series, seat and trim to your service condition. Support continues from selection through sizing and configuration.',
-    families: ['PROD-007', 'PROD-006', 'PROD-002'], app: 'Selection, sizing and application support',
+    families: ['PROD-007', 'PROD-006', 'PROD-013'], app: 'Selection, sizing and application support',
     image: FAMILIES.find((f) => f.id === 'PROD-005').image
   },
 ];
@@ -136,7 +136,7 @@ export const INDUSTRY_STORIES = [
     teaser: 'Data center facilities rely on cooling and water systems that must operate consistently. Max-Seal supports dependable isolation and automated valve packages for critical support systems.',
     line: 'Valve support for cooling and infrastructure systems.',
     story: 'Data center facilities rely on cooling and water systems that need to operate consistently. Dependable isolation and automated valve packages support these critical support systems.',
-    sectors: ['Data Centers', 'HVAC', 'Cooling Systems'], families: ['PROD-001', 'PROD-002', 'PROD-006'],
+    sectors: ['Data Centers', 'HVAC', 'Cooling Systems'], families: ['PROD-009', 'PROD-013', 'PROD-006'],
     app: 'Cooling loops and water distribution for data center facilities',
     image: INDUSTRIES.find((i) => i.id === 'data-centers').image
   },
@@ -145,7 +145,7 @@ export const INDUSTRY_STORIES = [
     teaser: 'Water and utility applications need dependable isolation, material compatibility and long service life. Max-Seal supports valve selection for infrastructure and process-water requirements.',
     line: 'Butterfly valve solutions for water and utility systems.',
     story: 'Water and utility systems need dependable isolation and material compatibility built for long service life. Valve selection is reviewed against infrastructure and process-water requirements.',
-    sectors: ['Water Infrastructure', 'Utilities', 'Process Water'], families: ['PROD-001', 'PROD-002', 'PROD-007'],
+    sectors: ['Water Infrastructure', 'Utilities', 'Process Water'], families: ['PROD-009', 'PROD-013', 'PROD-007'],
     app: 'Water distribution, treatment and utility infrastructure',
     image: INDUSTRIES.find((i) => i.id === 'hvac').image
   },
@@ -154,7 +154,7 @@ export const INDUSTRY_STORIES = [
     teaser: 'Power generation environments involve demanding operating conditions across cooling, process and balance-of-plant systems. Valve configurations are reviewed against pressure, temperature and service needs.',
     line: 'Flow control support for power and plant systems.',
     story: 'Power generation environments span cooling, process and balance-of-plant systems, each with its own operating conditions. Valve configurations are reviewed against pressure, temperature and service requirements.',
-    sectors: ['Power Generation', 'Cooling', 'Plant Systems'], families: ['PROD-002', 'PROD-003', 'PROD-006'],
+    sectors: ['Power Generation', 'Cooling', 'Plant Systems'], families: ['PROD-013', 'PROD-003', 'PROD-006'],
     app: 'Cooling water, process and balance-of-plant duties',
     image: INDUSTRIES.find((i) => i.id === 'power').image
   },
@@ -163,7 +163,7 @@ export const INDUSTRY_STORIES = [
     teaser: 'Oil, gas and refining applications involve varied pressure, temperature and media conditions. Max-Seal supports valve configurations for dependable isolation and control in demanding service.',
     line: 'Valve options for demanding energy and refining service.',
     story: 'Oil, gas and refining operations work across a wide range of pressures, temperatures and media. Valve configurations are matched to each service condition for dependable isolation and control.',
-    sectors: ['Oil and Gas', 'Refining', 'Energy'], families: ['PROD-003', 'PROD-002', 'PROD-006'],
+    sectors: ['Oil and Gas', 'Refining', 'Energy'], families: ['PROD-003', 'PROD-013', 'PROD-006'],
     app: 'Isolation and control across oil, gas and refining duties',
     image: INDUSTRIES.find((i) => i.id === 'oil-gas').image
   },
@@ -181,7 +181,7 @@ export const INDUSTRY_STORIES = [
     teaser: 'Marine, transportation and mining systems can face corrosion, vibration and heavy service. Material selection and rugged construction help support long-term operation.',
     line: 'Durable valve options for harsh operating environments.',
     story: 'Marine, transportation and mining systems face corrosion, vibration and heavy-duty service. Corrosion-aware materials and rugged construction are matched to the duty, with practical maintenance in mind.',
-    sectors: ['Marine', 'Transportation', 'Mining'], families: ['PROD-005', 'PROD-001', 'PROD-007'],
+    sectors: ['Marine', 'Transportation', 'Mining'], families: ['PROD-005', 'PROD-009', 'PROD-007'],
     app: 'Seawater, transfer and heavy-duty service',
     image: INDUSTRIES.find((i) => i.id === 'marine').image
   },

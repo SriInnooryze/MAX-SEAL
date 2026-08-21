@@ -70,18 +70,16 @@ export default function ProductSubcategory() {
                 <h2 className="matchsum__count">{series.length} {series.length === 1 ? 'series' : 'series'} in {subcategory.name}</h2>
                 <p className="matchsum__note">Select a series to view full specifications, documents and related products.</p>
               </div>
-              <div className="resgrid">
+              <div className="subcategory-series-grid">
                 {series.map(f => (
-                  <article className="pcard" key={f.id}>
-                    <div className="pcard__media">
+                  <article className="subcategory-series-card" key={f.id}>
+                    <div className="subcategory-series-card__media">
                       <image-slot id={'subcat-tile-' + f.id} src={f.image} shape="rect" fit="contain" placeholder={f.name + ' image'} />
                     </div>
-                    <div className="pcard__body">
-                      <h3 className="pcard__name">{f.name}</h3>
-                      <p className="pcard__desc">{f.short}</p>
-                      <div className="pcard__actions">
-                        <Link className="ms-btn ms-btn--primary ms-btn--sm" to={routes.productDetail(f.id)}>View Details <ArrowRight size={15} /></Link>
-                      </div>
+                    <div className="subcategory-series-card__body">
+                      <h3 className="subcategory-series-card__name">{f.name}</h3>
+                      <p className="subcategory-series-card__desc">{f.short}</p>
+                      <Link className="subcategory-series-card__cta" to={routes.productDetail(f.id)}>View Details <ArrowRight size={15} /></Link>
                     </div>
                   </article>
                 ))}

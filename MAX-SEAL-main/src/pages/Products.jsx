@@ -60,7 +60,7 @@ export default function Products() {
   const seedCategory = () => { const c = qpP('category'); return c && CATEGORIES.find(x => x.id === c) ? c : null; };
   const hasSeed = !!(qpP('industry') || qpP('application') || qpP('type') || qpP('family') || qpP('story') || qpP('category'));
 
-  const [phase, setPhase] = useState(hasSeed ? 'results' : 'choose'); // choose · q1 · q2 · results
+  const [phase, setPhase] = useState(hasSeed ? 'results' : 'choose'); // choose · q1 · q2 · categories · results
   const [goal, setGoal] = useState(null);
   const [place, setPlace] = useState(null);
   const [category, setCategory] = useState(seedCategory);
@@ -112,7 +112,10 @@ export default function Products() {
 
   // Journey controls
   const startGuided = () => { setGoal(null); setPlace(null); setCategory(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); go('q1'); };
-  const browseAll = () => { setGoal(null); setPlace(null); setCategory(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); go('results'); };
+  // "Browse All Products" no longer drops straight into the flat 22-family
+  // list — it now shows the Main Category grid first; drilling into a
+  // category navigates to its own /products/:slug page (ProductCategory.jsx).
+  const browseAll = () => { setGoal(null); setPlace(null); setCategory(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); go('categories'); };
   const startOver = () => { setGoal(null); setPlace(null); setCategory(null); setAdv(EMPTY_SEL()); setAdvDraft(EMPTY_SEL()); setRefineOpen(false); setMoreOpen(false); go('choose'); };
   const toResultsFromStep2 = () => { setAdv(advDraft); go('results'); }; // apply step-2 refinements
 
@@ -223,6 +226,8 @@ export default function Products() {
     </article>
   );
 
+  const activeCategories = CATEGORIES.filter(c => c.status === 'active');
+
   const compareActive = compare.length > 0;
 
   return (
@@ -313,6 +318,35 @@ export default function Products() {
                   <button className="ms-btn ms-btn--primary" onClick={toResultsFromStep2}>See matches <ArrowRight size={16} /></button>
                 </div>
                 <button className="jnav__skip" onClick={browseAll}>Skip and view all products</button>
+              </div>
+            )}
+
+            {/* CATEGORIES — Main Category grid shown by "Browse All Products".
+                Cards are data-driven from CATEGORIES (catalog.json); a 5th
+                category just adds a 5th card, centered in its own row, via
+                the shared .subcategory-series-grid card layout. */}
+            {phase === 'categories' && (
+              <div className="results" key="categories">
+                <div className="matchsum">
+                  <h2 className="matchsum__count">Browse Product Categories</h2>
+                  <p className="matchsum__note">Explore our valve and automation product categories.</p>
+                </div>
+                <div className="resbar">
+                  <button className="ms-btn ms-btn--outline ms-btn--sm" onClick={startOver}><ArrowLeft size={15} /> Start Over</button>
+                </div>
+                <div className="subcategory-series-grid">
+                  {activeCategories.map(c => (
+                    <article className="subcategory-series-card" key={c.id}>
+                      <div className="subcategory-series-card__media">
+                        <image-slot id={'main-cat-' + c.id} src={c.image} shape="rect" fit="contain" placeholder={c.name + ' image'} />
+                      </div>
+                      <div className="subcategory-series-card__body">
+                        <h3 className="subcategory-series-card__name">{c.name}</h3>
+                        <Link className="subcategory-series-card__cta" to={routes.productCategory(c.slug)}>Explore <ArrowRight size={15} /></Link>
+                      </div>
+                    </article>
+                  ))}
+                </div>
               </div>
             )}
 

@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FAMILIES, DOCS, INDUSTRIES } from '../data/data';
-import { ArrowRight, Headset, Download, FileText, Compass, Search } from '../icons/icons';
+import { ArrowRight, Headset, Download, FileText, Compass, Search, Eye } from '../icons/icons';
 import { routes } from '../router/paths';
 import Tabs from '../components/ds/Tabs';
 import SpecTable from '../components/ds/SpecTable';
@@ -87,44 +87,99 @@ export default function ProductDetail() {
     setZooming(true);
   };
 
+  // Automation is only shown when Excel actually specifies it — an empty
+  // Automation cell means "not applicable / not yet specified", not "manual"
+  // by default (that silently invented a fact the catalog doesn't have).
+  const automationLabel = f.automation.length
+    ? (f.automation.includes('manual') && f.automation.includes('actuated') ? 'Manual / Actuated'
+      : f.automation.includes('actuated') ? 'Actuated' : 'Manual')
+    : null;
+
   const specRows = [
-    ['Series', f.code], ['Size range', f.sizes], ['Pressure rating', f.rating],
-    ['Typical application', f.application], ['Automation', f.automation.includes('actuated') ? 'Manual or actuated' : 'Manual'],
+    ['Series', f.code],
+    f.sizes && ['Size range', f.sizes],
+    f.rating && ['Pressure rating', f.rating],
+    f.application && ['Typical application', f.application],
+    automationLabel && ['Automation', automationLabel],
     ...f.specifications.map(s => [s.label, s.value]),
-  ];
+  ].filter(Boolean);
   const overview = (
     <div className="prose" style={{ maxWidth: '64ch' }}>
       <p style={{ fontSize: '1.1rem' }}>{f.short}</p>
-      <p>{f.need} {f.where} The {f.name} family is supplied with options to suit your service condition. Talk to our team for sizing, seat and trim selection.</p>
+      {(f.need || f.where) && (
+        <p>{[f.need, f.where].filter(Boolean).join(' ')} The {f.name} family is supplied with options to suit your service condition. Talk to our team for sizing, seat and trim selection.</p>
+      )}
     </div>
   );
   const tech = <SpecTable caption="Technical data" rows={specRows} />;
-  const applications = (<div className="prose"><p>Typical applications include {f.application.toLowerCase()}. Material and seat options are matched to media and operating conditions.</p></div>);
-  const materials = (
+  const applications = f.application ? (
+    <div className="prose"><p>Typical applications include {f.application.toLowerCase()}. Material and seat options are matched to media and operating conditions.</p></div>
+  ) : null;
+
+  // Materials tab only appears once at least one field carries a real,
+  // confirmed value — an all-blank or all-"To be validated" materials
+  // record means nothing is actually known yet, so the section is hidden
+  // rather than rendered as a table of placeholder rows.
+  const materialsRows = [
+    ['Body materials', f.materials.bodyMaterials],
+    ['Seat or lining options', f.materials.seatLiningOptions],
+    ['Disc and stem', f.materials.discAndStem],
+    ['Configurations', f.materials.configurations],
+  ].filter(([, v]) => v && v !== 'To be validated');
+  const materials = materialsRows.length ? (
     <div className="prose" style={{ maxWidth: '64ch' }}>
       <table className="cmptable"><tbody>
-        <tr><th>Body materials</th><td>{f.materials.bodyMaterials || <span className="tbv">To be validated</span>}</td></tr>
-        <tr><th>Seat or lining options</th><td>{f.materials.seatLiningOptions || <span className="tbv">To be validated</span>}</td></tr>
-        <tr><th>Disc and stem</th><td>{f.materials.discAndStem || <span className="tbv">To be validated</span>}</td></tr>
-        <tr><th>Configurations</th><td>{f.materials.configurations || <span className="tbv">To be validated</span>}</td></tr>
+        {materialsRows.map(([k, v]) => <tr key={k}><th>{k}</th><td>{v}</td></tr>)}
       </tbody></table>
-      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--steel-500)', marginTop: '0.8rem' }}>Confirmed materials connect through the future CMS.</p>
     </div>
-  );
-  const documents = (
+  ) : null;
+
+  // Only documents with an actual PDF asset are shown — a title with no
+  // real file behind it is a dead download link, which counts as "broken"
+  // rather than as real document content.
+  const realDocs = famDocs.filter(d => d.pdfAsset);
+  const documents = realDocs.length ? (
     <div className="rlist">
-      {famDocs.map((d, i) => (
-        <div className="doc-row" key={i}>
-          <div className="doc-ic"><FileText size={20} /></div>
-          <div className="doc-main"><div className="doc-main__t">{d.title}</div><div className="doc-main__m"><span>{d.type}</span><span>Updated {d.date}</span><span>PDF · {d.size}</span></div></div>
-          <span className="doc-fam">{d.fam}</span>
-          <div className="doc-actions"><Link className="doc-mini" to={routes.catalog()} aria-label="Download"><Download size={17} /></Link></div>
-        </div>
-      ))}
+      {realDocs.map((d, i) => {
+        // encodeURI (not encodeURIComponent) so the "/" path separators
+        // survive while spaces and other special characters in the actual
+        // on-disk filename resolve correctly as a browser request.
+        const href = encodeURI(d.pdfAsset);
+        const fileName = d.pdfAsset.split('/').pop();
+        return (
+          <div className="doc-row" key={i}>
+            <div className="doc-ic"><FileText size={20} /></div>
+            <div className="doc-main">
+              <div className="doc-main__t">{d.title}</div>
+              <div className="doc-main__m">
+                {d.type && <span>{d.type}</span>}
+                {d.date && <span>Updated {d.date}</span>}
+                {d.size && <span>PDF · {d.size}</span>}
+              </div>
+            </div>
+            <span className="doc-fam">{d.fam}</span>
+            <div className="doc-actions">
+              <a className="doc-mini" href={href} target="_blank" rel="noreferrer" aria-label="View PDF" title="View PDF"><Eye size={17} /></a>
+              <a className="doc-mini" href={href} download={fileName} aria-label="Download PDF" title="Download PDF"><Download size={17} /></a>
+            </div>
+          </div>
+        );
+      })}
     </div>
-  );
+  ) : null;
   const sectionContent = { overview, specifications: tech, applications, materials, documents };
-  const sectionsToShow = f.sections.length ? f.sections : [{ type: 'overview', title: 'Overview' }];
+  // Excel's per-product Sections rows (if any) still take priority and are
+  // still filtered against real content below; when a product has none, the
+  // full standard template is offered and each tab self-hides per data.
+  const defaultSections = [
+    { type: 'overview', title: 'Overview' },
+    { type: 'specifications', title: 'Technical Data' },
+    { type: 'applications', title: 'Applications' },
+    { type: 'materials', title: 'Materials' },
+    { type: 'documents', title: 'Documents' },
+  ];
+  const sectionsToShow = (f.sections.length ? f.sections : defaultSections)
+    .filter(s => sectionContent[s.type] != null);
   const tabItems = sectionsToShow.map(s => ({ id: s.type, label: s.title, content: sectionContent[s.type] }));
 
   return (
@@ -159,13 +214,15 @@ export default function ProductDetail() {
                     overflow:hidden (needed to keep thumbnails/gallery images
                     cropped correctly) doesn't clip the floating panel. */}
                 <div className={'pdet__zoompanel' + (zooming ? ' pdet__zoompanel--active' : '')} ref={panelRef} aria-hidden="true" />
-                <div className="pdet__thumbs">
-                  {shots.map((s, i) => (
-                    <button key={i} className={'pdet__thumb' + (i === shot ? ' on' : '')} aria-label={s.label} aria-pressed={i === shot} onClick={() => setShot(i)}>
-                      <image-slot id={'pd-thumb-' + f.id + '-' + i} src={s.imagePath} shape="rect" fit="contain" placeholder={s.label} />
-                    </button>
-                  ))}
-                </div>
+                {shots.length > 1 && (
+                  <div className="pdet__thumbs">
+                    {shots.map((s, i) => (
+                      <button key={i} className={'pdet__thumb' + (i === shot ? ' on' : '')} aria-label={s.label} aria-pressed={i === shot} onClick={() => setShot(i)}>
+                        <image-slot id={'pd-thumb-' + f.id + '-' + i} src={s.imagePath} shape="rect" fit="contain" placeholder={s.label} />
+                      </button>
+                    ))}
+                  </div>
+                )}
                 <div className="pdet__zoomctrl">
                   <label htmlFor="pdet-zoom-range">Zoom strength</label>
                   <input
@@ -188,12 +245,14 @@ export default function ProductDetail() {
                 </div>
                 <h1 className="pdet__name">{f.name}</h1>
                 <p className="pdet__purpose">{f.short}</p>
-                <dl className="pstage2__specs" style={{ marginTop: '1.4rem' }}>
-                  <div><dt>Size range</dt><dd>{f.sizes}</dd></div>
-                  <div><dt>Pressure</dt><dd>{f.rating}</dd></div>
-                  <div><dt>Typical</dt><dd>{f.application}</dd></div>
-                  <div><dt>Automation</dt><dd>{f.automation.includes('actuated') ? 'Manual / Actuated' : 'Manual'}</dd></div>
-                </dl>
+                {(f.sizes || f.rating || f.application || automationLabel) && (
+                  <dl className="pstage2__specs" style={{ marginTop: '1.4rem' }}>
+                    {f.sizes && <div><dt>Size range</dt><dd>{f.sizes}</dd></div>}
+                    {f.rating && <div><dt>Pressure</dt><dd>{f.rating}</dd></div>}
+                    {f.application && <div><dt>Typical</dt><dd>{f.application}</dd></div>}
+                    {automationLabel && <div><dt>Automation</dt><dd>{automationLabel}</dd></div>}
+                  </dl>
+                )}
                 <div className="pdet__approvals">
                   <span className="pdet__appr-k">Approvals</span>
                   {f.approvals === 'To be validated'
@@ -223,18 +282,20 @@ export default function ProductDetail() {
               </div>
             )}
 
-            <div className="pdet__section">
-              <div className="kicker" style={{ marginBottom: '1.2rem' }}>Related products</div>
-              <div className="rlist">
-                {related.map(r => (
-                  <Link key={r.id} className="rrow" to={routes.productDetail(r.id)}>
-                    <div className="rrow__thumb"><image-slot id={'pd-rel-' + f.id + '-' + r.id} src={r.image} shape="rect" fit="contain" placeholder={r.code} /></div>
-                    <div style={{ gridColumn: 'span 2' }}><div className="rrow__name">{r.name}</div><div className="rrow__purpose">{r.need}</div></div>
-                    <span className="rrow__meta" style={{ color: 'var(--azure-700)' }}><ArrowRight size={18} /></span>
-                  </Link>
-                ))}
+            {related.length > 0 && (
+              <div className="pdet__section">
+                <div className="kicker" style={{ marginBottom: '1.2rem' }}>Related products</div>
+                <div className="rlist">
+                  {related.map(r => (
+                    <Link key={r.id} className="rrow" to={routes.productDetail(r.id)}>
+                      <div className="rrow__thumb"><image-slot id={'pd-rel-' + f.id + '-' + r.id} src={r.image} shape="rect" fit="contain" placeholder={r.code} /></div>
+                      <div style={{ gridColumn: 'span 2' }}><div className="rrow__name">{r.name}</div><div className="rrow__purpose">{r.need}</div></div>
+                      <span className="rrow__meta" style={{ color: 'var(--azure-700)' }}><ArrowRight size={18} /></span>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
     </main>

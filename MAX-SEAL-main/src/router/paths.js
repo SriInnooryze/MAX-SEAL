@@ -15,6 +15,11 @@ export const routes = {
   home: '/',
   products: (params) => withQuery('/products', params),
   productDetail: (id) => '/products/' + id,
+  /* Main Category page (dynamic Products navigation) — shows a category's
+     Sub Category-1 tiles. Shares the single-segment /products/:family URL
+     shape with productDetail; ProductOrCategory.jsx decides which one a
+     given slug/id resolves to. */
+  productCategory: (categorySlug) => '/products/' + categorySlug,
   /* Category > Subcategory hierarchy page (dynamic Products navigation) —
      shows a subcategory's own Sub Category-2 tiles (the individual product
      series). Slugs come from the Categories/Subcategories catalog data. */

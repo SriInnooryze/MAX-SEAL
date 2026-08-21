@@ -5,7 +5,7 @@ import SiteLayout from '../components/layout/SiteLayout';
 import Home from '../pages/Home';
 import Products from '../pages/Products';
 import ProductSubcategory from '../pages/ProductSubcategory';
-import ProductDetail from '../pages/ProductDetail';
+import ProductOrCategory from '../pages/ProductOrCategory';
 import Industries from '../pages/Industries';
 import Solutions from '../pages/Solutions';
 import About from '../pages/About';
@@ -41,7 +41,7 @@ export default function AppRouter() {
         <Route path="/" element={<SiteLayout current="home"><Home /></SiteLayout>} />
         <Route path="/products" element={<SiteLayout current="products"><Products /></SiteLayout>} />
         <Route path="/products/:categorySlug/:subcategorySlug" element={<SiteLayout current="products"><ProductSubcategory /></SiteLayout>} />
-        <Route path="/products/:family" element={<SiteLayout current="products"><ProductDetail /></SiteLayout>} />
+        <Route path="/products/:family" element={<SiteLayout current="products"><ProductOrCategory /></SiteLayout>} />
         <Route path="/industries" element={<SiteLayout current="industries"><Industries /></SiteLayout>} />
         <Route path="/solutions" element={<SiteLayout current="solutions"><Solutions /></SiteLayout>} />
         <Route path="/about" element={<SiteLayout current="about"><About /></SiteLayout>} />
