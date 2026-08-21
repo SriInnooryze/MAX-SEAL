@@ -204,24 +204,19 @@ export default function Products() {
     );
   };
 
+  // Square tile card, matching the same reusable card used for Main
+  // Category / Sub Category-1 / Sub Category-2 grids (subcategory-series-*
+  // classes) — one card system across the whole product hierarchy instead
+  // of a separate large horizontal-card layout just for this listing.
   const ResultCard = (r) => (
-    <article className="pcard" key={r.id}>
-      <div className="pcard__media">
+    <article className="subcategory-series-card" key={r.id}>
+      <div className="subcategory-series-card__media">
         <image-slot id={'pcard-' + r.id} src={r.image} shape="rect" fit="contain" placeholder={r.name + ' image'} />
       </div>
-      <div className="pcard__body">
-        <div className="pcard__fit">
-          <span className="pcard__fitk">Why it may fit</span>
-          <p>{r.need}</p>
-        </div>
-        <h3 className="pcard__name">{r.name}</h3>
-        <p className="pcard__desc">{r.short}</p>
-        <div className="pcard__apps"><span className="pcard__appk">Typical applications</span> {r.application}</div>
-        <div className="pcard__actions">
-          <Link className="ms-btn ms-btn--primary ms-btn--sm" to={routes.productDetail(r.id)}>View Product <ArrowRight size={15} /></Link>
-          <CompareToggle id={r.id} />
-          <Link className="ms-btn ms-btn--outline ms-btn--sm" to={routes.enquiry({ intent: 'pricing', product: r.id })}>Request a Quote</Link>
-        </div>
+      <div className="subcategory-series-card__body">
+        <h3 className="subcategory-series-card__name">{r.name}</h3>
+        <p className="subcategory-series-card__desc">{r.short}</p>
+        <Link className="subcategory-series-card__cta" to={routes.productDetail(r.id)}>View Details <ArrowRight size={15} /></Link>
       </div>
     </article>
   );
@@ -337,7 +332,7 @@ export default function Products() {
                 <div className="subcategory-series-grid">
                   {activeCategories.map(c => (
                     <article className="subcategory-series-card" key={c.id}>
-                      <div className="subcategory-series-card__media">
+                      <div className="subcategory-series-card__media subcategory-series-card__media--square">
                         <image-slot id={'main-cat-' + c.id} src={c.image} shape="rect" fit="contain" placeholder={c.name + ' image'} />
                       </div>
                       <div className="subcategory-series-card__body">
@@ -407,7 +402,7 @@ export default function Products() {
                     </div>
                   </div>
                 ) : view === 'featured' ? (
-                  <div className="resgrid">{results.map(ResultCard)}</div>
+                  <div className="subcategory-series-grid">{results.map(ResultCard)}</div>
                 ) : (
                   <div className="rlist">
                     {results.map(r => {

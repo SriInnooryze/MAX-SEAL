@@ -6,7 +6,7 @@
    ProductDetail.jsx page, unchanged. All content is data-driven from
    CATEGORIES/SUBCATEGORIES/FAMILIES (catalog.json, generated from the Excel
    workbook) — nothing here is hardcoded. */
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
 import { CATEGORIES, SUBCATEGORIES, FAMILIES } from '../data/data';
@@ -38,6 +38,15 @@ export default function ProductSubcategory() {
   }
 
   const series = FAMILIES.filter(f => f.subcategoryId === subcategory.id);
+
+  // A Sub Category-1 with exactly one product has no real Sub Category-2 /
+  // Series choice to make — send it straight to the product, even for a
+  // direct/bookmarked URL, instead of an intermediate page with one card.
+  // (Card links already skip this page entirely via subcategoryTarget() in
+  // data.js; this covers navigating here directly.)
+  if (series.length === 1) {
+    return <Navigate to={routes.productDetail(series[0].id)} replace />;
+  }
 
   return (
     <main>

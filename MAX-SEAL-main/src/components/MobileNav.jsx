@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { CATEGORIES, SUBCATEGORIES, INDUSTRIES } from '../data/data';
+import { CATEGORIES, SUBCATEGORIES, INDUSTRIES, subcategoryTarget } from '../data/data';
 import { INDUSTRY_MENU_IDS } from './DropdownContent';
 import { Search, ChevronDown, Phone, Mail, MessageCircle, ArrowRight, X } from '../icons/icons';
 import { routes } from '../router/paths';
@@ -24,7 +24,7 @@ const MOBILE_NAV = [
         label: c.name,
         href: routes.products({ category: c.id }),
         children: SUBCATEGORIES.filter(s => s.categoryId === c.id && s.status === 'active')
-          .map(s => ({ label: s.name, href: routes.productSubcategory(c.slug, s.slug) })),
+          .map(s => ({ label: s.name, href: subcategoryTarget(c, s) })),
       })),
       { id: 'all-products', label: 'Explore all products', href: routes.products(), all: true },
     ]

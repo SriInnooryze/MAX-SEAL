@@ -9,7 +9,7 @@
 import { Link, useParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
-import { CATEGORIES, SUBCATEGORIES } from '../data/data';
+import { CATEGORIES, SUBCATEGORIES, subcategoryTarget } from '../data/data';
 import { ArrowRight, Headset } from '../icons/icons';
 import { routes } from '../router/paths';
 
@@ -77,7 +77,7 @@ export default function ProductCategory() {
                     <div className="subcategory-series-card__body">
                       <h3 className="subcategory-series-card__name">{s.menuName || s.name}</h3>
                       {s.description && <p className="subcategory-series-card__desc">{s.description}</p>}
-                      <Link className="subcategory-series-card__cta" to={routes.productSubcategory(category.slug, s.slug)}>View Details <ArrowRight size={15} /></Link>
+                      <Link className="subcategory-series-card__cta" to={subcategoryTarget(category, s)}>View Details <ArrowRight size={15} /></Link>
                     </div>
                   </article>
                 ))}

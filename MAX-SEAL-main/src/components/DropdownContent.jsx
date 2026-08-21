@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CATEGORIES, SUBCATEGORIES, RESOURCE_LIBS, INDUSTRIES } from '../data/data';
+import { CATEGORIES, SUBCATEGORIES, RESOURCE_LIBS, INDUSTRIES, subcategoryTarget } from '../data/data';
 import { ArrowRight } from '../icons/icons';
 import { routes } from '../router/paths';
 
@@ -52,7 +52,7 @@ function ProductsDropdown({ onNavigate }) {
         <div className="dropdown__col dropdown__col--sub" onMouseEnter={() => setOpenCat(activeCategory.id)}>
           <div className="dropdown__col-title">{activeCategory.name}</div>
           {subs.map(s => (
-            <Link key={s.id} className="drop-link" to={routes.productSubcategory(activeCategory.slug, s.slug)} onClick={onNavigate}>
+            <Link key={s.id} className="drop-link" to={subcategoryTarget(activeCategory, s)} onClick={onNavigate}>
               <strong>{s.name}</strong>
             </Link>
           ))}

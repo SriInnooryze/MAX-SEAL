@@ -28,6 +28,21 @@ export const FAMILIES = catalog.products;
 export const CATEGORIES = catalog.categories;
 export const SUBCATEGORIES = catalog.subcategories;
 
+/* Where a Sub Category-1 tile should navigate to — derived from the catalog
+   data, not hardcoded per category/subcategory name. A Sub Category-1 with
+   exactly one product underneath it (no real "Sub Category-2 / Series"
+   choice to make) skips straight to that product's detail page instead of
+   an intermediate listing with a single card on it. Anything else (zero
+   products, or more than one) goes to the existing Sub Category-2 series
+   page, which already has its own empty-state for the zero case. Shared by
+   every place a Sub Category-1 is linked from (category landing page, nav
+   dropdown, mobile nav) so the rule only lives in one place. */
+export function subcategoryTarget(category, subcategory) {
+  const products = FAMILIES.filter(f => f.subcategoryId === subcategory.id);
+  if (products.length === 1) return routes.productDetail(products[0].id);
+  return routes.productSubcategory(category.slug, subcategory.slug);
+}
+
 /* Products page filter facets */
 export const FACETS = [
   {
