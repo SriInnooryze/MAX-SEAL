@@ -15,9 +15,20 @@ export default function ProductDetail() {
   const related = f.relatedProducts.map(rid => FAMILIES.find(x => x.id === rid)).filter(Boolean);
   const relIndustries = INDUSTRIES.filter(x => x.families.includes(f.name)).slice(0, 4);
   const famDocs = DOCS.filter(d => d.familyIds.includes('ALL') || d.familyIds.includes(f.id));
-  const [shot, setShot] = useState(0);
+  // Products.ImagePath (f.image) is the source of truth for the primary
+  // image — shot starts at null ("no gallery thumbnail explicitly picked")
+  // so it's always shown first, even when the product also has Gallery-sheet
+  // rows (Primary/Section/In application views) for the thumbnail strip.
+  // Selecting a thumbnail switches to that specific gallery image.
+  const [shot, setShot] = useState(null);
   const shots = f.gallery;
-  const activeImage = shots[shot]?.imagePath || f.image;
+  const activeImage = (shot != null && shots[shot]?.imagePath) || f.image;
+
+  // Reset to the primary image when navigating from one product to another
+  // — React Router reuses this component instance across /products/:family
+  // param changes, so a thumbnail picked on the previous product would
+  // otherwise stay "selected" and show the wrong image on the new one.
+  useEffect(() => { setShot(null); }, [f.id]);
 
   // Amazon-style hover zoom: a lens square tracks the cursor over the small
   // image, and a floating panel beside it shows that region magnified via a
