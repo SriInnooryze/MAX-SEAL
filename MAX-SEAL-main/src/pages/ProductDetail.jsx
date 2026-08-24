@@ -13,14 +13,24 @@ export default function ProductDetail() {
   const id = familyParam || FAMILIES[0].id;
   const f = FAMILIES.find(x => x.id === id) || FAMILIES[0];
   const related = f.relatedProducts.map(rid => FAMILIES.find(x => x.id === rid)).filter(Boolean);
-  const relIndustries = INDUSTRIES.filter(x => x.families.includes(f.name)).slice(0, 4);
+  // f.industries is the direct ProductIndustryLinks mapping for this product
+  // (catalog/MAXSEAL_CATALOG.xlsx, ProductIndustryLinks sheet — SortOrder
+  // preserved from generate-catalog.mjs). Reading it directly, with no cap,
+  // so "Where it's used" shows every industry actually mapped to this
+  // product — a name-based reverse lookup capped at 4 was silently dropping
+  // a real mapping for any product with more than 4 links (most have 5).
+  const relIndustries = f.industries.map(iid => INDUSTRIES.find(x => x.id === iid)).filter(Boolean);
   const famDocs = DOCS.filter(d => d.familyIds.includes('ALL') || d.familyIds.includes(f.id));
-  // Products.ImagePath (f.image) is the source of truth for the primary
-  // image — shot starts at null ("no gallery thumbnail explicitly picked")
-  // so it's always shown first, even when the product also has Gallery-sheet
-  // rows (Primary/Section/In application views) for the thumbnail strip.
-  // Selecting a thumbnail switches to that specific gallery image.
-  const [shot, setShot] = useState(null);
+  // Every product's Gallery rows (catalog/MAXSEAL_CATALOG.xlsx, Gallery
+  // sheet) provide exactly 3 shots — Main View / View 2 / View 3 — so the
+  // thumbnail strip renders the same for every product, data-driven, never
+  // hardcoded to one product. Main View defaults to selected (index 0), and
+  // its ImagePath is always Products.ImagePath (f.image); View 2/View 3
+  // temporarily reuse that same image until distinct shots exist in the
+  // catalog — swapping them there is a data change, no component change
+  // needed. `shots.length ? 0 : null` is a defensive fallback only, for the
+  // unlikely case a product has no Gallery rows at all.
+  const [shot, setShot] = useState(() => (f.gallery.length ? 0 : null));
   const shots = f.gallery;
   const activeImage = (shot != null && shots[shot]?.imagePath) || f.image;
 
@@ -28,7 +38,7 @@ export default function ProductDetail() {
   // — React Router reuses this component instance across /products/:family
   // param changes, so a thumbnail picked on the previous product would
   // otherwise stay "selected" and show the wrong image on the new one.
-  useEffect(() => { setShot(null); }, [f.id]);
+  useEffect(() => { setShot(f.gallery.length ? 0 : null); }, [f.id, f.gallery.length]);
 
   // Amazon-style hover zoom: a lens square tracks the cursor over the small
   // image, and a floating panel beside it shows that region magnified via a
@@ -48,8 +58,11 @@ export default function ProductDetail() {
 
   useEffect(() => {
     let cancelled = false;
+    setImgSize(null);
+    if (!activeImage) return undefined;
     const img = new Image();
     img.onload = () => { if (!cancelled) setImgSize({ w: img.naturalWidth, h: img.naturalHeight }); };
+    img.onerror = () => { if (!cancelled) setImgSize(null); };
     img.src = activeImage;
     return () => { cancelled = true; };
   }, [activeImage]);
@@ -91,10 +104,17 @@ export default function ProductDetail() {
 
   const handleZoomEnter = () => {
     const panel = panelRef.current;
-    if (panel) {
-      panel.style.backgroundImage = `url(${activeImage})`;
-      panel.style.backgroundSize = `${ZOOM * 100}% auto`;
-    }
+    // Guard on imgSize (set only once activeImage has actually loaded) so a
+    // still-loading or failed-to-load image never opens an empty panel —
+    // see the load effect above, which resets imgSize to null on error.
+    if (!panel || !activeImage || !imgSize) return;
+    // encodeURI + quoting: several catalog image filenames contain spaces
+    // and other characters (e.g. "Double Flanged Butterfly Valve.png") that
+    // are valid in an <img src>/URL but break an unquoted CSS url(...) token,
+    // which silently no-ops and left the panel showing its plain white
+    // background — this was the actual cause of the blank zoom preview.
+    panel.style.backgroundImage = `url("${encodeURI(activeImage)}")`;
+    panel.style.backgroundSize = `${ZOOM * 100}% auto`;
     setZooming(true);
   };
 
@@ -106,6 +126,24 @@ export default function ProductDetail() {
       : f.automation.includes('actuated') ? 'Actuated' : 'Manual')
     : null;
 
+  // Overview only renders when Products.Short actually carries text — it's
+  // an Excel-required field so this is normally always true, but the guard
+  // keeps the tab from ever appearing over an empty paragraph if that ever
+  // changes.
+  const overview = f.short ? (
+    <div className="prose" style={{ maxWidth: '64ch' }}>
+      <p style={{ fontSize: '1.1rem' }}>{f.short}</p>
+      {(f.need || f.where) && (
+        <p>{[f.need, f.where].filter(Boolean).join(' ')} The {f.name} family is supplied with options to suit your service condition. Talk to our team for sizing, seat and trim selection.</p>
+      )}
+    </div>
+  ) : null;
+
+  // Technical Data is gated on real spec content — Sizes/Rating/Application/
+  // Automation (Products sheet) or ProductSpecifications rows — not on
+  // 'Series' alone, which is just the product code already shown in the
+  // header badge and isn't itself a specification.
+  const hasTechData = Boolean(f.sizes || f.rating || f.application || automationLabel || f.specifications.length);
   const specRows = [
     ['Series', f.code],
     f.sizes && ['Size range', f.sizes],
@@ -114,15 +152,7 @@ export default function ProductDetail() {
     automationLabel && ['Automation', automationLabel],
     ...f.specifications.map(s => [s.label, s.value]),
   ].filter(Boolean);
-  const overview = (
-    <div className="prose" style={{ maxWidth: '64ch' }}>
-      <p style={{ fontSize: '1.1rem' }}>{f.short}</p>
-      {(f.need || f.where) && (
-        <p>{[f.need, f.where].filter(Boolean).join(' ')} The {f.name} family is supplied with options to suit your service condition. Talk to our team for sizing, seat and trim selection.</p>
-      )}
-    </div>
-  );
-  const tech = <SpecTable caption="Technical data" rows={specRows} />;
+  const tech = hasTechData ? <SpecTable caption="Technical data" rows={specRows} /> : null;
   const applications = f.application ? (
     <div className="prose"><p>Typical applications include {f.application.toLowerCase()}. Material and seat options are matched to media and operating conditions.</p></div>
   ) : null;
@@ -230,6 +260,7 @@ export default function ProductDetail() {
                     {shots.map((s, i) => (
                       <button key={i} className={'pdet__thumb' + (i === shot ? ' on' : '')} aria-label={s.label} aria-pressed={i === shot} onClick={() => setShot(i)}>
                         <image-slot id={'pd-thumb-' + f.id + '-' + i} src={s.imagePath} shape="rect" fit="contain" placeholder={s.label} />
+                        <span className="pdet__thumb-label">{s.label}</span>
                       </button>
                     ))}
                   </div>
@@ -280,9 +311,17 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            <div className="pdet__tabs">
-              <Tabs items={tabItems} />
-            </div>
+            {tabItems.length > 0 && (
+              <div className="pdet__tabs">
+                {/* Tabs self-manages its active tab in internal state and never
+                    resets it on its own; keying by product id forces a fresh
+                    mount on navigation so the first available tab for the new
+                    product is what's active, instead of possibly matching no
+                    tab at all if the previous product's active tab type
+                    doesn't exist here. */}
+                <Tabs items={tabItems} key={f.id} />
+              </div>
+            )}
 
             {relIndustries.length > 0 && (
               <div className="pdet__section">

@@ -68,6 +68,11 @@ function IndustriesMatrix() {
   const apps = appsForInd(ind);
   const fams = activeApp ? famsForApp(ind, activeApp) : indFamilies(ind);
   const appObj = APP_NEEDS.find(a => a.id === activeApp);
+  // Matrix card display cap — keeps the right panel (and therefore the whole
+  // matrix row) compact regardless of how many families an industry maps to.
+  // Full list stays reachable via "Explore related products" (exploreHref).
+  const MATRIX_FAMS_LIMIT = 4;
+  const displayedFams = fams.slice(0, MATRIX_FAMS_LIMIT);
 
   const selectInd = (id) => { setActiveInd(id); setActiveApp(null); };
   const exploreHref = routes.products({ industry: ind.id, application: activeApp || undefined });
@@ -146,7 +151,7 @@ function IndustriesMatrix() {
                   <p className="mx__panel-ctx">{appObj ? appObj.ctx : ind.ctx}</p>
                   <div className="mx__panel-fams-k"><Layers size={15} /> Relevant product families</div>
                   <div className="mx__fams">
-                    {fams.map(f => (
+                    {displayedFams.map(f => (
                       <Link key={f.id} className={'mx__fam' + (highlightFam === f.name ? ' hot' : '')} to={routes.productDetail(f.id)}>
                         <span className="mx__fam-code">{f.code}</span>
                         <span className="mx__fam-body"><span className="mx__fam-name">{f.name}</span><span className="mx__fam-need">{f.need}</span></span>

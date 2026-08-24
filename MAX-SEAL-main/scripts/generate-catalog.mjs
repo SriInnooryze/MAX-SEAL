@@ -177,12 +177,20 @@ requireFields('Categories', categories, ['Id', 'Name', 'Slug']);
 checkUnique('Categories', categories, 'Id');
 checkUnique('Categories', categories, 'Slug');
 checkClosedValue('Categories', categories, 'Status', CATEGORY_STATUS_VALUES);
+// Main Category and Sub Category-1 cards render ImagePath through
+// <image-slot>, which has no load-error fallback — an empty or malformed
+// path (no leading "/", or a file that doesn't exist under public/) either
+// renders a visible "<Name> image" placeholder caption or a broken image
+// icon, not a graceful empty state. checkAsset catches both at generation
+// time instead of at the browser.
+checkAsset('Categories', categories, 'ImagePath', { required: true });
 
 requireFields('Subcategories', subcategories, ['Id', 'CategoryId', 'Name', 'Slug']);
 checkUnique('Subcategories', subcategories, 'Id');
 checkUnique('Subcategories', subcategories, 'Slug');
 checkFK('Subcategories', subcategories, 'CategoryId', categoryIds);
 checkClosedValue('Subcategories', subcategories, 'Status', CATEGORY_STATUS_VALUES);
+checkAsset('Subcategories', subcategories, 'ImagePath', { required: true });
 
 // Sizes/Rating are intentionally NOT required: a product's dimensional/
 // pressure spec is only entered once a source document confirms it, per the
