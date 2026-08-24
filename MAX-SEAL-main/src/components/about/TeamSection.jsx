@@ -20,7 +20,7 @@ export default function TeamSection() {
         <h2 className="about__h" style={{ marginBottom: '1rem' }}>
           People supporting product selection and customer needs
         </h2>
-        <p className="about__p" style={{ marginBottom: '1.8rem' }}>
+        <p className="about__p" style={{ marginBottom: '1.4rem' }}>
           Max-Seal's team supports customers across valve selection, inside sales, outside sales, operations and application requirements.
         </p>
         <div className="team-grid">

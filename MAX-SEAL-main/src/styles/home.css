@@ -52,10 +52,10 @@
 /* Product tile, overlay, industry and case-study titles use the display
    face — Exo 2 (Priority 1A typography hierarchy). Comes after the rule
    above by source order, so it wins on the shared classes without
-   disturbing the letter-spacing set there. .isplit__title and .aboutx__title
-   set their own font-family directly at their own rules below, so they are
-   intentionally not repeated here. */
-.ptile__title, .slay__title, .why__pt h4, .proofx__title {
+   disturbing the letter-spacing set there. .isplit__title sets its own
+   font-family directly at its own rule below, so it is intentionally not
+   repeated here. */
+.ptile__title, .slay__title, .why-chart__cell-title, .why__pt h4, .proofx__title {
   font-family: var(--font-display) !important;
 }
 
@@ -106,12 +106,44 @@
 /* ============================================================
    HERO — single video-led, fluid, editorial offset
    ============================================================ */
-.vhero { position: relative; min-height: clamp(560px, 80vh, 860px); height: auto; overflow: hidden; background: radial-gradient(125% 105% at 78% 22%, #313a41 0%, #1b2125 42%, #0d1012 100%); }
+.vhero { position: relative; min-height: clamp(440px, 58vh, 600px); height: auto; overflow: hidden; background: radial-gradient(125% 105% at 78% 22%, #313a41 0%, #1b2125 42%, #0d1012 100%); }
 .vhero__media { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; }
 .vhero__media image-slot { width: 100%; height: 100%; display: block; }
-/* readability-only: darker low-left, clear upper-right so background stays visible */
-.vhero__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(0, 0, 0, 0.6); }
-.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 25%; pointer-events: none; z-index: 0; }
+/* readability + burned-in top-left mark suppression: concentrated dark
+   radial mask over the top-left corner (confirmed location of the source
+   video's baked-in secondary logo/wording), plus a left-to-right fade so
+   the whole left column (where hero text sits) stays readable, clear on
+   the right so the product background stays visible. Paired with
+   .hero-video's crop below and the dedicated .vhero::after mask further
+   down — do not flatten back to a single rgba(). */
+.vhero__scrim {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(circle at 8% 10%, rgba(4,10,16,0.98) 0%, rgba(4,10,16,0.92) 15%, rgba(4,10,16,0.72) 30%, rgba(4,10,16,0.30) 52%, transparent 72%),
+    linear-gradient(90deg, rgba(4,10,16,0.82) 0%, rgba(4,10,16,0.62) 34%, rgba(4,10,16,0.18) 70%);
+}
+/* object-position + scale pushed further up/right and zoomed in (from
+   68%/12%, no scale) to crop the source video's burned-in top-left
+   secondary logo/wording out of the visible frame, keeping the product
+   in view. Capped at 1.12 to avoid an overly cropped look; do not exceed
+   1.16 per design direction. */
+.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: 82% 18%; transform: scale(1.12); transform-origin: center center; pointer-events: none; z-index: 0; }
+/* Dedicated top-left mask — belt-and-suspenders on top of the scrim's radial
+   layer, matching the dark hero gradient tone so it reads as part of the
+   normal treatment rather than a visible patch. Sized to just cover the
+   logo's corner without intruding on the headline, which sits lower via
+   .vhero__inner's vertical centering. */
+.vhero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(260px, 32vw, 520px);
+  height: clamp(84px, 13vh, 150px);
+  pointer-events: none;
+  z-index: 2;
+  background: linear-gradient(135deg, rgba(4,10,16,0.98) 0%, rgba(4,10,16,0.92) 38%, rgba(4,10,16,0.52) 70%, transparent 100%);
+}
 
 /* Pause / Play toggle — bottom-right, glass pill */
 .vhero__pause { position: absolute; z-index: 3; right: clamp(1.2rem, 4vw, 2.5rem); bottom: clamp(1.2rem, 3vh, 2rem); display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: rgba(12, 15, 17, 0.45); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: var(--radius-sm, 6px); color: #fff; cursor: pointer; transition: background 180ms ease, border-color 180ms ease; }
@@ -293,7 +325,7 @@
     animation: none !important;
   }
 }
-.vhero__inner { position: relative; z-index: 2; width: 100%; min-height: clamp(560px, 80vh, 860px); display: flex; align-items: center; padding-top: clamp(1.5rem, 3.5vh, 2rem); padding-bottom: clamp(2.5rem, 5vh, 4rem); box-sizing: border-box; }
+.vhero__inner { position: relative; z-index: 3; width: 100%; min-height: clamp(440px, 58vh, 600px); display: flex; align-items: center; padding-top: clamp(1.2rem, 2.5vh, 1.6rem); padding-bottom: clamp(1.6rem, 3vh, 2.2rem); box-sizing: border-box; }
 .vhero__content { max-width: clamp(40rem, 50vw, 46rem); margin-right: auto; }
 .vhero__title { font-family: var(--font-display); font-weight: 700; color: #fff; font-size: clamp(3.25rem, 2.35rem + 2.8vw, 3.75rem); line-height: 1.05; letter-spacing: -0.01em; text-wrap: balance; max-width: 680px; margin-top: 0; }
 .vhero__lead { color: rgba(255,255,255,0.88); font-weight: 400; font-size: clamp(1.02rem, 0.92rem + 0.35vw, 1.15rem); line-height: 1.55; max-width: 720px; margin-top: clamp(1.1rem, 1.5vw, 1.35rem); }
@@ -316,7 +348,19 @@
    HOME · 2 + 3 · STORY SECTIONS (Products carousel, Industry split)
    Shared heading + layer body, plus two distinct interactions.
    ============================================================ */
-.cine-head { max-width: none; margin-bottom: clamp(2rem, 3vw, 3.2rem); }
+/* Tightened section rhythm — client flagged excessive scroll distance
+   specifically after the hero and between these two sections. Scoped to
+   .cine-sec/.cine-head (only used by ProductPreview + IndustryPreview) so
+   --section-y itself, and every other section sitewide that relies on it,
+   is untouched. */
+.cine-sec { padding-block: clamp(3rem, 4vw, 4.5rem); }
+.vhero + .cine-sec { padding-top: clamp(2.25rem, 3.5vw, 3.5rem); }
+/* Where We Perform immediately follows What We Engineer (both .cine-sec) —
+   client flagged the gap between them as still too large; tighten this
+   section's own top padding further rather than touching the shared
+   bottom padding both sections rely on. */
+.cine-sec + .cine-sec { padding-top: clamp(1.5rem, 2.5vw, 2.25rem); }
+.cine-head { max-width: none; margin-bottom: clamp(1.5rem, 2.5vw, 2.5rem); }
 .cine-title { max-width: 24ch; }
 .cine-lead { color: var(--steel-600); font-size: 1.08rem; line-height: 1.62; margin-top: 1.1rem; max-width: 50rem; }
 
@@ -434,58 +478,252 @@
 @keyframes cineFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
 /* ============================================================
-   HOME · 4 · WHY MAX-SEAL — 47/53, staggered strengths, offset overlap
-   ============================================================ */
-.why { display: grid; grid-template-columns: 47fr 53fr; gap: 0; align-items: stretch; }
-/* Media column fills the full row height set by .why__body's natural content
-   height (3 proof points + intro + cue + CTA) — .why's align-items:stretch
-   plus height:100% here (not min-height, which only raises a floor and
-   would leave the shorter column short) is what closes that gap. Same
-   single homeWhyImg composite throughout, no new/second image; object-fit:
-   cover + object-position:top (set on the <img> in Home.jsx) crops it to
-   fill cleanly regardless of the resulting column height. */
-.why__media { position: relative; align-self: stretch; height: 100%; min-height: 100%; background: var(--titanium-200); overflow: hidden; }
-.why__media image-slot, .why__media img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.why__tagstrip { position: absolute; left: 0; bottom: 0; z-index: 2; display: flex; font-family: var(--font-mono); }
-.why__tagstrip span { background: rgba(12,15,17,0.82); color: #fff; font-size: 0.7rem; letter-spacing: 0.08em; padding: 0.5rem 0.85rem; }
-.why__body { position: relative; z-index: 2; background: var(--paper-0); padding: clamp(3rem, 5vw, 6rem) clamp(2rem, 5vw, 5rem); display: flex; align-items: flex-start; }
-.why__inner { width: 100%; max-width: 42rem; }
-.why__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 1.83rem + 0.68vw, 2.375rem); line-height: 1.18; letter-spacing: -0.01em; color: var(--graphite-900); margin: 0.85rem 0 0; max-width: 17ch; text-wrap: balance; }
-.why__intro { color: var(--steel-600); font-size: 1.05rem; line-height: 1.6; font-weight: var(--weight-regular); margin-top: 1rem; max-width: 50ch; }
-.why__points { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 2rem; }
-.why__pt { display: grid; grid-template-columns: 2.5rem 1fr; gap: 1.1rem; padding: 0.85rem 0; align-items: start; }
+   HOME · 4 · WHY MAX-SEAL — compact capability chart (client feedback:
+   the previous 47/53 image-split section ran too tall, and the first
+   rewrite still read as a bulleted list — this is a real 3-step process
+   chart: numbered cells sharing borders in one row, connected by a light
+   arrow, no section image. Target section height ~320-420px desktop).
+   Dark treatment (color-rhythm polish): sits between light "Where We
+   Perform" and light "Case Studies" so the lower page doesn't run
+   dark-into-dark before the CTA. Structure/spacing unchanged — only the
+   palette flips to the site's dark-section tokens (same ones .proofx
+   used before it became the light section). */
+.why-chart { padding-block: clamp(2.5rem, 3.5vw, 3.5rem); background: var(--navy-900); color: var(--text-on-dark); }
+.why-chart__grid { display: grid; grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: center; }
+.why-chart__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.7rem, 1.5rem + 0.8vw, 2.1rem); line-height: 1.16; letter-spacing: -0.01em; color: #fff; margin: 0.7rem 0 0; max-width: 16ch; text-wrap: balance; }
+.why-chart__lead { color: var(--text-on-dark-muted); font-size: 0.98rem; line-height: 1.5; font-weight: var(--weight-regular); margin-top: 0.75rem; max-width: 34ch; }
+.why-chart__cta { margin-top: 1.25rem; }
+
+/* Chart panel — small caption label above the 3-cell row */
+.why-chart__panel-label { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-300); margin-bottom: 0.7rem; }
+.why-chart__cells { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+.why-chart__cell { position: relative; padding: clamp(1.1rem, 1.6vw, 1.5rem) clamp(1rem, 1.6vw, 1.4rem); border: 1px solid rgba(255,255,255,0.14); background: var(--navy-800); }
+.why-chart__cell + .why-chart__cell { border-left: 0; }
+.why-chart__cell::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--azure-500); }
+.why-chart__step { display: block; font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.04em; color: var(--azure-300); }
+.why-chart__label { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-on-dark-muted); }
+.why-chart__cell .why-chart__label { display: block; margin-top: 0.4rem; }
+.why-chart__cell-title { font-weight: 700; font-size: 0.98rem; color: #fff; line-height: 1.28; margin: 0.45rem 0 0; }
+.why-chart__cell-copy { font-size: 0.82rem; color: var(--text-on-dark-muted); line-height: 1.48; font-weight: var(--weight-regular); margin: 0.35rem 0 0; }
+/* connector arrow between cells, desktop single-row layout only — patch
+   background matches the cell background so it sits cleanly on the
+   shared border seam */
+.why-chart__cell:not(:last-child)::after { content: "\2192"; position: absolute; right: -9px; top: clamp(1.1rem, 1.6vw, 1.5rem); z-index: 2; width: 18px; height: 18px; display: grid; place-items: center; font-size: 0.85rem; line-height: 1; color: var(--azure-400); background: var(--navy-800); }
+
+/* .why__points / .why__pt* — NOT part of this Home compact-chart rewrite.
+   Kept here because src/components/about/LeadershipSection.jsx (About page)
+   reuses this exact numbered-point pattern — it's now the only consumer
+   (Home's own Why Max-Seal moved to .why-chart__cells above), so the
+   spacing values below were tightened for the About spacing cleanup
+   without affecting Home. Do not remove without checking that component
+   first. */
+.why__points { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1.5rem; }
+.why__pt { display: grid; grid-template-columns: 2.5rem 1fr; gap: 1.1rem; padding: 0.7rem 0; align-items: start; }
 .why__pt-no { font-family: var(--font-mono); font-size: 0.82rem; color: var(--azure-600); padding-top: 0.4rem; }
 .why__pt-k { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel-400); }
 .why__pt h4 { font-weight: 600; font-size: 1.4rem; color: var(--graphite-900); line-height: 1.22; margin-top: 0.15rem; }
 .why__pt p { font-size: 0.95rem; color: var(--steel-600); line-height: 1.55; font-weight: var(--weight-regular); margin-top: 0.3rem; max-width: 40ch; }
-.why__cue { margin-top: 1.9rem; padding-left: 1rem; border-left: 2px solid var(--azure-500); font-size: 0.96rem; color: var(--graphite-700); line-height: 1.5; max-width: 40ch; }
-.why__cta { margin-top: 1.9rem; }
-@media (min-width: 1025px) {
-  .why__body { margin-left: -3.5rem; box-shadow: -26px 0 54px rgba(12,15,17,0.09); }
+
+/* ============================================================
+   HOME · 5 · CASE STUDIES — Dynalektric-style split proof module:
+   compact left selector, one horizontal (image-left/content-right)
+   featured card. Deliberately not the isplit__* pattern used by "Where
+   We Perform" above — no text-over-image overlay, no full-stage
+   crossfade, a vertical selector list, dark card with a hard image/
+   content split — so this reads as a distinct proof/example module, not
+   a second industry browser. The card is horizontal rather than stacked
+   specifically so the whole section (tabs + title + Challenge/Valve
+   support/Outcome) fits one desktop screen without scrolling within it —
+   a stacked image-on-top card nearly doubled this section's height.
+   Section background (color-rhythm polish): light, so the page doesn't
+   run Why Max-Seal (dark) straight into this straight into the dark
+   Let's Talk CTA. The featured card itself stays dark navy on purpose —
+   a dark card on a light section reads as premium contrast and needed
+   zero changes to .proofx__card or anything inside it. */
+.proofx { background: var(--paper-0); padding-block: clamp(3.5rem, 7vw, 5.375rem); }
+.proofx__grid { display: grid; grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.6fr); gap: clamp(2rem, 4vw, 4.5rem); align-items: start; }
+.proofx__head { color: var(--graphite-900); max-width: 16ch; margin-top: 0.7rem; font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.85rem); }
+.proofx__lead { color: var(--steel-600); font-size: 0.92rem; line-height: 1.48; margin-top: 0.65rem; max-width: 34ch; }
+.proofx__hint { color: var(--steel-500); font-size: 0.8rem; line-height: 1.4; margin-top: 1rem; }
+
+/* Toggle selector — a vertical list of 5 full-width rows (not wrapped
+   pills, which read uneven at varying label lengths like "Data Centers"
+   vs "Oil, Gas and Refining"), so it reads as a clean, even selector.
+   Wrapped in its own subtle border so the list reads as one light card;
+   active tab stays Max-Seal blue (azure-500 left accent + azure-50 fill,
+   same language as .isplit__item.on above it). */
+.proofx__tabs { display: flex; flex-direction: column; margin-top: 0.5rem; border: 1px solid var(--color-border); background: var(--paper-0); }
+.proofx__tab { display: block; width: 100%; text-align: left; font-family: var(--font-body); font-size: 0.92rem; color: var(--steel-600); background: transparent; border: 0; border-bottom: 1px solid var(--color-divider); border-left: 2px solid transparent; padding: 0.7rem 0.2rem 0.7rem 0.85rem; cursor: pointer; transition: background 160ms ease, border-color 160ms ease, color 160ms ease; }
+.proofx__tabs .proofx__tab:last-child { border-bottom: 0; }
+.proofx__tab:hover { color: var(--graphite-900); background: var(--titanium-50); }
+.proofx__tab.on { color: var(--graphite-900); font-weight: 600; border-left-color: var(--azure-500); background: var(--azure-50); }
+.proofx__tab:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--color-focus-ring); }
+
+/* Active case-study card — horizontal on desktop: image left, structured
+   content right. Height is a FIXED value (not derived from
+   .proofx__body's content) so it (a) stays identical across all 5 tabs
+   even though their copy lengths differ slightly, and (b) can be tuned
+   to reach down toward the left column's selector-list bottom. The
+   source photo (src/assets/industries/data-centers.png, reused across
+   all 5 tabs — see CaseStudies() comment) is a fixed 1536x1024 / 3:2
+   landscape shot with its subject (valve actuators) in the left ~55% of
+   the frame — fit="cover" + position="left center" on the <image-slot>
+   fills the media area completely (no letterbox gap) while cropping
+   from the right side of the photo (mostly server racks/walkway), not
+   the left side where the valves are. */
+.proofx__card { display: grid; grid-template-columns: minmax(340px, 1.05fr) minmax(320px, 1fr); height: clamp(470px, 36vw, 530px); background: var(--navy-800); border: 1px solid rgba(255,255,255,0.12); overflow: hidden; }
+.proofx__media { position: relative; height: 100%; background: var(--navy-700); overflow: hidden; }
+.proofx__media image-slot { width: 100%; height: 100%; display: block; }
+.proofx__badge { position: absolute; top: 14px; left: 14px; z-index: 2; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-300); background: rgba(12,15,17,0.72); border: 1px solid rgba(255,255,255,0.2); padding: 0.35rem 0.65rem; }
+/* flex-start (not center) — content starts flush with the card's top
+   edge, same as the image and the left column's eyebrow. Fixed card
+   height means any leftover space (content is shorter than 420-480px)
+   settles at the bottom, which reads as normal card padding rather than
+   an alignment problem. */
+.proofx__body { padding: clamp(1.25rem, 2vw, 1.75rem); display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; }
+.proofx__tag { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy-900); background: var(--azure-400); padding: 0.28rem 0.55rem; align-self: flex-start; }
+.proofx__title { font-weight: 700; font-size: clamp(1.3rem, 1.1rem + 0.85vw, 1.6rem); line-height: 1.12; color: #fff; margin: 0.6rem 0 0; max-width: 22ch; }
+.proofx__context { color: var(--text-on-dark-muted); font-size: 0.86rem; line-height: 1.42; margin-top: 0.5rem; max-width: 48ch; }
+.proofx__details { display: grid; gap: 0.55rem; margin-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 0.7rem; }
+.proofx__detail { font-size: 0.83rem; line-height: 1.4; color: rgba(255,255,255,0.8); max-width: 48ch; }
+.proofx__detail strong { display: block; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--azure-300); font-weight: 600; margin: 0 0 0.15rem; }
+
+/* ============================================================
+   HOME · 5B · APPLICATION EXPLORER — interactive butterfly-valve component
+   guide, rendered in place of Case Studies (.proofx* above, preserved but
+   not rendered — see src/pages/Home.jsx). Light section, same rhythm role
+   Case Studies played: breaks up dark Why Max-Seal running into the dark
+   Let's Talk CTA. Visual is the real Resilient Seated Butterfly Valve
+   product photo (src/assets/products/resilient-seated.png) with numbered
+   hotspot buttons overlaid on it — not a generic pipe diagram. Compact by
+   design: short head block + one row (photo+hotspots beside a content
+   card whose own footer holds the component picker) — no separate wide
+   label row floating below the section.
+   ============================================================ */
+.explorer { background: var(--paper-0); padding-block: clamp(2.25rem, 3vw, 3rem); }
+.explorer__title-main { font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.85rem); max-width: 26ch; }
+.explorer__lead { color: var(--steel-600); font-size: 0.94rem; line-height: 1.48; margin-top: 0.6rem; max-width: 56ch; }
+.explorer__panel { display: grid; grid-template-columns: minmax(200px, 0.55fr) minmax(0, 1fr); gap: clamp(1.75rem, 3vw, 2.5rem); align-items: stretch; margin-top: clamp(1.25rem, 2vw, 1.75rem); }
+
+/* Visual — real product photo, height-capped to keep the section compact
+   (it's a tall portrait shot); width: fit-content so the hotspot buttons'
+   percentage positions below line up with the image's own rendered box,
+   not a wider surrounding grid column. */
+.explorer__visual { position: relative; width: fit-content; margin-inline: auto; }
+.explorer__img { display: block; height: clamp(260px, 28vw, 340px); width: auto; max-width: 100%; border: 1px solid var(--color-border); background: var(--titanium-50); }
+.explorer__hotspot { position: absolute; transform: translate(-50%, -50%); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,0.94); border: 2px solid var(--azure-500); color: var(--azure-600); font-family: var(--font-mono); font-weight: 700; font-size: 0.7rem; cursor: pointer; box-shadow: 0 2px 6px rgba(12,15,17,0.18); transition: background 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+.explorer__hotspot:hover { transform: translate(-50%, -50%) scale(1.08); }
+.explorer__hotspot.on { background: var(--azure-500); color: #fff; box-shadow: 0 0 0 4px rgba(0,159,218,0.2), 0 2px 8px rgba(12,15,17,0.22); }
+.explorer__hotspot:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--color-focus-ring); }
+
+/* Content card — plain bordered "engineering note card": subtle border,
+   light background, no accent bar or corner flourish. The component
+   picker (.explorer__labels) now lives in this card's own footer, split
+   off by a thin divider, instead of floating below the whole section. */
+.explorer__card { display: flex; flex-direction: column; border: 1px solid var(--color-border); background: var(--paper-0); }
+.explorer__card > div:first-child { padding: clamp(1.3rem, 2vw, 1.75rem) clamp(1.3rem, 2vw, 1.75rem) 0; }
+.explorer__ctag { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--azure-600); background: var(--azure-50); padding: 0.25rem 0.55rem; }
+.explorer__ctitle { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.1rem, 1rem + 0.5vw, 1.3rem); line-height: 1.22; color: var(--graphite-900); margin: 0.65rem 0 0; max-width: 28ch; }
+.explorer__cbody { color: var(--steel-600); font-size: 0.9rem; line-height: 1.5; margin-top: 0.55rem; max-width: 48ch; }
+.explorer__bullets { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin: 0.8rem 0 0; padding: 0; max-width: 48ch; }
+.explorer__bullets li { position: relative; padding-left: 1.1rem; font-size: 0.83rem; color: var(--steel-600); line-height: 1.42; }
+.explorer__bullets li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 6px; height: 6px; border-radius: 50%; background: var(--azure-500); }
+
+/* Card footer — component picker, directly attached to the card it
+   controls instead of a wide row floating below the section. */
+.explorer__labels { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: clamp(1.1rem, 1.8vw, 1.5rem); padding: 0.9rem clamp(1.3rem, 2vw, 1.75rem); border-top: 1px solid var(--color-divider); }
+.explorer__label { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-body); font-size: 0.8rem; color: var(--steel-600); background: var(--paper-0); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.4rem 0.7rem; cursor: pointer; transition: background 160ms ease, border-color 160ms ease, color 160ms ease; }
+.explorer__label-no { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; color: var(--azure-600); border: 1px solid var(--azure-300); flex: none; }
+.explorer__label:hover { border-color: var(--azure-400); color: var(--graphite-900); }
+.explorer__label.on { background: var(--azure-500); border-color: var(--azure-500); color: #fff; font-weight: 600; }
+.explorer__label.on .explorer__label-no { color: #fff; border-color: rgba(255,255,255,0.6); }
+.explorer__label:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--color-focus-ring); }
+
+@media (prefers-reduced-motion: reduce) {
+  .explorer__hotspot { transition: none; }
 }
 
 /* ============================================================
-   HOME · 5 · PROOF STORY — one featured, CMS-ready (labelled placeholder)
+   HOME · 5C · APPLICATION FIT — "where do these valves apply" pipeline
+   explorer, directly below Application Explorer (component breakdown).
+   One cohesive inline SVG industrial diagram (viewBox 0 0 1000 190,
+   scales with width): a continuous pipe, flow-direction arrows, and 5
+   station markers — 3 simplified butterfly-valve glyphs (circle body +
+   flange bolts + diagonal disc line), one utility/pump module, one
+   marine corrosion-marker branch. Real <button> labels sit in their own
+   row below the diagram, positioned at the exact same x/10% marks as
+   the SVG stations (viewBox is 0-1000, so x itself is the percentage),
+   so nothing needs per-viewport recalculation. A small pointer nub
+   between the label row and the detail card tracks the active station,
+   visually tying the card to the diagram. Subtly different light tone
+   (titanium-50) from Application Explorer's white so the two adjacent
+   light sections still read as distinct blocks.
    ============================================================ */
-.proofx { background: var(--navy-900); color: var(--text-on-dark); padding-block: clamp(3.5rem, 6vw, 6.5rem); }
-.proofx .kicker--ondark { color: var(--azure-300); }
-.proofx__head { color: #fff; max-width: 22ch; }
-.proofx__card { display: grid; grid-template-columns: 1.05fr 1fr; gap: 0; margin-top: clamp(2rem, 3vw, 3rem); background: var(--navy-800); border: 1px solid rgba(255,255,255,0.12); }
-.proofx__media { position: relative; min-height: 460px; background: var(--navy-700); overflow: hidden; }
-.proofx__media image-slot { width: 100%; height: 100%; display: block; }
-.proofx__badge { position: absolute; top: 16px; left: 16px; z-index: 2; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-300); background: rgba(12,15,17,0.72); border: 1px solid rgba(255,255,255,0.2); padding: 0.4rem 0.7rem; }
-.proofx__body { padding: clamp(2rem, 3.5vw, 3.4rem); display: flex; flex-direction: column; justify-content: center; }
-.proofx__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.proofx__tag { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em; color: var(--text-on-dark-muted); border: 1px dashed rgba(255,255,255,0.28); padding: 0.3rem 0.6rem; }
-.proofx__tag--type { color: var(--navy-900); background: var(--azure-400); border-style: solid; border-color: var(--azure-400); font-weight: 600; }
-.proofx__title { font-weight: 700; font-size: clamp(1.5rem, 1.1rem + 1.3vw, 2.1rem); line-height: 1.14; color: #fff; margin: 1.1rem 0 0; max-width: 20ch; }
-.proofx__summary { color: var(--text-on-dark-muted); font-size: 0.95rem; line-height: 1.55; font-weight: var(--weight-regular); margin-top: 0.8rem; max-width: 52ch; }
-.proofx__details { display: flex; flex-direction: column; margin-top: 1.6rem; border-top: 1px solid rgba(255,255,255,0.12); }
-.proofx__detail { display: grid; grid-template-columns: 9.5rem 1fr; gap: 1.2rem; padding: 0.95rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.proofx__detail-k { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--azure-300); padding-top: 0.15rem; }
-.proofx__detail-v { font-size: 0.95rem; color: rgba(255,255,255,0.78); line-height: 1.5; }
-.proofx__note { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-on-dark-muted); }
-.proofx__note .pdot { width: 7px; height: 7px; border-radius: 50%; background: var(--azure-400); }
+.fit { background: var(--titanium-50); padding-block: clamp(2.25rem, 3vw, 3rem); }
+.fit__title-main { font-size: clamp(1.5rem, 1.3rem + 0.7vw, 1.85rem); max-width: 40ch; }
+.fit__lead { color: var(--steel-600); font-size: 0.94rem; line-height: 1.48; margin-top: 0.6rem; max-width: 62ch; }
+
+.fit__diagram { position: relative; margin-top: clamp(1.75rem, 2.75vw, 2.5rem); }
+.fit__svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.pf__pipe-body { fill: var(--steel-200); }
+.pf__pipe-sheen { fill: var(--titanium-50); opacity: 0.8; }
+.pf__flow-arrow { fill: none; stroke: var(--steel-400); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+/* per-station highlight band on the pipe itself — flat color tint, no
+   blur/glow filter */
+.pf__segment { fill: transparent; transition: fill 200ms ease; }
+.pf__segment.on { fill: rgba(0, 159, 218, 0.12); }
+
+.pf__valve-body { fill: var(--titanium-50); stroke: var(--steel-500); stroke-width: 2.4; transition: fill 200ms ease, stroke 200ms ease; }
+.pf__valve-disc { stroke: var(--steel-500); stroke-width: 2.2; stroke-linecap: round; transition: stroke 200ms ease; }
+.pf__bolt { fill: var(--steel-400); transition: fill 200ms ease; }
+.pf__stem { stroke: var(--steel-400); stroke-width: 2.2; transition: stroke 200ms ease; }
+.pf__actuator { fill: var(--steel-100); stroke: var(--steel-500); stroke-width: 2; transition: fill 200ms ease, stroke 200ms ease; }
+.pf__module { fill: var(--steel-100); stroke: var(--steel-500); stroke-width: 2; transition: fill 200ms ease, stroke 200ms ease; }
+.pf__module-tick { stroke: var(--steel-400); stroke-width: 1.6; transition: stroke 200ms ease; }
+.pf__marker { fill: var(--steel-100); stroke: var(--steel-500); stroke-width: 2; transition: fill 200ms ease, stroke 200ms ease; }
+.pf__marker-dot { fill: var(--steel-500); transition: fill 200ms ease; }
+
+.pf__glyph.on .pf__valve-body { fill: var(--azure-50); stroke: var(--azure-500); }
+.pf__glyph.on .pf__valve-disc { stroke: var(--azure-500); }
+.pf__glyph.on .pf__bolt { fill: var(--azure-500); }
+.pf__glyph.on .pf__stem { stroke: var(--azure-500); }
+.pf__glyph.on .pf__actuator { fill: var(--azure-50); stroke: var(--azure-500); }
+.pf__glyph.on .pf__module { fill: var(--azure-50); stroke: var(--azure-500); }
+.pf__glyph.on .pf__module-tick { stroke: var(--azure-500); }
+.pf__glyph.on .pf__marker { fill: var(--azure-50); stroke: var(--azure-500); }
+.pf__glyph.on .pf__marker-dot { fill: var(--azure-500); }
+
+/* Label row — real buttons, positioned to match the SVG station x's */
+.fit__stations { position: relative; height: 2.1rem; margin-top: 0.4rem; }
+.fit__station { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.02em; color: var(--steel-600); background: transparent; border: 1px solid transparent; border-radius: var(--radius-sm); padding: 0.35rem 0.6rem; cursor: pointer; transition: background 160ms ease, border-color 160ms ease, color 160ms ease; }
+.fit__station:hover { color: var(--graphite-900); background: var(--paper-0); border-color: var(--color-border); }
+.fit__station.on { color: var(--azure-700); font-weight: 700; background: var(--azure-50); border-color: var(--azure-200); }
+.fit__station:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--color-focus-ring); }
+
+/* Pointer — small nub between the label row and the card, tracking the
+   active station's x position; the visible connection between them. */
+.fit__pointer { position: absolute; bottom: -1px; width: 12px; height: 12px; background: var(--paper-0); border: 1px solid var(--color-border); border-top: 0; border-left: 0; transform: translateX(-50%) rotate(45deg); transition: left 200ms ease; z-index: 1; }
+
+.fit__card { position: relative; margin-top: clamp(1.5rem, 2.2vw, 1.9rem); border: 1px solid var(--color-border); background: var(--paper-0); padding: clamp(1.3rem, 2vw, 1.75rem) clamp(1.3rem, 2.2vw, 2rem); }
+.fit__ctag { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--azure-600); background: var(--azure-50); padding: 0.25rem 0.55rem; }
+.fit__ctitle { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.1rem, 1rem + 0.5vw, 1.3rem); line-height: 1.22; color: var(--graphite-900); margin: 0.6rem 0 0; max-width: 42ch; }
+.fit__cbody { color: var(--steel-600); font-size: 0.88rem; line-height: 1.48; margin-top: 0.5rem; max-width: 62ch; }
+.fit__cases { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.85rem; }
+.fit__case { font-family: var(--font-mono); font-size: 0.72rem; color: var(--graphite-700); background: var(--titanium-50); border: 1px solid var(--color-border); padding: 0.3rem 0.6rem; }
+
+@media (max-width: 768px) {
+  .fit__svg { display: none; }
+  .fit__pointer { display: none; }
+  .fit__stations { position: static; height: auto; display: flex; flex-direction: column; gap: 0.5rem; }
+  .fit__station { position: static; transform: none; text-align: left; border: 1px solid var(--color-border); background: var(--paper-0); padding: 0.65rem 0.9rem; font-size: 0.86rem; }
+  .fit__station.on { background: var(--azure-50); }
+  .fit__card { margin-top: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf__segment, .pf__valve-body, .pf__valve-disc, .pf__bolt, .pf__stem, .pf__actuator, .pf__module, .pf__module-tick, .pf__marker, .pf__marker-dot, .fit__station, .fit__pointer { transition: none; }
+}
 
 /* ============================================================
    HOME · 6 · RESOURCES PREVIEW — three differentiated treatments
@@ -527,21 +765,6 @@
 .resx__actions--price { border-top: 1px solid rgba(255,255,255,0.12); margin-top: 1.4rem; }
 
 /* ============================================================
-   HOME · 7 · ABOUT PREVIEW — editorial, asymmetric
-   ============================================================ */
-.aboutx { display: grid; grid-template-columns: 1.1fr 1fr; gap: 0; align-items: stretch; }
-.aboutx__media { position: relative; min-height: clamp(360px, 28vw, 540px); background: var(--titanium-100); border: 1px solid var(--color-border); overflow: hidden; }
-.aboutx__media image-slot, .aboutx__media img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.aboutx__panel { background: var(--paper-0); border: 1px solid var(--color-border); border-left: 0; padding: clamp(2.4rem, 4vw, 4rem); display: flex; flex-direction: column; justify-content: center; }
-.aboutx__title { font-weight: 800; font-family: var(--font-display) !important; font-size: clamp(1.7rem, 1.2rem + 1.5vw, 2.5rem); line-height: 1.1; letter-spacing: -0.01em; color: var(--graphite-900); margin: 0.8rem 0 0; max-width: 18ch; }
-.aboutx__story { color: var(--steel-600); font-size: 1.05rem; line-height: 1.6; font-weight: var(--weight-regular); margin-top: 1rem; max-width: 46ch; }
-.aboutx__facts { display: grid; grid-template-columns: repeat(3, auto); gap: var(--grid-gap); margin: 1.9rem 0 0; justify-content: start; }
-.aboutx__fact-v { font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; line-height: 1; letter-spacing: -0.01em; color: var(--graphite-900); }
-.aboutx__fact-l { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel-500); margin-top: 0.4rem; }
-.aboutx__cue { margin-top: 1.7rem; padding-left: 1rem; border-left: 2px solid var(--azure-500); font-size: 0.94rem; color: var(--graphite-700); line-height: 1.5; max-width: 42ch; }
-.aboutx__cta { margin-top: 1.9rem; align-self: flex-start; }
-
-/* ============================================================
    HOME · 8 · CONVERSION — calm material band, generous height
    ============================================================ */
 .convert { position: relative; overflow: hidden; background: var(--navy-900); color: #fff; }
@@ -576,14 +799,18 @@
    ============================================================ */
 /* Tablet and small laptop */
 @media (max-width: 1024px) {
-  .why { grid-template-columns: 1fr; }
-  /* Stacked layout: .why__media and .why__body become separate rows, so the
-     desktop full-height stretch no longer applies (each row auto-sizes to
-     its own content) — set an explicit fixed height/min-height here so the
-     media row doesn't collapse or inherit the desktop rule's percentage
-     values, which have no stable reference once stacked. */
-  .why__media { height: 320px; min-height: 320px; }
-  .why__body { margin-left: 0; box-shadow: none; }
+  /* Tablet: stack intro above the chart, keep it compact rather than
+     leaving awkward leftover white space beside a narrowed column. The
+     3-cell row also stacks to one column here — a wrapped row would break
+     the shared-border/connector-arrow treatment, so drop straight to a
+     clean vertical stack instead of an in-between 2+1 layout. */
+  .why-chart__grid { grid-template-columns: 1fr; gap: 1.75rem; align-items: start; }
+  .why-chart__title, .why-chart__lead { max-width: none; }
+  .why-chart__cells { grid-template-columns: 1fr; }
+  .why-chart__cell { border-top: 0; }
+  .why-chart__cell + .why-chart__cell { border-left: 1px solid rgba(255,255,255,0.14); border-top: 0; }
+  .why-chart__cell:first-child { border-top: 1px solid rgba(255,255,255,0.14); }
+  .why-chart__cell:not(:last-child)::after { display: none; }
 
   /* product carousel: center dominant with side peeks (continuation cue) */
   .pcar__row { grid-template-columns: 0.22fr 1.7fr 0.22fr; gap: 0.7rem; }
@@ -601,12 +828,28 @@
   .isplit__item-name { font-size: 1.02rem; }
   .isplit__stage { min-height: clamp(440px, 66vh, 580px); }
 
-  .proofx__card { grid-template-columns: 1fr; }
-  .proofx__media { min-height: 320px; }
+  .proofx__grid { grid-template-columns: 1fr; align-items: start; }
+  .proofx__head, .proofx__lead { max-width: none; }
+  /* Card stacks image-above-content below this breakpoint — the fixed
+     min/max media height plus a full-width content column stop fitting
+     side by side comfortably once the whole section has already dropped
+     to one column above. */
+  /* The fixed desktop card height is a 2-column-row trick (media stretches
+     to match the row) — once stacked to one column, media and body become
+     two separate rows, so the fixed height must be released back to auto
+     or the second row (body) would overflow and get clipped by the
+     card's overflow:hidden. */
+  .proofx__card { grid-template-columns: 1fr; height: auto; }
+  .proofx__media { height: 260px; }
+  .proofx__body { overflow: visible; }
+  .proofx__title, .proofx__context, .proofx__detail { max-width: none; }
   .resx { grid-template-columns: 1fr; }
-  .aboutx { grid-template-columns: 1fr; }
-  .aboutx__media { min-height: 340px; }
-  .aboutx__panel { border-left: 1px solid var(--color-border); border-top: 0; }
+
+  /* Explorer: stack photo above the content card once they no longer fit
+     comfortably side by side. */
+  .explorer__panel { grid-template-columns: 1fr; }
+  .explorer__card { margin-top: 1.5rem; }
+  .explorer__ctitle, .explorer__cbody, .explorer__bullets { max-width: none; }
 }
 
 /* Mobile & Tablet */
@@ -616,6 +859,14 @@
   .vhero__content { max-width: 100%; }
   .vhero__title { max-width: 100%; }
   .vhero__lead { max-width: 100%; }
+}
+
+/* Mobile safety: the desktop crop/zoom is tuned for wide frames — on narrow
+   viewports it over-crops the video, so ease it back toward a centered,
+   lightly-zoomed frame instead. The .vhero::after corner mask still applies
+   and scales down via its own clamp(). */
+@media (max-width: 768px) {
+  .hero-video { object-position: center center; transform: scale(1.04); }
 }
 
 @media (max-width: 600px) {
@@ -653,12 +904,8 @@
   .isplit__overlay-inner, .ptile__overlay-inner { padding: 1.3rem; }
   .slay__rows { gap: 0.8rem 1.6rem; }
 
-  .why__pt:nth-child(2), .why__pt:nth-child(3) { margin-left: 0; }
-  .aboutx { width: 100%; max-width: 100%; overflow: hidden; box-sizing: border-box; }
-  .aboutx__media { width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden; }
-  .aboutx__panel { width: 100%; max-width: 100%; box-sizing: border-box; padding: clamp(1.4rem, 4vw, 2.5rem); }
-  .aboutx__facts { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; max-width: 100%; }
-  .proofx__detail { grid-template-columns: 1fr; gap: 0.25rem; }
+  .why-chart__cell { padding: 0.9rem 1rem; }
+  .proofx__tab { padding: 0.75rem 0.2rem 0.75rem 0.7rem; font-size: 0.9rem; }
   .resx__spec { grid-template-columns: repeat(3, auto); gap: 0.4rem 1.2rem; }
   .convert__links { gap: 0.5rem 1.2rem; }
 }

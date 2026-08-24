@@ -63,9 +63,9 @@ export const FACETS = [
 export const INDUSTRIES = catalog.industries;
 
 export const WHY = [
-  { k: 'ENGINEERING', t: 'Built for demanding applications', d: 'Custom valve designs, special materials and application review for complex piping configurations and severe service conditions.' },
-  { k: 'EXPERTISE', t: 'Selection support before configuration', d: 'Experienced valve professionals help customers review valve type, materials, actuation and operating requirements before selection.' },
-  { k: 'SERVICE', t: 'Responsive supply and technical support', d: 'Product availability, automation capability and technical sales support help keep requirements moving from review through delivery.' },
+  { k: 'ENGINEERING', t: 'Built for demanding applications', d: 'Valve design, materials and automation are reviewed against real service requirements.' },
+  { k: 'SELECTION', t: 'Support before configuration', d: 'Product type, materials, actuation and operating needs are clarified before selection.' },
+  { k: 'SERVICE', t: 'Responsive supply and technical support', d: 'Availability, automation capability and technical support help keep requirements moving.' },
 ];
 
 /* Story-led groupings for the homepage cinematic stages.
@@ -187,7 +187,14 @@ export const INDUSTRY_STORIES = [
   },
 ];
 
-/* Featured application-focus story — clearly labelled placeholder until CMS content is approved. */
+/* type/title/summary here are the fallback story for any industry in
+   INDUSTRY_DETAILS (src/pages/IndustryDetail.jsx) that has no `proof` entry
+   of its own — every current industry already overrides title/summary, and
+   `type` is read directly (not per-industry) by that page's badge, so do
+   not reword these three without checking IndustryDetail.jsx first.
+   Home's CaseStudies() (below, see CASE_STUDIES) no longer reads this
+   object for its copy — only `.image` is still used there, as the shared
+   section visual across all 5 toggled case studies. */
 export const PROOF = {
   type: 'Application focus',
   industry: 'Data Centers',
@@ -196,11 +203,169 @@ export const PROOF = {
   summary: 'Cooling loop applications require dependable isolation, automation readiness and careful valve selection. Max-Seal supports valve packages based on service conditions, system requirements and operating needs.',
   image: INDUSTRIES.find((i) => i.id === 'data-centers').image,
   details: [
-    { k: 'Requirement', v: 'Support consistent flow control and isolation in cooling loop service.' },
-    { k: 'Max-Seal support', v: 'Review valve type, seat, trim, actuation and accessories against the application requirement.' },
-    { k: 'Application value', v: 'Help customers specify a practical valve package for installation, operation and long-term support.' },
+    { k: 'Requirement', v: 'Support accurate flow control and reliable isolation in a demanding cooling-loop environment.' },
+    { k: 'Valve selection', v: 'Review valve type, actuation, materials and operating conditions before configuration.' },
+    { k: 'Application result', v: 'Help customers specify a practical valve package for installation, operation and maintenance needs.' },
   ],
 };
+
+/* Home "Case Studies" toggle section (src/pages/Home.jsx CaseStudies()) —
+   5 anonymous, representative application examples, one shown at a time.
+   No customer names, no delivered/installed/completed-for claims, no
+   metrics — these are illustrative of common requirements, not confirmed
+   projects. Keep that framing if this copy is ever edited. */
+export const CASE_STUDIES = [
+  {
+    id: 'data-centers', sector: 'Data Centers',
+    title: 'Cooling loop valve support',
+    context: 'Mission-critical cooling environments need reliable isolation and flow control across chilled-water and process cooling loops.',
+    challenge: 'Keep cooling systems serviceable while supporting dependable flow control and isolation.',
+    support: 'Review butterfly valve type, actuation, materials and operating requirements before configuration.',
+    outcome: 'A practical valve package can support installation, operation and maintenance needs.',
+  },
+  {
+    id: 'water-infrastructure', sector: 'Water Infrastructure',
+    title: 'Water system isolation and flow control',
+    context: 'Water and utility systems need valves that can support frequent operation, practical maintenance and long service life.',
+    challenge: 'Balance isolation, pressure conditions and ease of maintenance across water-handling applications.',
+    support: 'Match valve construction, seat materials, actuation and accessories to the operating environment.',
+    outcome: 'A clear selection path helps teams specify valves suited for water, utility and infrastructure service.',
+  },
+  {
+    id: 'power-generation', sector: 'Power Generation',
+    title: 'Valve selection for plant utility systems',
+    context: 'Power and plant utility environments require dependable flow control across cooling, auxiliary and support systems.',
+    challenge: 'Support operating reliability while accounting for temperature, pressure and service conditions.',
+    support: 'Review application duty, automation needs and material compatibility before product selection.',
+    outcome: 'A fit-for-application valve configuration supports maintenance planning and operational consistency.',
+  },
+  {
+    id: 'oil-gas-refining', sector: 'Oil, Gas and Refining',
+    title: 'Process valve support for demanding service',
+    context: 'Oil, gas and refining environments often involve demanding process conditions, material considerations and tight operating requirements.',
+    challenge: 'Select valves that can support isolation, control and material compatibility in demanding service.',
+    support: 'Evaluate valve family, body materials, trims, actuation and configuration requirements before selection.',
+    outcome: 'A structured review helps customers narrow the right valve approach for process and utility needs.',
+  },
+  {
+    id: 'marine-transportation', sector: 'Marine and Transportation',
+    title: 'Corrosion-aware valve support',
+    context: 'Marine and transportation systems face corrosion, vibration, space constraints and continuous service demands.',
+    challenge: 'Support seawater, cooling, onboard utility or transportation-related service conditions with practical valve selection.',
+    support: 'Review corrosion-aware materials, rugged construction and maintenance access before configuration.',
+    outcome: 'A practical valve selection can support reliable isolation and flow control in space-constrained environments.',
+  },
+];
+
+/* Home "Application Explorer" (src/components/home/ApplicationExplorer.jsx)
+   — 6 clickable butterfly-valve components, one active at a time, overlaid
+   as hotspots on the real Resilient Seated Butterfly Valve product photo
+   (src/assets/products/resilient-seated.png — also FAMILIES PROD-001's
+   catalog image) rather than a generic diagram. `id` must match the
+   hotspot ids positioned in the component. Default active is 'disc' (set
+   in the component, not here). */
+export const EXPLORER_ITEMS = [
+  {
+    id: 'actuator', label: 'Actuator / Operator',
+    title: 'Actuator and operator selection',
+    body: 'Manual, gear, pneumatic or electric operation should be selected based on service conditions, control needs and accessibility.',
+    bullets: [
+      'Review manual or automated operation needs',
+      'Consider access, torque and response expectations',
+      'Match the operator to the valve size and application duty',
+    ],
+  },
+  {
+    id: 'stem', label: 'Stem / Shaft',
+    title: 'Stem and shaft connection',
+    body: 'The stem transfers motion from the operator to the disc and should be reviewed with valve size, duty cycle and operating requirements.',
+    bullets: [
+      'Consider stem design and operating torque',
+      'Review shaft-to-disc connection requirements',
+      'Support dependable operation through repeated cycling',
+    ],
+  },
+  {
+    id: 'disc', label: 'Disc',
+    title: 'Disc and flow control',
+    body: 'The disc is central to shutoff and flow control performance. Disc material and configuration should match media, pressure and service conditions.',
+    bullets: [
+      'Review media compatibility and service conditions',
+      'Consider shutoff, throttling and duty cycle needs',
+      'Match disc material to the application environment',
+    ],
+  },
+  {
+    id: 'seat', label: 'Seat / Liner',
+    title: 'Seat and sealing performance',
+    body: 'Seat selection affects sealing, torque, durability and service suitability across water, process, chemical and utility applications.',
+    bullets: [
+      'Review sealing requirements',
+      'Consider pressure, temperature and media',
+      'Select seat materials for service-appropriate isolation',
+    ],
+  },
+  {
+    id: 'body', label: 'Valve Body',
+    title: 'Body construction and service fit',
+    body: 'Valve body construction should be reviewed against pipe size, pressure class, installation method and service environment.',
+    bullets: [
+      'Consider wafer, lug or flanged connection needs',
+      'Review body material and coating requirements',
+      'Support proper installation and in-line performance',
+    ],
+  },
+  {
+    id: 'end-connection', label: 'End Connection',
+    title: 'End connection and installation interface',
+    body: 'End connection format should suit the piping layout, flange standard and maintenance requirements of the installation.',
+    bullets: [
+      'Review piping and mounting requirements',
+      'Consider installation environment and service access',
+      'Support practical field fit-up and maintenance',
+    ],
+  },
+];
+
+/* Home "Application Fit" (src/components/home/ApplicationFit.jsx) — 5
+   clickable application areas along a left-to-right pipeline visual, one
+   active at a time. Answers "where do Max-Seal butterfly valves apply",
+   not a component breakdown (see EXPLORER_ITEMS above, rendered by
+   ApplicationExplorer.jsx, for that). Default active is 'cooling-water'
+   (set in the component, not here). `cases` are short phrases rendered
+   as compact chips, not full sentences. */
+export const APPLICATION_FIT = [
+  {
+    id: 'cooling-water', label: 'Cooling Water',
+    title: 'Cooling water and chilled-water support',
+    body: 'Butterfly valves can support isolation and flow control across cooling loops, chilled-water systems and serviceable infrastructure environments.',
+    cases: ['Cooling loop isolation', 'Flow control support', 'Maintenance-friendly shutoff'],
+  },
+  {
+    id: 'water-infrastructure', label: 'Water Infrastructure',
+    title: 'Water and utility infrastructure support',
+    body: 'Butterfly valves can support practical isolation and operating control across utility water systems and general infrastructure applications.',
+    cases: ['Utility water lines', 'Pump and line isolation', 'Serviceable infrastructure setups'],
+  },
+  {
+    id: 'process-lines', label: 'Process Lines',
+    title: 'Industrial process line support',
+    body: 'Application review should consider media, materials, pressure, temperature and operating conditions when selecting butterfly valve solutions.',
+    cases: ['Process service review', 'Material compatibility', 'Manual or automated operation'],
+  },
+  {
+    id: 'marine-systems', label: 'Marine Systems',
+    title: 'Marine and transportation-related support',
+    body: 'Butterfly valves can support compact, corrosion-aware flow control needs across marine, onboard utility and transportation-related environments.',
+    cases: ['Cooling and utility service', 'Space-conscious installation', 'Rugged operating conditions'],
+  },
+  {
+    id: 'automation-packages', label: 'Automation Packages',
+    title: 'Automated butterfly valve packages',
+    body: 'Manual, pneumatic or electric operation can be reviewed based on control requirements, accessibility and application duty.',
+    cases: ['Actuated valve assemblies', 'Control requirement review', 'Operator and accessory selection'],
+  },
+];
 
 /* Per-industry Industry Detail page content: hand-authored, not part of the
    generated catalog (catalog only carries id/name/image/ctx/families — see

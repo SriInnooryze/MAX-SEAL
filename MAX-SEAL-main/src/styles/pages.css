@@ -633,9 +633,27 @@
   scroll-margin-top: calc(var(--header-h, 82px) + 16px);
 }
 
+/* Spacing cleanup (client feedback: About should follow the same tighter
+   rhythm already applied to Home) — scoped to .about-page so the shared
+   `.section` class (--section-y, used site-wide by Resources/Catalog/
+   product/industry pages and Home's own ProductPreview/IndustryPreview)
+   is left completely untouched everywhere else. Every About section
+   (who-we-are, how-we-grew, leadership, facts, team, who-we-serve,
+   global-partners) uses plain `.section`, so this one rule tightens all
+   of them at once; the first section gets an extra top-padding cut since
+   it follows the hero, whose own bottom padding is trimmed just below. */
+.about-page .section { padding-block: clamp(2.75rem, 4vw, 4.25rem); }
+.about-page section#who-we-are { padding-top: clamp(1.75rem, 3vw, 2.5rem); }
+/* Hero → Company Intro transition */
+.page-hero--about .page-hero__inner { padding-bottom: clamp(1.6rem, 2.5vw, 2.4rem); }
+/* Bottom CTA — ClosingCTA reuses Home's .convert pattern (see
+   ClosingCTA.jsx), so this is scoped to .about-page rather than editing
+   .convert__inner itself, which Home's own closing CTA also depends on. */
+.about-page .convert__inner { padding-block: clamp(2.25rem, 4vw, 3.25rem) clamp(1.75rem, 3vw, 2.5rem); }
+
 .about__h { font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 1.83rem + 0.68vw, 2.375rem); line-height: 1.18; letter-spacing: -0.01em; color: var(--graphite-900); margin: 0.6rem 0 1rem; }
 .about__p { color: var(--steel-600); line-height: 1.7; font-size: 1.05rem; max-width: var(--text-max); }
-.about__split { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; }
+.about__split { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(1.75rem, 3vw, 3rem); align-items: center; }
 .about__values { list-style: none; margin: 1.6rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
 .about__values li { padding-left: 1rem; border-left: 2px solid var(--azure-500); color: var(--steel-600); line-height: 1.55; font-size: 0.96rem; }
 .about__values span { display: block; font-family: var(--font-body); font-weight: 600; color: var(--graphite-900); font-size: 1.02rem; }
@@ -688,9 +706,9 @@
    Partners section: intro/CTA on the left, a premium end-user + markets
    panel on the right. Own about-serve__* classes, not shared with anything
    else, so this can't regress other sections. */
-.about-serve__wrap { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3rem); align-items: start; }
+.about-serve__wrap { display: grid; grid-template-columns: 1fr; gap: clamp(1.75rem, 3.5vw, 2.75rem); align-items: start; }
 @media (min-width: 900px) {
-  .about-serve__wrap { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(2.5rem, 5vw, 4.5rem); }
+  .about-serve__wrap { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(2rem, 4vw, 3.5rem); }
 }
 
 .about-serve__note { color: var(--steel-600); font-size: 0.95rem; line-height: 1.6; max-width: 48ch; margin: 1.2rem 0 0; }
@@ -783,7 +801,7 @@
 .htl { list-style: none; margin: 0; padding: 0; }
 .htl__row {
   display: grid; grid-template-columns: 2.6rem minmax(0, 1fr);
-  gap: 0.9rem 1.4rem; margin-bottom: clamp(2.5rem, 4vw, 4rem); align-items: start;
+  gap: 0.9rem 1.4rem; margin-bottom: clamp(1.75rem, 3vw, 2.75rem); align-items: start;
 }
 .htl__row:last-child { margin-bottom: 0; }
 .htl__row:last-child .htl__line { display: none; }
@@ -1015,7 +1033,7 @@
    a region swaps the detail/location cards, same underlying REGIONS data as
    the standalone /partners page and the tab pattern above, restyled to sit
    naturally inside About. */
-.about-partners__wrap { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3rem); align-items: start; }
+.about-partners__wrap { display: grid; grid-template-columns: 1fr; gap: clamp(1.75rem, 3.5vw, 2.75rem); align-items: start; }
 .about-partners__note { color: var(--steel-600); font-size: 0.95rem; line-height: 1.6; max-width: 48ch; margin: 1.2rem 0 0; }
 
 .about-partners__pathways { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.4rem 0 1.6rem; }
@@ -1077,7 +1095,7 @@
 @media (max-width: 560px) { .about-partners__locs { grid-template-columns: 1fr; } }
 
 @media (min-width: 900px) {
-  .about-partners__wrap { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(2.5rem, 5vw, 4.5rem); }
+  .about-partners__wrap { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(2rem, 4vw, 3.5rem); }
 }
 
 /* ============================================================
