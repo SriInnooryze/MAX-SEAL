@@ -8,7 +8,7 @@ export default function FactsSection() {
     <section className="section section--sunken" id="facts">
       <div className="wrap">
         <div className="kicker">THE COMPANY AT A GLANCE</div>
-        <h2 className="about__h" style={{ marginBottom: 'clamp(1.8rem,3vw,2.6rem)' }}>
+        <h2 className="about__h" style={{ marginBottom: 'clamp(1.25rem,2.2vw,1.9rem)' }}>
           Max-Seal at a Glance
         </h2>
         <div className="factsx">

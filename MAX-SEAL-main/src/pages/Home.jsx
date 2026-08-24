@@ -2,15 +2,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
-import { FAMILIES, WHY, PRODUCT_STORIES, INDUSTRY_STORIES, PROOF, RESOURCE_LIBS } from '../data/data';
-import { ArrowRight, ArrowLeft, Play, Pause, Headset, MessageCircle, X, FileText, Eye, Download } from '../icons/icons';
+import ApplicationExplorer from '../components/home/ApplicationExplorer';
+import ApplicationFit from '../components/home/ApplicationFit';
+import { FAMILIES, WHY, PRODUCT_STORIES, INDUSTRY_STORIES, PROOF, CASE_STUDIES } from '../data/data';
+import { ArrowRight, ArrowLeft, Play, Pause, Headset, MessageCircle, X, FileText, Download } from '../icons/icons';
 import { routes } from '../router/paths';
 import heroVideo from '../assets/home/Max-Seal.mp4';
-import catalogPdf from '../assets/home/Resilient Seated Butterfly Valves — Performance Series.pdf';
-import catalogCoverImg from '../assets/home/performance-series-catalog-cover.png';
-import globalPartnersImg from '../assets/home/home-global-partners-network-support.png';
-import homeAboutImg from '../assets/home/Home-About.png';
-import homeWhyImg from '../assets/home/Home-Why max-seal.png';
 
 
 function famShort(id) { const f = FAMILIES.find(x => x.id === id); return f ? f.name : id; }
@@ -176,7 +173,6 @@ function ProductPreview() {
         <div className="shead cine-head reveal">
           <div className="kicker">WHAT WE ENGINEER</div>
           <h2 className="shead__title cine-title">Butterfly valve solutions built around real service conditions</h2>
-          <p className="cine-lead">From standard isolation to demanding process service, Max-Seal helps match valve design, materials, automation and configuration to the requirements of each application.</p>
         </div>
       </div>
       <div className="wrap wrap--wide">
@@ -352,68 +348,26 @@ function IndustryPreview() {
 
 function WhyMaxSeal() {
   return (
-    <section className="why">
-      <div className="why__media reveal">
-        <img
-          src={homeWhyImg}
-          alt="Max-Seal engineering review and product detail"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
-        />
-        <div className="why__tagstrip"><span>SINCE 2008</span><span>U.S. OPERATIONS</span></div>
-      </div>
-      <div className="why__body reveal">
-        <div className="why__inner">
-          <div className="kicker">WHY MAX-SEAL</div>
-          <h2 className="why__title">Practical valve expertise from selection to supply</h2>
-          <p className="why__intro">Max-Seal brings butterfly valve experience, product knowledge and responsive service together to help customers specify the right solution for each application.</p>
-          <div className="why__points">
-            {WHY.map((w, i) => (
-              <div key={w.k} className="why__pt">
-                <div className="why__pt-no">{String(i + 1).padStart(2, '0')}</div>
-                <div className="why__pt-body">
-                  <div className="why__pt-k">{w.k}</div>
-                  <h4>{w.t}</h4>
-                  <p>{w.d}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="why__cue">A U.S.-based butterfly valve manufacturer and supplier serving distributors, OEMs and industrial customers.</p>
-          <div className="why__cta">
-            <Link className="ms-btn ms-btn--primary" to={routes.about}>More about Max-Seal <ArrowRight size={16} /></Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ProofStory() {
-  return (
-    <section className="proofx">
+    <section className="why-chart">
       <div className="wrap">
-        <div className="shead reveal">
-          <div className="kicker kicker--ondark">APPLICATION FOCUS</div>
-          <h2 className="shead__title shead--dark proofx__head">Valve support for critical cooling and process systems</h2>
-        </div>
-        <div className="proofx__card reveal">
-          <div className="proofx__media">
-            <image-slot id="home-proof-media" shape="rect" fit="cover" src={PROOF.image} placeholder="Project, facility or end-user photo" />
-            <span className="proofx__badge">{PROOF.type}</span>
-          </div>
-          <div className="proofx__body">
-            <div className="proofx__tags">
-              <span className="proofx__tag proofx__tag--type">{PROOF.type}</span>
-              <span className="proofx__tag">{PROOF.industry}</span>
-              <span className="proofx__tag">{PROOF.customer}</span>
+        <div className="why-chart__grid reveal">
+          <div className="why-chart__intro">
+            <div className="kicker kicker--ondark">WHY MAX-SEAL</div>
+            <h2 className="why-chart__title">Practical valve expertise from selection to supply</h2>
+            <p className="why-chart__lead">Max-Seal brings valve experience, product knowledge and practical support together to help customers specify the right solution for each application.</p>
+            <div className="why-chart__cta">
+              <Link className="ms-btn ms-btn--primary" to={routes.about}>More about Max-Seal <ArrowRight size={16} /></Link>
             </div>
-            <h3 className="proofx__title">{PROOF.title}</h3>
-            <p className="proofx__summary">{PROOF.summary}</p>
-            <div className="proofx__details">
-              {PROOF.details.map((d) => (
-                <div key={d.k} className="proofx__detail">
-                  <div className="proofx__detail-k">{d.k}</div>
-                  <div className="proofx__detail-v">{d.v}</div>
+          </div>
+          <div className="why-chart__panel">
+            <div className="why-chart__panel-label">Selection-to-supply support</div>
+            <div className="why-chart__cells">
+              {WHY.map((w, i) => (
+                <div key={w.k} className="why-chart__cell">
+                  <span className="why-chart__step">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="why-chart__label">{w.k}</span>
+                  <h3 className="why-chart__cell-title">{w.t}</h3>
+                  <p className="why-chart__cell-copy">{w.d}</p>
                 </div>
               ))}
             </div>
@@ -424,108 +378,64 @@ function ProofStory() {
   );
 }
 
-function ResourcesPreview() {
-  const cat = RESOURCE_LIBS.find(r => r.id === 'catalog');
+/* Anonymous, representative case-study toggle — deliberately not a copy of
+   IndustryPreview's discovery-style selector above (isplit__*): this reads
+   as a compact proof/example panel (tabs + one fixed detail card), not
+   another way to browse industries. Content is illustrative, not a record
+   of a named or completed customer project — see CASE_STUDIES in data.js. */
+function CaseStudies() {
+  // Default (index 0) is 'data-centers' — must stay in sync with PROOF.image
+  // (a data-centers / chilled-water room photo), since the featured image
+  // is shared across tabs rather than swapped per case study.
+  const [active, setActive] = useState(0);
+  const cur = CASE_STUDIES[active];
+
   return (
-    <section className="section section--titanium">
+    <section className="proofx">
       <div className="wrap">
-        <div className="shead shead--row reveal">
-          <div>
-            <div className="kicker">DOCUMENTS AND RESOURCES</div>
-            <h2 className="shead__title">Product information, catalogs and partner resources</h2>
+        <div className="proofx__grid reveal">
+          <div className="proofx__intro">
+            <div className="kicker">CASE STUDIES</div>
+            <h2 className="shead__title proofx__head">Valve support across demanding applications</h2>
+            <p className="proofx__lead">Representative application examples showing how valve type, materials, actuation and support come together across different service conditions.</p>
+            <p className="proofx__hint">Select a sector to view a representative valve application example.</p>
+            <div className="proofx__tabs" role="tablist" aria-label="Case study examples">
+              {CASE_STUDIES.map((c, i) => (
+                <button
+                  key={c.id}
+                  role="tab"
+                  aria-selected={i === active}
+                  className={'proofx__tab' + (i === active ? ' on' : '')}
+                  onClick={() => setActive(i)}
+                >
+                  {c.sector}
+                </button>
+              ))}
+            </div>
           </div>
-          <Link className="ms-btn ms-btn--outline" to={routes.resources}>All resources <ArrowRight size={16} /></Link>
-        </div>
 
-        <div className="resx reveal">
-          {/* Catalog — technical document treatment */}
-          <article className="resx__card resx--catalog">
-            <div className="resx__cover">
-              <img
-                src={catalogCoverImg}
-                alt="Resilient Seated Butterfly Valves — Performance Series Catalog Cover"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
-              />
-              <span className="resx__filetag">{cat.fileType}</span>
+          <div className="proofx__card">
+            <div className="proofx__media">
+              <image-slot id="home-proof-media" shape="rect" fit="cover" position="left center" src={PROOF.image} placeholder="Project, facility or end-user photo" />
+              <span className="proofx__badge">Case Study</span>
             </div>
-            <div className="resx__body">
-              <div className="resx__eyebrow">CATALOG</div>
-              <h3 className="resx__title">{cat.latest}</h3>
-              <dl className="resx__spec">
-                <div><dt>Family</dt><dd>{cat.family}</dd></div>
-                <div><dt>Pages</dt><dd>{cat.pages}</dd></div>
-              </dl>
-              <div className="resx__actions">
-                <a className="link-arrow" href={catalogPdf} target="_blank" rel="noopener noreferrer"><Eye size={16} /> Preview</a>
-                <Link className="link-arrow" to={routes.catalog({ catalog: 'resilient-seated' })}>View Catalog <ArrowRight size={16} /></Link>
+            <div className="proofx__body">
+              <span className="proofx__tag">{cur.sector}</span>
+              <h3 className="proofx__title">{cur.title}</h3>
+              <p className="proofx__context">{cur.context}</p>
+              <div className="proofx__details">
+                <div className="proofx__detail"><strong>Challenge</strong> {cur.challenge}</div>
+                <div className="proofx__detail"><strong>Valve support</strong> {cur.support}</div>
+                <div className="proofx__detail"><strong>Outcome</strong> {cur.outcome}</div>
               </div>
             </div>
-          </article>
-
-          {/* Global Partners — about entry point */}
-          <article className="resx__card resx--marketing">
-            <div className="resx__visual">
-              <img
-                src={globalPartnersImg}
-                alt="Max-Seal valve packaging and global partner support"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
-              />
-            </div>
-            <div className="resx__body">
-              <div className="resx__eyebrow">GLOBAL PARTNERS</div>
-              <h3 className="resx__title">Partner support in key markets</h3>
-              <p className="resx__desc">Max-Seal works through U.S. operations, regional sales offices and partner relationships to support distributors and industrial customers across key markets.</p>
-              <dl className="resx__spec">
-                <div><dt>U.S. Facilities</dt><dd>2</dd></div>
-                <div><dt>Latin America Offices</dt><dd>3</dd></div>
-              </dl>
-              <div className="resx__actions">
-                <Link className="link-arrow" to={routes.about + '#global-partners'}>Explore Global Partners <ArrowRight size={16} /></Link>
-              </div>
-            </div>
-          </article>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function CompanyStoryPreview() {
-  return (
-    <section className="section aboutx-sec">
-      <div className="wrap">
-        <div className="aboutx reveal">
-          <div className="aboutx__media">
-            <img
-              src={homeAboutImg}
-              alt="Max-Seal facility and engineering team"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
-            />
-            <span className="corner-tick tl" />
-          </div>
-          <div className="aboutx__panel">
-            <div className="kicker">ABOUT MAX-SEAL</div>
-
-            <h2 className="aboutx__title">
-              A focused butterfly valve company with practical support
-            </h2>
-
-            <p className="aboutx__story">
-              Established in 2008, Max-Seal manufactures and supplies industrial butterfly valves, automated packages and customized solutions for distributors, OEMs and industrial customers.
-            </p>
-            <div className="aboutx__facts">
-              <div className="aboutx__fact"><div className="aboutx__fact-v">2008</div><div className="aboutx__fact-l">Established</div></div>
-              <div className="aboutx__fact"><div className="aboutx__fact-v">U.S.</div><div className="aboutx__fact-l">Operations</div></div>
-              <div className="aboutx__fact"><div className="aboutx__fact-v">Worldwide</div><div className="aboutx__fact-l">Partner support</div></div>
-            </div>
-            <div className="aboutx__cue">Product selection, automation support and application review are available through the Max-Seal team.</div>
-            <Link className="ms-btn ms-btn--primary aboutx__cta" to={routes.about}>Read the Full Story <ArrowRight size={16} /></Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function Conversion() {
   return (
@@ -554,9 +464,15 @@ export default function Home() {
       <ProductPreview />
       <IndustryPreview />
       <WhyMaxSeal />
-      <ProofStory />
-      <ResourcesPreview />
-      <CompanyStoryPreview />
+      {/* Case Studies section preserved for future use. Hidden from Home per
+          client feedback round — component, its content data (CASE_STUDIES
+          in src/data/data.js) and CSS (.proofx* in home.css) are all left
+          in place so it can be restored by uncommenting the line below. */}
+      {/* <CaseStudies /> */}
+      <ApplicationExplorer />
+      {/* Application Fit pipeline explorer preserved for future custom SVG
+          design. Hidden for now. */}
+      {/* <ApplicationFit /> */}
       <Conversion />
     </main>
   );

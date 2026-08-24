@@ -87,7 +87,7 @@ export default function HistoryTimeline() {
     <section className="section section--sunken" id="how-we-grew">
       <div className="wrap">
         <div className="kicker">HOW THE COMPANY GREW</div>
-        <h2 className="about__h" style={{ marginBottom: 'clamp(2rem,3.5vw,3rem)' }}>
+        <h2 className="about__h" style={{ marginBottom: 'clamp(1.25rem,2.2vw,1.9rem)' }}>
           From a focused start to worldwide supply
         </h2>
 
