@@ -38,7 +38,7 @@ function ProductsDropdown({ onNavigate }) {
           <Link
             key={c.id}
             className={'drop-link' + (c.id === openCat ? ' on' : '')}
-            to={routes.products({ category: c.id })}
+            to={routes.productCategory(c.slug)}
             onMouseEnter={() => setOpenCat(c.id)}
             onFocus={() => setOpenCat(c.id)}
             onClick={onNavigate}
@@ -46,7 +46,7 @@ function ProductsDropdown({ onNavigate }) {
             <strong>{c.name}</strong>
           </Link>
         ))}
-        <div className="drop-foot"><Link className="link-arrow" to={routes.products()} onClick={onNavigate}>Explore all products <ArrowRight size={17} /></Link></div>
+        <div className="drop-foot"><Link className="link-arrow" to={routes.exploreProducts} onClick={onNavigate}>Explore all products <ArrowRight size={17} /></Link></div>
       </div>
       {activeCategory && subs.length > 0 && (
         <div className="dropdown__col dropdown__col--sub" onMouseEnter={() => setOpenCat(activeCategory.id)}>

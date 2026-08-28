@@ -24,6 +24,12 @@ export const routes = {
      shows a subcategory's own Sub Category-2 tiles (the individual product
      series). Slugs come from the Categories/Subcategories catalog data. */
   productSubcategory: (categorySlug, subcategorySlug) => '/products/' + categorySlug + '/' + subcategorySlug,
+  /* Full-catalog sitemap page — deliberately distinct from `products` (the
+     guided selection/discovery experience). Kept under the /products/
+     namespace as a static segment so it still ranks above the dynamic
+     /products/:family route in React Router's matching, without needing a
+     separate top-level path. */
+  exploreProducts: '/products/explore-all',
   industries: (params) => withQuery('/industries', params),
   /* Individual industry pages were consolidated into the Industries matrix
      (see src/pages/Industries.jsx) — this now points every existing caller

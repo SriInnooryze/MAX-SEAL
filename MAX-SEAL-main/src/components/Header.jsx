@@ -36,7 +36,14 @@ export default function Header({ current }) {
             {NAV.map((n) => (
               <div key={n.id} className={'navitem' + (n.dropdown && open === n.id ? ' open' : '') + (current === n.id ? ' active' : '')}
                 onMouseEnter={() => n.dropdown ? enter(n.id) : leave()}>
-                <Link to={n.href}>{n.label}{n.dropdown && <ChevronDown size={15} />}</Link>
+                <Link
+                  to={n.href}
+                  aria-haspopup={n.dropdown ? 'true' : undefined}
+                  aria-expanded={n.dropdown ? open === n.id : undefined}
+                  onClick={n.dropdownOnly ? (e) => { e.preventDefault(); setOpen(o => (o === n.id ? null : n.id)); } : undefined}
+                >
+                  {n.label}{n.dropdown && <ChevronDown size={15} />}
+                </Link>
                 {n.dropdown && <DropdownContent kind={n.dropdown} onNavigate={() => setOpen(null)} isOpen={open === n.id} />}
               </div>
             ))}

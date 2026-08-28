@@ -1343,6 +1343,11 @@
 .selchip__clear { font-family: var(--font-body); font-size: 0.82rem; font-weight: 500; color: var(--azure-700); background: none; border: 0; cursor: pointer; padding: 0.3rem 0.4rem; }
 .selchip__clear:hover { text-decoration: underline; }
 
+/* Explore All Products — stacked per-category sections (sitemap-style
+   full-catalog page, distinct from the single-phase Products.jsx views). */
+.catalog-block { padding-bottom: 3rem; margin-bottom: 3rem; border-bottom: 1px solid var(--color-border); }
+.catalog-block:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
+
 /* Match summary */
 .matchsum { margin-bottom: 1.4rem; }
 .matchsum__count { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem); line-height: 1.08; letter-spacing: -0.01em; color: var(--graphite-900); }

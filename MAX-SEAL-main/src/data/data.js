@@ -16,7 +16,10 @@ export const HERO_INDUSTRY_IMAGE = '/assets/maxseal/industries/hero.png';
 /* Simplified primary navigation. Dropdowns are previews, not full mega-menus. */
 export const NAV = [
   { id: 'home', label: 'Home', href: routes.home },
-  { id: 'products', label: 'Products', href: routes.products(), dropdown: 'products' },
+  // dropdownOnly: clicking the label itself only opens/closes the dropdown
+  // (see Header.jsx) instead of navigating to /products — the dropdown's
+  // own "Explore all products" link is the way into the product pages.
+  { id: 'products', label: 'Products', href: routes.products(), dropdown: 'products', dropdownOnly: true },
   { id: 'industries', label: 'Industries', href: routes.industries(), dropdown: 'industries' },
   { id: 'solutions', label: 'Solutions', href: routes.solutions },
   { id: 'resources', label: 'Resources', href: routes.resources, dropdown: 'resources' },

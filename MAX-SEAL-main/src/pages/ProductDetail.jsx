@@ -286,7 +286,7 @@ export default function ProductDetail() {
                   {f.sku && <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--steel-500)' }}>SKU: {f.sku}</span>}
                 </div>
                 <h1 className="pdet__name">{f.name}</h1>
-                <p className="pdet__purpose">{f.short}</p>
+                <p className="pdet__purpose">{f.short || 'Details coming soon — contact our engineers for current availability and specifications.'}</p>
                 {(f.sizes || f.rating || f.application || automationLabel) && (
                   <dl className="pstage2__specs" style={{ marginTop: '1.4rem' }}>
                     {f.sizes && <div><dt>Size range</dt><dd>{f.sizes}</dd></div>}

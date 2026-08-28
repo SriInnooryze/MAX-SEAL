@@ -22,11 +22,11 @@ const MOBILE_NAV = [
       ...CATEGORIES.filter(c => c.status === 'active').map(c => ({
         id: 'cat-' + c.id,
         label: c.name,
-        href: routes.products({ category: c.id }),
+        href: routes.productCategory(c.slug),
         children: SUBCATEGORIES.filter(s => s.categoryId === c.id && s.status === 'active')
           .map(s => ({ label: s.name, href: subcategoryTarget(c, s) })),
       })),
-      { id: 'all-products', label: 'Explore all products', href: routes.products(), all: true },
+      { id: 'all-products', label: 'Explore all products', href: routes.exploreProducts, all: true },
     ]
   },
   {

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import SiteLayout from '../components/layout/SiteLayout';
 import Home from '../pages/Home';
 import Products from '../pages/Products';
+import ExploreAllProducts from '../pages/ExploreAllProducts';
 import ProductSubcategory from '../pages/ProductSubcategory';
 import ProductOrCategory from '../pages/ProductOrCategory';
 import Industries from '../pages/Industries';
@@ -40,6 +41,7 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<SiteLayout current="home"><Home /></SiteLayout>} />
         <Route path="/products" element={<SiteLayout current="products"><Products /></SiteLayout>} />
+        <Route path="/products/explore-all" element={<SiteLayout current="products"><ExploreAllProducts /></SiteLayout>} />
         <Route path="/products/:categorySlug/:subcategorySlug" element={<SiteLayout current="products"><ProductSubcategory /></SiteLayout>} />
         <Route path="/products/:family" element={<SiteLayout current="products"><ProductOrCategory /></SiteLayout>} />
         <Route path="/industries" element={<SiteLayout current="industries"><Industries /></SiteLayout>} />

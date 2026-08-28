@@ -190,13 +190,22 @@ checkUnique('Subcategories', subcategories, 'Id');
 checkUnique('Subcategories', subcategories, 'Slug');
 checkFK('Subcategories', subcategories, 'CategoryId', categoryIds);
 checkClosedValue('Subcategories', subcategories, 'Status', CATEGORY_STATUS_VALUES);
-checkAsset('Subcategories', subcategories, 'ImagePath', { required: true });
+// Not required: a subcategory approved by name only (no image supplied yet)
+// still needs to exist so its products are reachable — <image-slot> already
+// renders a graceful placeholder when ImagePath is blank (see ProductCategory
+// / ProductSubcategory pages), so this is never a broken-image state.
+checkAsset('Subcategories', subcategories, 'ImagePath', { required: false });
 
 // Sizes/Rating are intentionally NOT required: a product's dimensional/
 // pressure spec is only entered once a source document confirms it, per the
 // "never invent technical specifications" rule — a blank cell means the
 // Product Detail page hides that row instead of showing a fabricated value.
-requireFields('Products', products, ['Id', 'SubcategoryId', 'SKU', 'Code', 'Name', 'MenuName', 'MenuDesc', 'Short', 'ImagePath', 'Need', 'Where', 'Application']);
+// MenuDesc/Short/Need/Where/Application/ImagePath are likewise NOT required:
+// a product name approved ahead of its content/image still needs a card and
+// a detail page — ProductDetail.jsx already hides every section (Overview,
+// Technical Data, Applications, Materials, Documents) whose backing field is
+// blank, and <image-slot> shows a placeholder instead of a broken image.
+requireFields('Products', products, ['Id', 'SubcategoryId', 'SKU', 'Code', 'Name', 'MenuName']);
 checkUnique('Products', products, 'Id');
 checkUnique('Products', products, 'SKU');
 checkFK('Products', products, 'SubcategoryId', subcategoryIds);
@@ -205,7 +214,7 @@ checkVocab('Products', products, 'Types', FACETS_VALUES.types);
 checkVocab('Products', products, 'Apps', FACETS_VALUES.apps);
 checkVocab('Products', products, 'Service', FACETS_VALUES.service);
 checkVocab('Products', products, 'Automation', FACETS_VALUES.automation);
-checkAsset('Products', products, 'ImagePath', { required: true });
+checkAsset('Products', products, 'ImagePath', { required: false });
 
 requireFields('ProductSpecifications', specifications, ['ProductId', 'Group', 'Label', 'Value']);
 checkFK('ProductSpecifications', specifications, 'ProductId', productIds);
@@ -368,6 +377,7 @@ const outProducts = activeProducts.map((p) => {
   return {
     id: p.Id, sku: p.SKU, code: p.Code, name: p.Name, menuName: p.MenuName, menuDesc: p.MenuDesc, short: p.Short,
     image: p.ImagePath, need: p.Need, where: p.Where, application: p.Application, sizes: p.Sizes, rating: p.Rating,
+    sourceFile: p.SourceFile || '',
     subcategoryId: p.SubcategoryId, categoryId: cat ? cat.Id : null,
     types: parseList(p.Types), apps: parseList(p.Apps),
     industries: productIndustries.get(p.Id) || [], service: parseList(p.Service), automation: parseList(p.Automation),
