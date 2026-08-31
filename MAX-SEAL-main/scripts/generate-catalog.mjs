@@ -253,6 +253,7 @@ requireFields('PriceLists', priceLists, ['Id', 'Title', 'ProductId']);
 checkUnique('PriceLists', priceLists, 'Id');
 checkFK('PriceLists', priceLists, 'ProductId', productIds, { allowAll: true });
 checkClosedValue('PriceLists', priceLists, 'Access', PRICE_ACCESS_VALUES);
+checkAsset('PriceLists', priceLists, 'PdfAssetPath', { required: false });
 
 requireFields('ResourceLibs', resourceLibs, ['Id', 'Label', 'Desc']);
 checkUnique('ResourceLibs', resourceLibs, 'Id');
@@ -411,6 +412,7 @@ const outDocs = docs.map((d) => {
 const outPriceLists = priceLists.map((p) => ({
   id: p.Id, title: p.Title, fam: p.ProductId === 'ALL' ? 'All families' : (productById.get(p.ProductId)?.Name || ''),
   effective: p.Effective, version: p.Version, updated: p.Updated, access: p.Access, size: p.SizeLabel,
+  pdfAsset: p.PdfAssetPath || null,
 }));
 
 const outResourceLibs = resourceLibs.map((r) => ({
