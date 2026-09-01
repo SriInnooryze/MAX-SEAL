@@ -42,8 +42,6 @@ export default function Catalog() {
     .filter(d => !q || (d.title + ' ' + d.fam + ' ' + d.type).toLowerCase().includes(q.toLowerCase()))
     .sort((a, b) => sort === 'title' ? a.title.localeCompare(b.title) : 0), [q, fam, type, sort]);
 
-  const recent = docs.slice(0, 3);
-
   return (
     <main>
         <PageHero kicker="Catalog" title="Technical document library"
@@ -53,78 +51,6 @@ export default function Catalog() {
 
         <section className="section">
           <div className="wrap">
-            {/* Featured catalog */}
-            <div className="cat-feature">
-              <div className="cat-feature__cover">
-                {featured.coverAsset ? (
-                  <img
-                    src={featured.coverAsset}
-                    alt={featured.title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
-                  />
-                ) : (
-                  <image-slot id={'cat-feature-cover-' + featured.id} shape="rect" fit="cover" placeholder="Featured catalog cover" />
-                )}
-                <span className="resx__filetag">{featured.fileType || 'PDF'}</span>
-              </div>
-              <div className="cat-feature__body">
-                <div className="kicker">FEATURED CATALOGS</div>
-                <h2 className="cat-feature__t">{featured.title}</h2>
-                <p className="cat-feature__d">
-                  {featured.desc || `The current product document for the ${featured.fam} family. Preview the pages or download the PDF.`}
-                </p>
-                <dl className="pstage2__specs" style={{ maxWidth: '420px' }}>
-                  <div><dt>Family</dt><dd>{featured.fam}</dd></div>
-                  <div><dt>Updated</dt><dd>{featured.date}</dd></div>
-                  <div><dt>Pages</dt><dd>{featured.pages}</dd></div>
-                  <div><dt>File</dt><dd>{featured.fileType || 'PDF'} · {featured.size}</dd></div>
-                </dl>
-                <div className="cat-feature__actions">
-                  {featured.pdfAsset ? (
-                    <a className="ms-btn ms-btn--primary" href={featured.pdfAsset} target="_blank" rel="noopener noreferrer">
-                      <Eye size={16} /> Preview catalog
-                    </a>
-                  ) : (
-                    <button className="ms-btn ms-btn--primary" onClick={() => setDoc(featured)}>
-                      <Eye size={16} /> Preview catalog
-                    </button>
-                  )}
-                  {featured.pdfAsset ? (
-                    <a className="ms-btn ms-btn--outline" href={featured.pdfAsset} download>
-                      <Download size={16} /> Download PDF
-                    </a>
-                  ) : (
-                    <a className="ms-btn ms-btn--outline" href="#" onClick={(e) => { e.preventDefault(); setDoc(featured); }}>
-                      <Download size={16} /> Download PDF
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Recently updated */}
-            <div className="kicker" style={{ margin: '0 0 1rem' }}>Recently updated</div>
-            <div className="cat-recent">
-              {recent.map(d => (
-                <button className="cat-recent__card" key={d.id} onClick={() => selectCatalogDoc(d)}>
-                  <div className="cat-recent__thumb">
-                    {d.coverAsset ? (
-                      <img
-                        src={d.coverAsset}
-                        alt={d.title}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
-                      />
-                    ) : (
-                      <image-slot id={'cat-rec-' + d.id} shape="rect" fit="cover" placeholder={d.type} />
-                    )}
-                  </div>
-                  <div className="cat-recent__type">{d.type}</div>
-                  <div className="cat-recent__t">{d.title}</div>
-                  <div className="cat-recent__m">Updated {d.date} · PDF · {d.size}</div>
-                </button>
-              ))}
-            </div>
-
             {/* Search + filters */}
             <div className="cat-controls">
               <div className="cat-search">
@@ -151,14 +77,19 @@ export default function Catalog() {
             <div className="doc-list">
               {shown.map(d => {
                 const isSelected = d.slug === featured.slug;
+                const openDoc = () => {
+                  selectCatalogDoc(d);
+                  if (d.pdfAsset) window.open(d.pdfAsset, '_blank', 'noopener,noreferrer');
+                  else setDoc(d);
+                };
                 return (
                   <div
                     className={'doc-row' + (isSelected ? ' doc-row--selected' : '')}
                     key={d.id}
-                    onClick={() => selectCatalogDoc(d)}
+                    onClick={openDoc}
                     role="button"
                     tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === 'Enter') selectCatalogDoc(d); }}
+                    onKeyDown={(e) => { if (e.key === 'Enter') openDoc(); }}
                   >
                     <div className="doc-ic"><FileText size={20} /></div>
                     <div className="doc-main">
@@ -172,17 +103,30 @@ export default function Catalog() {
                     </div>
                     <span className="doc-fam">{d.fam}</span>
                     <div className="doc-actions">
-                      <button
-                        className="doc-mini"
-                        aria-label="Preview"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          selectCatalogDoc(d);
-                          if (!d.pdfAsset) setDoc(d);
-                        }}
-                      >
-                        <Eye size={17} />
-                      </button>
+                      {d.pdfAsset ? (
+                        <a
+                          className="doc-mini"
+                          aria-label="Preview"
+                          href={d.pdfAsset}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => { e.stopPropagation(); selectCatalogDoc(d); }}
+                        >
+                          <Eye size={17} />
+                        </a>
+                      ) : (
+                        <button
+                          className="doc-mini"
+                          aria-label="Preview"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            selectCatalogDoc(d);
+                            setDoc(d);
+                          }}
+                        >
+                          <Eye size={17} />
+                        </button>
+                      )}
                       {d.pdfAsset ? (
                         <a
                           className="doc-mini"

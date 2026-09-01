@@ -31,7 +31,7 @@ export default function PriceLists() {
                     <div className="pl-cell" data-k="Access"><span className={'pl-badge' + (open ? ' pl-badge--open' : '')}>{open ? 'Available to download' : 'Request access'}</span></div>
                     <div className="pl-act">
                       {open
-                        ? <a className="ms-btn ms-btn--primary ms-btn--sm" href={p.pdfAsset || '#'} target="_blank" rel="noopener noreferrer"><Download size={15} /> Download</a>
+                        ? <a className="ms-btn ms-btn--primary ms-btn--sm" href={p.pdfAsset} download><Download size={15} /> Download</a>
                         : <Link className="ms-btn ms-btn--outline ms-btn--sm" to={routes.enquiry({ intent: 'pricelist' })}>Request access</Link>}
                     </div>
                   </div>
