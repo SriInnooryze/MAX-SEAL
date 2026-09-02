@@ -2,7 +2,6 @@ import { routes } from '../router/paths';
 
 export const SOLUTIONS_TABS = [
   { id: 'applications', label: 'Applications' },
-  { id: 'series', label: 'Product Series' },
   { id: 'services', label: 'Engineering & Services' },
   { id: 'affiliates', label: 'Partners & Affiliates' },
 ];
@@ -130,19 +129,23 @@ export const SOLUTIONS_SERIES = [
 export const SOLUTIONS_SERVICES = [
   {
     title: 'Custom Stem Extensions',
-    desc: 'Engineered stem and shaft extensions for insulated pipes, buried services, or high-temperature lines. Built to match your specific torque and height needs.'
+    desc: 'Engineered stem and shaft extensions for insulated pipes, buried services, or high-temperature lines. Built to match your specific torque and height needs.',
+    iconType: 'sliders'
   },
   {
     title: 'Mounting Brackets & Hardware',
-    desc: 'Custom mounting brackets, couplings, and adapter plates designed and machined in-house for seamless valve-to-actuator pairing.'
+    desc: 'Custom mounting brackets, couplings, and adapter plates designed and machined in-house for seamless valve-to-actuator pairing.',
+    iconType: 'layers'
   },
   {
     title: 'Valve & Actuator Repair',
-    desc: 'Full refurbishment, seat replacement, actuator recalibration, and leak testing services at our Lumberton and Houston depots.'
+    desc: 'Full refurbishment, seat replacement, actuator recalibration, and leak testing services at our Lumberton and Houston depots.',
+    iconType: 'settings'
   },
   {
     title: 'Custom Testing & QA',
-    desc: 'API 598 pressure testing, shell/leak tests, and custom certification reports for compliance and severe service verification.'
+    desc: 'API 598 pressure testing, shell/leak tests, and custom certification reports for compliance and severe service verification.',
+    iconType: 'gauge'
   }
 ];
 

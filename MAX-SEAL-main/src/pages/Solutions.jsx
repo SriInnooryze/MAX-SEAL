@@ -1,31 +1,18 @@
 /* Max-Seal — Solutions page. */
 import { useState } from 'react';
 import useSiteChrome from '../hooks/useSiteChrome';
-import useRecommendation from '../hooks/useRecommendation';
 
 import HeroSection from '../components/solutions/HeroSection';
 import SolutionTabs from '../components/solutions/SolutionTabs';
 import ApplicationsTab from '../components/solutions/ApplicationsTab';
-import ProductSeriesTab from '../components/solutions/ProductSeriesTab';
 import EngineeringServicesTab from '../components/solutions/EngineeringServicesTab';
 import PartnersTab from '../components/solutions/PartnersTab';
-import QuickSelectionAssistant from '../components/solutions/QuickSelectionAssistant';
 import VideoSection from '../components/solutions/VideoSection';
 import ClosingCTA from '../components/solutions/ClosingCTA';
 
 export default function Solutions() {
   useSiteChrome();
   const [activeTab, setActiveTab] = useState('applications');
-
-  const {
-    sizingMedia,
-    setSizingMedia,
-    sizingPressure,
-    setSizingPressure,
-    sizingOperation,
-    setSizingOperation,
-    recommendation,
-  } = useRecommendation();
 
   return (
     <>
@@ -159,27 +146,20 @@ export default function Solutions() {
           flex: 1;
         }
 
-        /* Services Layout */
-        .services-grid {
+        /* Engineering & Services — reuses .solution-card for the card shell
+           (colors, border, hover) and only defines the 2x2 grid shape here:
+           two equal columns on tablet/desktop, one column on mobile. */
+        .services-grid-2x2 {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          grid-template-columns: repeat(2, 1fr);
           gap: 2rem;
+          margin-top: 1rem;
         }
-        .service-item {
-          border-left: 2px solid var(--azure-500);
-          padding-left: 1.5rem;
-        }
-        .service-item h4 {
-          font-size: 1.15rem;
-          font-weight: 600;
-          color: var(--graphite-900);
-          margin: 0 0 0.5rem 0;
-        }
-        .service-item p {
-          color: var(--graphite-700);
-          font-size: 0.92rem;
-          line-height: 1.6;
-          margin: 0;
+        @media (max-width: 768px) {
+          .services-grid-2x2 {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
         }
 
         /* Affiliates Section */
@@ -391,28 +371,17 @@ export default function Solutions() {
 
             {/* Tab Contents */}
             {activeTab === 'applications' && <ApplicationsTab />}
-            {activeTab === 'series' && <ProductSeriesTab />}
             {activeTab === 'services' && <EngineeringServicesTab />}
             {activeTab === 'affiliates' && <PartnersTab />}
 
-            {/* Quick Selection Assistant */}
-            <QuickSelectionAssistant
-              sizingMedia={sizingMedia}
-              onMediaChange={setSizingMedia}
-              sizingPressure={sizingPressure}
-              onPressureChange={setSizingPressure}
-              sizingOperation={sizingOperation}
-              onOperationChange={setSizingOperation}
-              recommendation={recommendation}
-            />
-
             {/* Video Demos Section */}
             <VideoSection />
-
-            {/* Closing CTA */}
-            <ClosingCTA />
           </div>
         </section>
+
+        {/* Closing CTA — rendered outside .wrap so its .convert background
+            runs full-bleed, matching Home and About's closing sections. */}
+        <ClosingCTA />
       </main>
     </>
   );

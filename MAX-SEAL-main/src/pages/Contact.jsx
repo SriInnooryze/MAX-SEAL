@@ -45,13 +45,21 @@ export default function Contact() {
               </div>
               <div className="contact-map"><image-slot id="contact-map" shape="rect" fit="cover" src={contactHero} placeholder="Map or facility photo" /></div>
             </div>
-            <div className="contact-cta">
-              <h3>Have a specific requirement?</h3>
-              <p>Start an enquiry and choose request pricing, ask a technical question, general enquiry or a price list request. One form, the right team. We aim to respond within one business day.</p>
-              <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-                <Link className="ms-btn ms-btn--primary" to={routes.enquiry({ intent: 'pricing' })}>Request a Quote <ArrowRight size={16} /></Link>
-                <Link className="ms-btn ms-btn--outline" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask a technical question</Link>
-              </div>
+          </div>
+        </section>
+
+        {/* Reuses Home's .convert closing-CTA pattern (src/styles/home.css)
+            so this reads as the same shared site pattern used on Home and
+            About's closing sections, instead of the page-specific light
+            .contact-cta treatment it replaced. */}
+        <section className="convert">
+          <div className="wrap convert__inner reveal">
+            <div className="kicker kicker--ondark">ENQUIRIES</div>
+            <h2 className="convert__t">Have a specific requirement?</h2>
+            <p className="convert__lead">Start an enquiry and choose request pricing, ask a technical question, general enquiry or a price list request. One form, the right team. We aim to respond within one business day.</p>
+            <div className="convert__actions">
+              <Link className="ms-btn ms-btn--primary" to={routes.enquiry({ intent: 'pricing' })}>Request a Quote <ArrowRight size={16} /></Link>
+              <Link className="ms-btn ms-btn--on-dark" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask a technical question</Link>
             </div>
           </div>
         </section>
