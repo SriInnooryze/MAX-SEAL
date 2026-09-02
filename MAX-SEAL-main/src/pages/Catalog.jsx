@@ -8,7 +8,10 @@ import { FileText, Download, Eye, X, ArrowRight, Search, Sliders } from '../icon
 import { routes } from '../router/paths';
 
 export default function Catalog() {
-  const docs = DOCS;
+  // Product Detail pages read DOCS directly (unfiltered) — this page only
+  // shows the curated subset marked ShowInCatalog in the workbook, so
+  // trimming this list never removes a document from its product page.
+  const docs = DOCS.filter(d => d.showInCatalog !== false);
   const [searchParams, setSearchParams] = useSearchParams();
   const catalogSlug = searchParams.get('catalog');
 

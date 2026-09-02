@@ -406,6 +406,8 @@ const outDocs = docs.map((d) => {
     id: d.Id, slug: d.Slug, type: d.Type, title: d.Title, fam: primaryName, date: d.Date, size: d.SizeLabel,
     pages: Number(d.Pages) || 0, pdfAsset: d.PdfAssetPath || null, coverAsset: d.CoverAssetPath || null,
     familyIds: familyIdsForDoc,
+    // Blank/missing defaults to shown, so existing rows stay visible unless explicitly opted out.
+    showInCatalog: d.ShowInCatalog === '' || d.ShowInCatalog == null ? true : isTrue(d.ShowInCatalog),
   };
 });
 
