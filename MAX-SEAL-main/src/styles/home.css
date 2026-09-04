@@ -738,17 +738,24 @@
 .resx__body { padding: 1.5rem 1.6rem 1.7rem; display: flex; flex-direction: column; flex: 1; }
 .resx__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.4rem; margin-top: auto; padding-top: 1.3rem; }
 .resx__actions .link-arrow { font-size: 0.9rem; }
-/* Catalog — technical document cover */
-.resx--catalog .resx__cover { position: relative; aspect-ratio: 4/3; background: linear-gradient(150deg, var(--titanium-200), var(--titanium-100)); border-bottom: 1px solid var(--color-border); }
-.resx--catalog .resx__cover image-slot { width: 100%; height: 100%; display: block; }
+/* Catalog — technical document cover.
+   min-height:0 defeats the flex item's automatic min-size: the cover image
+   is a square (1024x1024) source, and without this a column-flex item's
+   min-content contribution from that square image would win over the
+   intended aspect-ratio, silently inflating the box back toward square. */
+.resx--catalog .resx__cover { position: relative; aspect-ratio: 3/2; min-height: 0; background: linear-gradient(150deg, var(--titanium-200), var(--titanium-100)); border-bottom: 1px solid var(--color-border); }
 .resx__filetag { position: absolute; top: 12px; right: 12px; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; color: #fff; background: rgba(12,15,17,0.74); padding: 0.28rem 0.55rem; }
 .resx__spec { display: grid; grid-template-columns: repeat(3, auto); gap: 0.4rem 1.6rem; margin: 1rem 0 0; font-family: var(--font-mono); justify-content: start; }
 .resx__spec dt { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-400); }
 .resx__spec dd { margin: 2px 0 0; font-size: 0.86rem; color: var(--graphite-900); }
 /* Marketing — visual content treatment */
-.resx--marketing .resx__visual { position: relative; aspect-ratio: 4/3; background: var(--navy-800); overflow: hidden; }
-.resx--marketing .resx__visual image-slot { width: 100%; height: 100%; display: block; }
+.resx--marketing .resx__visual { position: relative; aspect-ratio: 4/3; min-height: 0; background: var(--navy-800); overflow: hidden; }
 .resx--marketing .resx__visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,15,17,0.86), rgba(12,15,17,0) 64%); }
+/* Document/brochure badge standing in for an actual marketing photo — reuses
+   the same azure-tinted circle treatment as .resx__doc-icon on the Price
+   Lists card, just larger, so it reads as a deliberate visual, not an empty
+   placeholder. */
+.resx__visual-icon { position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%); z-index: 1; width: 64px; height: 64px; display: grid; place-items: center; background: rgba(0,159,218,0.16); color: var(--azure-300); border-radius: 50%; }
 .resx__visual-cap { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 1.2rem 1.4rem; }
 .resx__type { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-300); }
 .resx__desc { font-size: 0.95rem; color: var(--steel-600); line-height: 1.55; font-weight: var(--weight-regular); margin-top: 0.6rem; }

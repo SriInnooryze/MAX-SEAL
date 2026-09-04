@@ -48,6 +48,25 @@ function IndustriesMatrix() {
   // targets the .mx grid itself, so the selected industry is what actually
   // ends up on screen.
   const matrixRef = useRef(null);
+  const indListRef = useRef(null);
+
+  // Keeps the active industry visible in the horizontal (mobile) / vertical
+  // (desktop) .mx__list regardless of how it became active — a click inside
+  // the list, arriving via ?industry= from the header/mobile-nav dropdown,
+  // or a direct URL/refresh all funnel through activeInd, so one effect
+  // covers every case instead of a per-click scrollIntoView that only fired
+  // for in-list clicks. Scrolls the list's own scrollLeft directly (not
+  // scrollIntoView) so this can never drag the page's vertical scroll along
+  // with it — on desktop .mx__list has no horizontal overflow, so the same
+  // math simply clamps to 0 and no-ops.
+  useEffect(() => {
+    const container = indListRef.current;
+    const activeBtn = container && container.querySelector('.mx__ind.on');
+    if (!container || !activeBtn) return;
+    const target = activeBtn.offsetLeft + activeBtn.offsetWidth / 2 - container.clientWidth / 2;
+    const max = container.scrollWidth - container.clientWidth;
+    container.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
+  }, [activeInd]);
 
   // Auto-scroll to the matrix only when the page was reached with a valid
   // ?industry= — never for a bare /industries visit, and never for an
@@ -107,10 +126,10 @@ function IndustriesMatrix() {
               {/* Level 1 — industries */}
               <div className="mx__col mx__col--ind">
                 <div className="mx__coltitle">Industry</div>
-                <div className="mx__list" role="tablist" aria-label="Industries">
+                <div className="mx__list" role="tablist" aria-label="Industries" ref={indListRef}>
                   {INDUSTRIES.map(x => (
                     <button key={x.id} role="tab" aria-selected={x.id === activeInd}
-                      className={'mx__ind' + (x.id === activeInd ? ' on' : '')} onClick={(e) => { selectInd(x.id); if (e.currentTarget) e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }}>
+                      className={'mx__ind' + (x.id === activeInd ? ' on' : '')} onClick={() => selectInd(x.id)}>
                       <span className="mx__ind-bar" />
                       <span className="mx__ind-name">{x.name}</span>
                       <span className="mx__ind-arr"><ChevronRight size={16} /></span>

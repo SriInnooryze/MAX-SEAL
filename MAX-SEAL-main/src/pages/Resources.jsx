@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import PageHero from '../components/PageHero';
 import { RESOURCE_LIBS, DOCS, PRICE_LISTS } from '../data/data';
-import { ArrowRight, FileText, Eye } from '../icons/icons';
+import { ArrowRight, FileText, Eye, Layers } from '../icons/icons';
 import { routes } from '../router/paths';
 import catalogPdf from '../assets/home/Resilient Seated Butterfly Valves — Performance Series.pdf';
 import catalogCoverImg from '../assets/home/performance-series-catalog-cover.png';
@@ -20,7 +20,7 @@ export default function Resources() {
           crumbs={[{ label: 'Home', href: routes.home }, { label: 'Resources' }]}
           mediaId="resources-hero" mediaPlaceholder="Documents visual" />
 
-        <section className="section">
+        <section className="section resx-landing-section">
           <div className="wrap">
             <div className="resx resx--landing">
               {/* Catalog — technical document treatment */}
@@ -51,7 +51,7 @@ export default function Resources() {
               {/* Marketing — visual content treatment */}
               <article className="resx__card resx--marketing">
                 <div className="resx__visual">
-                  <image-slot id="res-marketing-visual" shape="rect" fit="cover" placeholder="Brochure or application image" />
+                  <div className="resx__visual-icon"><Layers size={30} /></div>
                   <div className="resx__visual-cap">
                     <span className="resx__type">{mkt.resType}</span>
                     <h2 className="resx__title resx__title--ondark">Approved sales, application and distributor materials</h2>

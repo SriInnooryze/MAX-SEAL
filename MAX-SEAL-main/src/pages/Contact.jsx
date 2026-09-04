@@ -4,12 +4,14 @@ import PageHero from '../components/PageHero';
 import { COMPANY } from '../data/data';
 import { Phone, Mail, MessageCircle, MapPin, FileText, ArrowRight, Headset } from '../icons/icons';
 import { routes } from '../router/paths';
+import useSiteChrome from '../hooks/useSiteChrome';
 import contactHero from '../assets/contact/Contact-Hero.png';
 
 export default function Contact() {
+  useSiteChrome();
   return (
-    <main>
-        <PageHero kicker="Contact" title="Talk to Max-Seal"
+    <main className="contact-page">
+        <PageHero className="page-hero--slim" kicker="Contact" title="Talk to Max-Seal"
           lead="Reach our team by phone, email or WhatsApp. For pricing or technical support, start an enquiry and choose your intent."
           crumbs={[{ label: 'Home', href: routes.home }, { label: 'Contact' }]}
           mediaId="contact-hero" mediaSrc={contactHero} mediaPlaceholder="Facility visual" />
@@ -31,15 +33,17 @@ export default function Contact() {
                 </div>
                 <div className="contact-block">
                   <div className="contact-block__ic"><MessageCircle size={20} /></div>
-                  <div><h4>WhatsApp</h4><a href="#">Message our team</a></div>
+                  <div><h4>WhatsApp</h4><a href="#" aria-label="Message our team on WhatsApp">Message our team</a></div>
                 </div>
                 <div className="contact-block">
                   <div className="contact-block__ic"><MapPin size={20} /></div>
                   <div>
                     <h4>US locations</h4>
-                    {COMPANY.facilities.map(f => (
-                      <p key={f.id}>{f.addressLine || `${f.city}, ${f.state}`}</p>
-                    ))}
+                    <div className="contact-locs">
+                      {COMPANY.facilities.map(f => (
+                        <p key={f.id}>{f.addressLine || `${f.city}, ${f.state}`}</p>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
