@@ -1,10 +1,11 @@
 /* Max-Seal — Marketing Resources: visual library. */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import PageHero from '../components/PageHero';
 import DocDrawer from '../components/DocDrawer';
 import { DOCS } from '../data/data';
 import { Eye, Download, X, Search, FileText } from '../icons/icons';
 import { routes } from '../router/paths';
+import useCenterActiveInScroller from '../hooks/useCenterActiveInScroller';
 
 export default function MarketingResources() {
   const base = DOCS.filter(d => ['Brochure', 'Application Guide', 'Selection Guide'].includes(d.type));
@@ -22,16 +23,7 @@ export default function MarketingResources() {
   // On narrow screens .fchips scrolls horizontally (see .mkt-section .fchip
   // in pages.css) — without this, selecting a chip near the edge (e.g.
   // "Application Guide") left it clipped instead of scrolling into view.
-  // Scrolls the chip row's own scrollLeft directly rather than
-  // scrollIntoView, so it can never drag the page's vertical scroll with it.
-  useEffect(() => {
-    const container = chipsRef.current;
-    const activeChip = container && container.querySelector('.fchip.on');
-    if (!container || !activeChip) return;
-    const target = activeChip.offsetLeft + activeChip.offsetWidth / 2 - container.clientWidth / 2;
-    const max = container.scrollWidth - container.clientWidth;
-    container.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
-  }, [type]);
+  useCenterActiveInScroller(chipsRef, '.fchip.on', type);
   const featured = items.find(i => i.type === 'Brochure') || items[0];
   const shown = items.filter(i => (type === 'All' || i.type === type) && (!q || (i.title + ' ' + i.fam).toLowerCase().includes(q.toLowerCase())));
 

@@ -4,6 +4,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
+import useCenterActiveInScroller from '../hooks/useCenterActiveInScroller';
 import PageHero from '../components/PageHero';
 import { INDUSTRIES, FAMILIES, APP_NEEDS, HERO_INDUSTRY_IMAGE } from '../data/data';
 import { ArrowRight, Headset, ChevronRight, Layers } from '../icons/icons';
@@ -55,18 +56,8 @@ function IndustriesMatrix() {
   // the list, arriving via ?industry= from the header/mobile-nav dropdown,
   // or a direct URL/refresh all funnel through activeInd, so one effect
   // covers every case instead of a per-click scrollIntoView that only fired
-  // for in-list clicks. Scrolls the list's own scrollLeft directly (not
-  // scrollIntoView) so this can never drag the page's vertical scroll along
-  // with it — on desktop .mx__list has no horizontal overflow, so the same
-  // math simply clamps to 0 and no-ops.
-  useEffect(() => {
-    const container = indListRef.current;
-    const activeBtn = container && container.querySelector('.mx__ind.on');
-    if (!container || !activeBtn) return;
-    const target = activeBtn.offsetLeft + activeBtn.offsetWidth / 2 - container.clientWidth / 2;
-    const max = container.scrollWidth - container.clientWidth;
-    container.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
-  }, [activeInd]);
+  // for in-list clicks.
+  useCenterActiveInScroller(indListRef, '.mx__ind.on', activeInd);
 
   // Auto-scroll to the matrix only when the page was reached with a valid
   // ?industry= — never for a bare /industries visit, and never for an

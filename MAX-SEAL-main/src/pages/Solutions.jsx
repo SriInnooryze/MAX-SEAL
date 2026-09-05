@@ -28,16 +28,38 @@ export default function Solutions() {
         }
 
         /* Premium Tabbed Navigation Styles */
+        .solutions-tabs-nav-wrap {
+          position: relative;
+          margin-bottom: 2.5rem;
+        }
         .solutions-tabs-nav {
           display: flex;
           gap: 0.5rem;
           border-bottom: 1px solid var(--steel-200);
-          margin-bottom: 2.5rem;
           overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scroll-behavior: smooth;
           scrollbar-width: none; /* Firefox */
         }
         .solutions-tabs-nav::-webkit-scrollbar {
           display: none; /* Safari/Chrome */
+        }
+        /* Visible cue that the row scrolls — a right-edge fade, only shown
+           once content actually overflows (mobile widths), so it's obvious
+           "Partners & Affiliates" is reachable by swiping instead of the tab
+           silently vanishing off-screen with no hint. */
+        .solutions-tabs-nav-wrap::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 1px;
+          width: 2.5rem;
+          background: linear-gradient(to right, rgba(255,255,255,0), var(--paper-0));
+          pointer-events: none;
+        }
+        @media (min-width: 769px) {
+          .solutions-tabs-nav-wrap::after { display: none; }
         }
         .solutions-tab-btn {
           background: none;
@@ -68,7 +90,6 @@ export default function Solutions() {
           height: 2px;
           background: var(--azure-500);
         }
-
         .solutions-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
