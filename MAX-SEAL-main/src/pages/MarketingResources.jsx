@@ -1,7 +1,12 @@
 /* Max-Seal — Marketing Resources: visual library. */
 import { useState, useRef } from 'react';
 import PageHero from '../components/PageHero';
-import DocDrawer from '../components/DocDrawer';
+// TEMPORARY: DocDrawer (the side preview panel) and the /resources/document-preview
+// route are intentionally not used on this page right now — client asked for
+// Preview/Download to act directly on the PDF instead of opening that panel.
+// DocDrawer itself is untouched and still used by Catalog.jsx; to restore the
+// panel here, re-import DocDrawer, add back a `doc` state, and swap the
+// window.open/href calls below for `setDoc(...)` the way Catalog.jsx does it.
 import { DOCS } from '../data/data';
 import { Eye, Download, X, Search, FileText } from '../icons/icons';
 import { routes } from '../router/paths';
@@ -15,7 +20,6 @@ export default function MarketingResources() {
   const items = DOCS.filter(d => d.showInMarketing);
   const [type, setType] = useState('All');
   const [q, setQ] = useState('');
-  const [doc, setDoc] = useState(null);
   const types = ['All', ...Array.from(new Set(items.map(i => i.type)))];
   const chipsRef = useRef(null);
 
@@ -54,7 +58,11 @@ export default function MarketingResources() {
                   {featured.date && <div><dt>Updated</dt><dd>{featured.date}</dd></div>}
                 </dl>
                 <div className="mkt-feature__actions">
-                  <button className="ms-btn ms-btn--primary ms-btn--sm" onClick={() => setDoc(featured)}><Eye size={15} /> Preview resource</button>
+                  {featured.pdfAsset && (
+                    <a className="ms-btn ms-btn--primary ms-btn--sm" href={featured.pdfAsset} target="_blank" rel="noopener noreferrer">
+                      <Eye size={15} /> Preview resource
+                    </a>
+                  )}
                   {featured.pdfAsset && (
                     <a className="ms-btn ms-btn--outline ms-btn--sm" href={featured.pdfAsset} download>
                       <Download size={15} /> Download resource
@@ -79,21 +87,25 @@ export default function MarketingResources() {
             {/* Resource cards — compact document-icon treatment, no thumbnails */}
             <div className="mkt-gallery">
               {shown.map(i => (
-                <button className="mkt-card" key={i.id} onClick={() => setDoc(i)}>
+                <a
+                  className="mkt-card"
+                  key={i.id}
+                  href={i.pdfAsset || undefined}
+                  target={i.pdfAsset ? '_blank' : undefined}
+                  rel={i.pdfAsset ? 'noopener noreferrer' : undefined}
+                >
                   <div className="mkt-card__ic"><FileText size={20} /></div>
                   <div className="mkt-card__body">
                     <div className="mkt-card__type">{i.type}</div>
                     <div className="mkt-card__t">{i.title}</div>
                     <div className="mkt-card__m">{i.fam}</div>
                   </div>
-                </button>
+                </a>
               ))}
               {shown.length === 0 && <p className="mx__empty" style={{ padding: '1.5rem' }}>No resources match. Try a different type or search.</p>}
             </div>
           </div>
         </section>
-
-        <DocDrawer doc={doc} onClose={() => setDoc(null)} usage kind="marketing" />
     </main>
   );
 }
