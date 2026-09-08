@@ -16,10 +16,10 @@ export const HERO_INDUSTRY_IMAGE = '/assets/maxseal/industries/hero.png';
 /* Simplified primary navigation. Dropdowns are previews, not full mega-menus. */
 export const NAV = [
   { id: 'home', label: 'Home', href: routes.home },
-  // dropdownOnly: clicking the label itself only opens/closes the dropdown
-  // (see Header.jsx) instead of navigating to /products — the dropdown's
-  // own "Explore all products" link is the way into the product pages.
-  { id: 'products', label: 'Products', href: routes.products(), dropdown: 'products', dropdownOnly: true },
+  // Clicking the label navigates to the Products landing page (like every
+  // other dropdown nav item below) — the dropdown itself still opens on
+  // hover/focus regardless, via Header.jsx's onMouseEnter.
+  { id: 'products', label: 'Products', href: routes.products(), dropdown: 'products' },
   { id: 'industries', label: 'Industries', href: routes.industries(), dropdown: 'industries' },
   { id: 'solutions', label: 'Solutions', href: routes.solutions },
   { id: 'resources', label: 'Resources', href: routes.resources, dropdown: 'resources' },
@@ -553,6 +553,44 @@ export const INDUSTRY_DETAILS = {
 
 export const DOCS = catalog.docs;
 export const DOC_TYPES = ['Product Catalog', 'Technical Bulletin', 'Selection Guide', 'Installation Document', 'Maintenance Document', 'Application Guide'];
+
+/* Product Detail → Documents should show the ONE catalog PDF that's
+   actually specific to a given product, not every doc whose FamilyIds
+   happens to list it. A product can legitimately match several DOCS rows:
+     - a broad multi-product doc (e.g. an old combined "Resilient Seated"
+       catalog covering 4 series) alongside a newer series-specific PDF
+       that supersedes it for that one product,
+     - the sitewide FamilyIds:"ALL" rows (install/maintenance samples,
+       general price guides) that apply to every product but aren't a real
+       per-product relationship,
+     - a re-uploaded duplicate of the same catalog, titled "— Alternate" /
+       "— Updated" in the workbook itself.
+   Resolution order, entirely data-driven off FamilyIds/title — never a
+   per-product lookup table:
+     1. Drop "ALL" rows whenever a real (non-"ALL") match exists — a
+        catch-all isn't a specific relationship to THIS product.
+     2. Keep only the most specific match(es): the fewest FamilyIds a doc
+        is shared across wins, so a single-product PDF beats a multi-
+        product one for that product, while a doc that's the ONLY match
+        for several products (e.g. one shared hardware-accessories PDF)
+        still applies to all of them — there's nothing more specific to
+        prefer over it.
+     3. If more than one doc ties at that specificity (a genuine duplicate
+        upload), prefer whichever title isn't marked "Alternate"/"Updated"
+        — the workbook's own way of flagging the superseded copy. */
+export function bestDocForFamily(familyId) {
+  const matches = DOCS.filter(d => d.pdfAsset && (d.familyIds.includes(familyId) || d.familyIds.includes('ALL')));
+  const specific = matches.filter(d => !d.familyIds.includes('ALL'));
+  const pool = specific.length ? specific : matches;
+  if (!pool.length) return null;
+  const minSpan = Math.min(...pool.map(d => d.familyIds.length));
+  let tier = pool.filter(d => d.familyIds.length === minSpan);
+  if (tier.length > 1) {
+    const preferred = tier.filter(d => !/\b(alternate|updated)\b/i.test(d.title));
+    if (preferred.length) tier = preferred;
+  }
+  return tier[0];
+}
 
 /* Confirmed company facts (client supplied). Do not add unconfirmed claims. */
 export const COMPANY = {

@@ -1,7 +1,7 @@
 /* Max-Seal — Product Detail (reusable template). */
 import { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { FAMILIES, DOCS, INDUSTRIES } from '../data/data';
+import { FAMILIES, INDUSTRIES, bestDocForFamily } from '../data/data';
 import { ArrowRight, Headset, Download, FileText, Compass, Search, Eye } from '../icons/icons';
 import { routes } from '../router/paths';
 import Tabs from '../components/ds/Tabs';
@@ -20,7 +20,6 @@ export default function ProductDetail() {
   // product — a name-based reverse lookup capped at 4 was silently dropping
   // a real mapping for any product with more than 4 links (most have 5).
   const relIndustries = f.industries.map(iid => INDUSTRIES.find(x => x.id === iid)).filter(Boolean);
-  const famDocs = DOCS.filter(d => d.familyIds.includes('ALL') || d.familyIds.includes(f.id));
   // Every product's Gallery rows (catalog/MAXSEAL_CATALOG.xlsx, Gallery
   // sheet) provide exactly 3 shots — Main View / View 2 / View 3 — so the
   // thumbnail strip renders the same for every product, data-driven, never
@@ -175,20 +174,23 @@ export default function ProductDetail() {
     </div>
   ) : null;
 
-  // Only documents with an actual PDF asset are shown — a title with no
-  // real file behind it is a dead download link, which counts as "broken"
-  // rather than as real document content.
-  const realDocs = famDocs.filter(d => d.pdfAsset);
-  const documents = realDocs.length ? (
+  // Product Detail shows the ONE catalog PDF that's actually specific to
+  // this product (see bestDocForFamily in data.js) — not every DOCS row
+  // whose FamilyIds happens to list it, which previously surfaced
+  // superseded multi-product catalogs and sitewide "ALL" docs (general
+  // price guides, install/maintenance samples) alongside the real one.
+  const bestDoc = bestDocForFamily(f.id);
+  const documents = bestDoc ? (
     <div className="rlist">
-      {realDocs.map((d, i) => {
+      {(() => {
+        const d = bestDoc;
         // encodeURI (not encodeURIComponent) so the "/" path separators
         // survive while spaces and other special characters in the actual
         // on-disk filename resolve correctly as a browser request.
         const href = encodeURI(d.pdfAsset);
         const fileName = d.pdfAsset.split('/').pop();
         return (
-          <div className="doc-row" key={i}>
+          <div className="doc-row">
             <div className="doc-ic"><FileText size={20} /></div>
             <div className="doc-main">
               <div className="doc-main__t">{d.title}</div>
@@ -205,7 +207,7 @@ export default function ProductDetail() {
             </div>
           </div>
         );
-      })}
+      })()}
     </div>
   ) : null;
   const sectionContent = { overview, specifications: tech, applications, materials, documents };
@@ -339,7 +341,7 @@ export default function ProductDetail() {
                   {related.map(r => (
                     <Link key={r.id} className="rrow" to={routes.productDetail(r.id)}>
                       <div className="rrow__thumb"><image-slot id={'pd-rel-' + f.id + '-' + r.id} src={r.image} shape="rect" fit="contain" placeholder={r.code} /></div>
-                      <div style={{ gridColumn: 'span 2' }}><div className="rrow__name">{r.name}</div><div className="rrow__purpose">{r.need}</div></div>
+                      <div><div className="rrow__name">{r.name}</div><div className="rrow__purpose">{r.need}</div></div>
                       <span className="rrow__meta" style={{ color: 'var(--azure-700)' }}><ArrowRight size={18} /></span>
                     </Link>
                   ))}

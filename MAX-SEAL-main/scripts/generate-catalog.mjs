@@ -249,6 +249,12 @@ checkFKList('Docs', docs, 'RelatedProductIds', productIds, { allowAll: true });
 checkAsset('Docs', docs, 'PdfAssetPath');
 checkAsset('Docs', docs, 'CoverAssetPath');
 
+// ShowInMarketing is optional (blank = not a Marketing Resource) so existing
+// rows need no backfill. There is no manual "Featured" flag -- Marketing
+// Resources always features the most recently added row (see
+// MarketingResources.jsx), so a new PDF is featured automatically the
+// moment it's added and regenerated, with no Excel flag to remember.
+
 requireFields('PriceLists', priceLists, ['Id', 'Title', 'ProductId']);
 checkUnique('PriceLists', priceLists, 'Id');
 checkFK('PriceLists', priceLists, 'ProductId', productIds, { allowAll: true });
@@ -408,6 +414,8 @@ const outDocs = docs.map((d) => {
     familyIds: familyIdsForDoc,
     // Blank/missing defaults to shown, so existing rows stay visible unless explicitly opted out.
     showInCatalog: d.ShowInCatalog === '' || d.ShowInCatalog == null ? true : isTrue(d.ShowInCatalog),
+    // Blank/missing defaults to hidden -- a doc only appears on Marketing Resources when explicitly opted in.
+    showInMarketing: isTrue(d.ShowInMarketing),
   };
 });
 

@@ -331,6 +331,18 @@
 .jpanel__h { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); line-height: 1.1; letter-spacing: -0.01em; color: var(--graphite-900); margin: 0.7rem 0 0; }
 .jpanel__lead { color: var(--steel-600); font-size: 1.05rem; line-height: 1.6; font-weight: var(--weight-regular); margin-top: 0.8rem; }
 
+.paths { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 2.5vw, 1.6rem); }
+.path { display: grid; grid-template-rows: auto auto 1fr auto; gap: 0.7rem; text-align: left; background: var(--paper-0); border: 1px solid var(--steel-200); border-radius: var(--radius-md); padding: clamp(1.6rem, 3vw, 2.4rem); cursor: pointer; transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
+.path:hover { border-color: var(--azure-400); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.path:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--color-focus-ring); }
+.path__ic { width: 56px; height: 56px; display: grid; place-items: center; background: var(--navy-900); color: #fff; border-radius: var(--radius-sm); }
+.path__ic svg { color: var(--azure-300); }
+.path__t { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); line-height: 1.05; color: var(--graphite-900); letter-spacing: -0.01em; }
+.path__d { font-family: var(--font-body); font-size: 1rem; color: var(--steel-600); line-height: 1.55; max-width: 34ch; }
+.path__go { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-body); font-weight: 600; font-size: 0.95rem; color: var(--azure-700); margin-top: 0.4rem; }
+.path:hover .path__go svg { transform: translateX(4px); }
+.path__go svg { transition: transform 160ms ease; }
+
 .pick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
 .pick { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; text-align: left; background: var(--paper-0); border: 1px solid var(--steel-200); border-radius: var(--radius-md); padding: 1.2rem 1.3rem; cursor: pointer; transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease; }
 .pick:hover { border-color: var(--steel-400); }
@@ -562,6 +574,12 @@
 .pdet__relind { margin-top: 1.1rem; }
 .pdet__tabs { margin-top: 1rem; }
 .pdet__section { margin-top: clamp(2.2rem, 4vw, 3rem); }
+/* .mx__appchips carries its own inset padding for the Industries page's
+   bordered .mx__apps panel — bare here (no such panel), so it needs
+   flushing back to the section's own left edge to line up with the
+   "Where it is used" heading and the Documents/Related Products sections
+   below it. */
+.pdet__section .mx__appchips { padding: 0; }
 
 /* ============================================================
    RESOURCES LANDING (reuses .resx from home.css)
@@ -1348,6 +1366,13 @@
   .rrow { grid-template-columns: auto 1fr; }
   .rrow__thumb, .rrow__meta { display: none; }
   .rrow--compact { grid-template-columns: 1fr auto; }
+  /* Product Detail's Related Products keeps its arrow visible on mobile
+     (unlike the shared .rrow default above) — text takes the flexible
+     column and wraps naturally, arrow stays in its own auto column at the
+     end. Scoped to .pdet__section so IndustryDetail/Products' own .rrow
+     lists (still thumb-first, arrow-hidden) are unaffected. */
+  .pdet__section .rrow { grid-template-columns: 1fr auto; }
+  .pdet__section .rrow__meta { display: inline-flex; align-items: center; }
   .doc-row { grid-template-columns: 40px 1fr; gap: 0.7rem 0.9rem; }
   .doc-row .doc-fam { grid-column: 2; font-size: 0.7rem; }
   .doc-row .doc-actions { grid-column: 1 / -1; justify-content: stretch; }
@@ -1383,17 +1408,6 @@
    ============================================================ */
 
 /* Opening: two premium path panels */
-.paths { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 2.5vw, 1.6rem); }
-.path { display: grid; grid-template-rows: auto auto 1fr auto; gap: 0.7rem; text-align: left; background: var(--paper-0); border: 1px solid var(--steel-200); border-radius: var(--radius-md); padding: clamp(1.6rem, 3vw, 2.4rem); cursor: pointer; transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease; }
-.path:hover { border-color: var(--azure-400); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-.path:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--color-focus-ring); }
-.path__ic { width: 56px; height: 56px; display: grid; place-items: center; background: var(--navy-900); color: #fff; border-radius: var(--radius-sm); }
-.path__ic svg { color: var(--azure-300); }
-.path__t { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); line-height: 1.05; color: var(--graphite-900); letter-spacing: -0.01em; }
-.path__d { font-family: var(--font-body); font-size: 1rem; color: var(--steel-600); line-height: 1.55; max-width: 34ch; }
-.path__go { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-body); font-weight: 600; font-size: 0.95rem; color: var(--azure-700); margin-top: 0.4rem; }
-.path:hover .path__go svg { transform: translateX(4px); }
-.path__go svg { transition: transform 160ms ease; }
 
 /* Guided steps — stepper reset for <ol>/<li> */
 .jsteps { list-style: none; padding: 0; }
@@ -1475,10 +1489,6 @@
 .subcategory-series-card { display: flex; flex-direction: column; flex: 0 1 calc((100% - 3rem) / 3); max-width: calc((100% - 3rem) / 3); border: 1px solid var(--color-border); background: var(--paper-0); border-radius: var(--radius-sm); overflow: hidden; transition: box-shadow 160ms ease, border-color 160ms ease; }
 .subcategory-series-card:hover { box-shadow: var(--shadow-lg); border-color: var(--steel-300); }
 .subcategory-series-card__media { position: relative; background: #ffffff; border-bottom: 1px solid var(--color-border); aspect-ratio: 4/3; }
-/* Main Category cards (Products.jsx "Browse Product Categories") use a
-   square image, per spec — a modifier so Sub Category-1/2 cards elsewhere
-   keep their 4:3 ratio unaffected. */
-.subcategory-series-card__media--square { aspect-ratio: 1/1; }
 .subcategory-series-card__media image-slot { width: 100%; height: 100%; display: block; padding: 0; box-sizing: border-box; }
 .subcategory-series-card__body { padding: 1.1rem 1.2rem 1.3rem; display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
 .subcategory-series-card__name { font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; line-height: 1.2; letter-spacing: -0.01em; color: var(--graphite-900); }

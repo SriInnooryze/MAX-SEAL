@@ -8,23 +8,25 @@ import { routes } from '../router/paths';
 import useCenterActiveInScroller from '../hooks/useCenterActiveInScroller';
 
 export default function MarketingResources() {
-  const base = DOCS.filter(d => ['Brochure', 'Application Guide', 'Selection Guide'].includes(d.type));
-  const items = base.concat([
-    { id: 'm1', type: 'Product Image', title: 'Resilient Seated Product Imagery', fam: 'Resilient Seated', date: 'Apr 2025', size: '8.4 MB', pages: 12, industry: 'General' },
-    { id: 'm2', type: 'Sales Presentation', title: 'Company Capability Presentation', fam: 'All families', date: 'Mar 2025', size: '5.2 MB', pages: 20, industry: 'General' },
-    { id: 'm3', type: 'Application Material', title: 'Data Center Cooling Application Sheet', fam: 'High Performance', date: 'Feb 2025', size: '1.7 MB', pages: 4, industry: 'Data Centers' },
-  ]);
+  // Marketing Resources is driven entirely by the Docs sheet's ShowInMarketing/
+  // Featured columns (see scripts/generate-catalog.mjs) — no items are
+  // hard-coded here, so adding/removing a resource is an Excel + regenerate
+  // change, not a code change.
+  const items = DOCS.filter(d => d.showInMarketing);
   const [type, setType] = useState('All');
   const [q, setQ] = useState('');
   const [doc, setDoc] = useState(null);
-  const types = ['All', 'Brochure', 'Application Material', 'Application Guide', 'Product Image', 'Sales Presentation', 'Selection Guide'];
+  const types = ['All', ...Array.from(new Set(items.map(i => i.type)))];
   const chipsRef = useRef(null);
 
   // On narrow screens .fchips scrolls horizontally (see .mkt-section .fchip
   // in pages.css) — without this, selecting a chip near the edge (e.g.
   // "Application Guide") left it clipped instead of scrolling into view.
   useCenterActiveInScroller(chipsRef, '.fchip.on', type);
-  const featured = items.find(i => i.type === 'Brochure') || items[0];
+  // Featured resource is always whichever Marketing Resource doc was added
+  // most recently in Excel (the last ShowInMarketing row, by sheet order) --
+  // no manual flag to set, so a newly added PDF is featured automatically.
+  const featured = items[items.length - 1] || null;
   const shown = items.filter(i => (type === 'All' || i.type === type) && (!q || (i.title + ' ' + i.fam).toLowerCase().includes(q.toLowerCase())));
 
   return (
@@ -37,25 +39,30 @@ export default function MarketingResources() {
         <section className="section mkt-section">
           <div className="wrap">
             {/* Featured resource — information-focused, no image dependency */}
-            <div className="mkt-feature">
-              <div className="mkt-feature__head">
-                <div className="doc-ic mkt-feature__ic"><FileText size={22} /></div>
-                <div>
-                  <div className="kicker">Featured resource</div>
-                  <h2 className="mkt-feature__t">{featured.title}</h2>
+            {featured && (
+              <div className="mkt-feature">
+                <div className="mkt-feature__head">
+                  <div className="doc-ic mkt-feature__ic"><FileText size={22} /></div>
+                  <div>
+                    <div className="kicker">Featured resource</div>
+                    <h2 className="mkt-feature__t">{featured.title}</h2>
+                  </div>
+                </div>
+                <dl className="resx__spec mkt-feature__meta">
+                  <div><dt>Type</dt><dd>{featured.type}</dd></div>
+                  {featured.fam && <div><dt>Related</dt><dd>{featured.fam}</dd></div>}
+                  {featured.date && <div><dt>Updated</dt><dd>{featured.date}</dd></div>}
+                </dl>
+                <div className="mkt-feature__actions">
+                  <button className="ms-btn ms-btn--primary ms-btn--sm" onClick={() => setDoc(featured)}><Eye size={15} /> Preview resource</button>
+                  {featured.pdfAsset && (
+                    <a className="ms-btn ms-btn--outline ms-btn--sm" href={featured.pdfAsset} download>
+                      <Download size={15} /> Download resource
+                    </a>
+                  )}
                 </div>
               </div>
-              <p className="mkt-feature__d">A featured marketing item for distributor and sales use. Preview the visual or download the file.</p>
-              <dl className="resx__spec mkt-feature__meta">
-                <div><dt>Type</dt><dd>{featured.type}</dd></div>
-                <div><dt>Related</dt><dd>{featured.fam}</dd></div>
-                <div><dt>Updated</dt><dd>{featured.date}</dd></div>
-              </dl>
-              <div className="mkt-feature__actions">
-                <button className="ms-btn ms-btn--primary ms-btn--sm" onClick={() => setDoc(featured)}><Eye size={15} /> Preview resource</button>
-                <a className="ms-btn ms-btn--outline ms-btn--sm" href="#"><Download size={15} /> Download resource</a>
-              </div>
-            </div>
+            )}
 
             {/* Filters */}
             <div className="cat-controls">
@@ -77,7 +84,7 @@ export default function MarketingResources() {
                   <div className="mkt-card__body">
                     <div className="mkt-card__type">{i.type}</div>
                     <div className="mkt-card__t">{i.title}</div>
-                    <div className="mkt-card__m">{i.fam}{i.industry ? ' · ' + i.industry : ''}</div>
+                    <div className="mkt-card__m">{i.fam}</div>
                   </div>
                 </button>
               ))}
