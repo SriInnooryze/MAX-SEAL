@@ -603,7 +603,6 @@ export const COMPANY = {
   email: 'sales@iv-controls.com',
   facilities: [
     { id: 'lumberton', city: 'Lumberton', state: 'North Carolina', country: 'United States', kind: 'Facility', addressLine: '4815 West 5th Street, Lumberton, N.C. 28358' },
-    { id: 'houston', city: 'Houston', state: 'Texas', country: 'United States', kind: 'Facility' },
   ],
   salesOffices: [
     { id: 'ar', country: 'Argentina', kind: 'Sales office' },
@@ -695,7 +694,7 @@ export const RESOURCE_LIBS = catalog.resourceLibs.map((r) => ({ ...r, href: ROUT
    Field definitions live in ENQ_FIELDS so the form is data-driven and CMS-ready. */
 export const INTENTS = [
   {
-    id: 'pricing', icon: 'FileText', t: 'Request pricing', d: 'Commercial and product requirement enquiry.',
+    id: 'pricing', icon: 'FileText', t: 'Request a quote', d: 'Commercial and product requirement inquiry.',
     lead: 'Tell us what you need to size and price. Include media, size, pressure class and quantity where known.',
     fields: ['name', 'company', 'email', 'mobile', 'state', 'country', 'family', 'application', 'quantity', 'requiredDate', 'message', 'attachment'],
     submit: 'Submit request'
@@ -707,14 +706,14 @@ export const INTENTS = [
     submit: 'Send to engineers'
   },
   {
-    id: 'general', icon: 'MessageCircle', t: 'General enquiry', d: 'Company, distributor and general contact request.',
+    id: 'general', icon: 'MessageCircle', t: 'General inquiry', d: 'Company, distributor and general contact request.',
     lead: 'For general questions, distributor enquiries or to reach a specific location.',
     fields: ['name', 'company', 'email', 'mobile', 'state', 'country', 'reason', 'message'],
     submit: 'Send message'
   },
   {
     id: 'pricelist', icon: 'Scale', t: 'Price list request', d: 'Access request for current price list documents.',
-    lead: 'Request access to current price lists. Distributor status helps us route your request.',
+    lead: 'Request access to current price lists.',
     fields: ['name', 'company', 'email', 'mobile', 'country', 'family', 'distributor', 'message'],
     submit: 'Request price list'
   },

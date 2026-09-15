@@ -58,7 +58,7 @@ export default function Contact() {
             .contact-cta treatment it replaced. */}
         <section className="convert">
           <div className="wrap convert__inner reveal">
-            <div className="kicker kicker--ondark">ENQUIRIES</div>
+            <div className="kicker kicker--ondark">INQUIRY</div>
             <h2 className="convert__t">Have a specific requirement?</h2>
             <p className="convert__lead">Start an enquiry and choose request pricing, ask a technical question, general enquiry or a price list request. One form, the right team. We aim to respond within one business day.</p>
             <div className="convert__actions">

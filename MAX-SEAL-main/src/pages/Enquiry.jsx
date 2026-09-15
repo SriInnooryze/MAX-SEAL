@@ -78,17 +78,17 @@ export default function Enquiry() {
   return (
     <main>
         <PageHero
-          kicker="Enquiry"
+          kicker="Inquiry"
           title="Start a conversation"
-          lead="Choose how you would like to begin. The form adapts to your enquiry so our team can respond with the right information."
-          crumbs={[{ label: 'Home', href: routes.home }, { label: 'Enquiry' }]}
+          lead="Choose how you would like to begin. The form adapts to your inquiry so our team can respond with the right information."
+          crumbs={[{ label: 'Home', href: routes.home }, { label: 'Inquiry' }]}
           mediaId="enquiry-hero" mediaPlaceholder="Facility or product visual" />
 
         <section className="section">
           <div className="wrap enq">
             <div>
               <div className="kicker" style={{ marginBottom: '1.3rem' }}>How can we help</div>
-              <div className="intent-list" role="tablist" aria-label="Enquiry type">
+              <div className="intent-list" role="tablist" aria-label="Inquiry type">
                 {INTENTS.map((it) => {
                   const Ic = Icons[it.icon];
                   return (
@@ -104,7 +104,7 @@ export default function Enquiry() {
                 <h4>Other ways to reach us</h4>
                 <div className="enq__contact">
                   <Link to={routes.contact}><Icons.Phone size={17} /> Call our team</Link>
-                  <Link to={routes.contact}><Icons.Mail size={17} /> Email an enquiry</Link>
+                  <Link to={routes.contact}><Icons.Mail size={17} /> Email an inquiry</Link>
                   <Link to={routes.contact}><Icons.MessageCircle size={17} /> Message on WhatsApp</Link>
                 </div>
               </div>
@@ -114,10 +114,10 @@ export default function Enquiry() {
               {done ? (
                 <div className="qform__success" role="status">
                   <div className="qform__success-ic"><Icons.Check size={26} /></div>
-                  <h2 className="qform__h">Thank you, your enquiry is on its way</h2>
+                  <h2 className="qform__h">Thank you, your inquiry is on its way</h2>
                   <p className="qform__lead">This is a prototype, so nothing was actually sent. In production your message would reach the right Max-Seal team and you would receive a confirmation by email.</p>
                   <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', marginTop: '1.4rem' }}>
-                    <button className="ms-btn ms-btn--outline" onClick={() => setDone(false)}>Start another enquiry</button>
+                    <button className="ms-btn ms-btn--outline" onClick={() => setDone(false)}>Start another inquiry</button>
                     <Link className="ms-btn ms-btn--primary" to={routes.home}>Back to home <Icons.ArrowRight size={16} /></Link>
                   </div>
                 </div>
@@ -137,11 +137,11 @@ export default function Enquiry() {
                       </label>
                     </div>
                     <div className="full">
-                      <Checkbox label="I agree to be contacted about this enquiry." onChange={(e) => setConsent(e.target ? e.target.checked : !consent)} />
-                      {err && <p className="enq__err" role="alert">Please confirm consent so we can reply to your enquiry.</p>}
+                      <Checkbox label="I agree to be contacted about this inquiry." onChange={(e) => setConsent(e.target ? e.target.checked : !consent)} />
+                      {err && <p className="enq__err" role="alert">Please confirm consent so we can reply to your inquiry.</p>}
                     </div>
                   </div>
-                  <p className="enq__privacy">We use your details only to respond to your enquiry. See our <Link to={routes.privacy}>Privacy Policy</Link>.</p>
+                  <p className="enq__privacy">We use your details only to respond to your inquiry. See our <Link to={routes.privacy}>Privacy Policy</Link>.</p>
                   <div className="qform__actions">
                     <button type="submit" className="ms-btn ms-btn--primary ms-btn--lg" disabled={submitting}>
                       {submitting ? 'Sending...' : cur.submit} {!submitting && <Icons.ArrowRight size={16} />}
