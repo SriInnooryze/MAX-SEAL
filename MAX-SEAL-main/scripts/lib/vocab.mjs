@@ -14,7 +14,7 @@ export const FACETS_VALUES = {
   automation: ['manual', 'actuated'],
 };
 
-export const DOC_TYPE_VALUES = ['Catalog', 'Datasheet', 'Brochure', 'Selection Guide', 'Technical Bulletin', 'Installation Document', 'Maintenance Document', 'Application Guide'];
+export const DOC_TYPE_VALUES = ['Catalog', 'Datasheet', 'Brochure', 'Selection Guide', 'Technical Bulletin', 'Installation Document', 'Maintenance Document', 'Application Guide', 'Terms and Conditions'];
 export const PRICE_ACCESS_VALUES = ['request', 'download'];
 export const PRODUCT_STATUS_VALUES = ['active', 'inactive', 'archived'];
 export const CATEGORY_STATUS_VALUES = ['active', 'inactive'];

@@ -552,7 +552,7 @@ export const INDUSTRY_DETAILS = {
 };
 
 export const DOCS = catalog.docs;
-export const DOC_TYPES = ['Product Catalog', 'Technical Bulletin', 'Selection Guide', 'Installation Document', 'Maintenance Document', 'Application Guide'];
+export const DOC_TYPES = ['Product Catalog', 'Technical Bulletin', 'Selection Guide', 'Installation Document', 'Maintenance Document', 'Application Guide', 'Terms and Conditions'];
 
 /* Product Detail → Documents should show the ONE catalog PDF that's
    actually specific to a given product, not every doc whose FamilyIds
