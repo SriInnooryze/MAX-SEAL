@@ -7,7 +7,7 @@ import useSiteChrome from '../hooks/useSiteChrome';
 import useCenterActiveInScroller from '../hooks/useCenterActiveInScroller';
 import PageHero from '../components/PageHero';
 import { INDUSTRIES, FAMILIES, APP_NEEDS, HERO_INDUSTRY_IMAGE } from '../data/data';
-import { ArrowRight, Headset, ChevronRight, Layers } from '../icons/icons';
+import { ArrowRight, Headset, ChevronRight, ChevronDown, Layers } from '../icons/icons';
 import { routes } from '../router/paths';
 
 /* /industries and /industries?industry=<id> are the same route, so clicking
@@ -20,6 +20,38 @@ import { routes } from '../router/paths';
 export default function Industries() {
   const [searchParams] = useSearchParams();
   return <IndustriesMatrix key={searchParams.get('industry') || 'default'} />;
+}
+
+/* Excel-driven "Relevant Products" card — Product Name is resolved from the
+   catalog (FAMILIES/product page, the identity source of truth); Best
+   Applications and Why It Fits come from the industry's ProductIndustryLinks
+   row in the Excel (see scripts/generate-catalog.mjs -> relevantProducts).
+   Collapsed by default. Desktop expands on hover (pure CSS, gated to
+   hover-capable/fine-pointer devices in pages.css so touch never gets a
+   sticky "phantom hover"); touch/keyboard still toggle via the click handler
+   below, which also drives aria-expanded for assistive tech. The body stays
+   mounted at all times (grid-rows 0fr/1fr transition in CSS) so the CSS
+   :hover rule alone can reveal it without any JS mouse tracking. */
+function RelevantProductCard({ product, bestApplications, whyItFits }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={'mx__rp' + (open ? ' open' : '')}>
+      <button type="button" className="mx__rp-head" aria-expanded={open} onClick={() => setOpen(o => !o)}>
+        <span className="mx__rp-headtext">
+          <span className="mx__rp-name">{product.name}</span>
+          <span className="mx__rp-apps">{bestApplications}</span>
+        </span>
+        <span className="mx__rp-toggle"><ChevronDown size={16} /></span>
+      </button>
+      <div className="mx__rp-collapse">
+        <div className="mx__rp-body">
+          <div className="mx__rp-why-k">Why it fits</div>
+          <p className="mx__rp-why">{whyItFits}</p>
+          <Link className="link-arrow mx__rp-link" to={routes.productDetail(product.id)}>View product <ArrowRight size={15} /></Link>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function IndustriesMatrix() {
@@ -83,6 +115,20 @@ function IndustriesMatrix() {
   // Full list stays reachable via "Explore related products" (exploreHref).
   const MATRIX_FAMS_LIMIT = 4;
   const displayedFams = fams.slice(0, MATRIX_FAMS_LIMIT);
+
+  // Excel-curated "Relevant Products" (Best Applications / Why It Fits) —
+  // only populated for industries the business has mapped so far (see
+  // scripts/generate-catalog.mjs). Application Need filtering still uses the
+  // broader family list below; the curated list is shown for "All needs"
+  // only, since the Excel mapping isn't broken out per application need.
+  const relevantProducts = !activeApp
+    ? (ind.relevantProducts || [])
+        .map(rp => {
+          const product = FAMILIES.find(f => f.id === rp.productId);
+          return product ? { product, bestApplications: rp.bestApplications, whyItFits: rp.whyItFits } : null;
+        })
+        .filter(Boolean)
+    : [];
 
   const selectInd = (id) => { setActiveInd(id); setActiveApp(null); };
   const exploreHref = routes.products({ industry: ind.id, application: activeApp || undefined });
@@ -159,17 +205,30 @@ function IndustriesMatrix() {
                 <div className="mx__panel" key={ind.id + (activeApp || '')}>
                   <div className="mx__panel-k">{ind.name}{appObj ? ' · ' + appObj.l : ''}</div>
                   <p className="mx__panel-ctx">{appObj ? appObj.ctx : ind.ctx}</p>
-                  <div className="mx__panel-fams-k"><Layers size={15} /> Relevant product families</div>
-                  <div className="mx__fams">
-                    {displayedFams.map(f => (
-                      <Link key={f.id} className={'mx__fam' + (highlightFam === f.name ? ' hot' : '')} to={routes.productDetail(f.id)}>
-                        <span className="mx__fam-code">{f.code}</span>
-                        <span className="mx__fam-body"><span className="mx__fam-name">{f.name}</span><span className="mx__fam-need">{f.need}</span></span>
-                        <span className="mx__fam-arr"><ArrowRight size={16} /></span>
-                      </Link>
-                    ))}
-                    {fams.length === 0 && <p className="mx__empty">No families mapped to this combination yet. Ask our team for guidance.</p>}
-                  </div>
+                  {relevantProducts.length > 0 ? (
+                    <>
+                      <div className="mx__panel-fams-k"><Layers size={15} /> Relevant products</div>
+                      <div className="mx__rp-list">
+                        {relevantProducts.map(rp => (
+                          <RelevantProductCard key={rp.product.id} product={rp.product} bestApplications={rp.bestApplications} whyItFits={rp.whyItFits} />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="mx__panel-fams-k"><Layers size={15} /> Relevant product families</div>
+                      <div className="mx__fams">
+                        {displayedFams.map(f => (
+                          <Link key={f.id} className={'mx__fam' + (highlightFam === f.name ? ' hot' : '')} to={routes.productDetail(f.id)}>
+                            <span className="mx__fam-code">{f.code}</span>
+                            <span className="mx__fam-body"><span className="mx__fam-name">{f.name}</span><span className="mx__fam-need">{f.need}</span></span>
+                            <span className="mx__fam-arr"><ArrowRight size={16} /></span>
+                          </Link>
+                        ))}
+                        {fams.length === 0 && <p className="mx__empty">No families mapped to this combination yet. Ask our team for guidance.</p>}
+                      </div>
+                    </>
+                  )}
                   <div className="mx__panel-actions">
                     <Link className="ms-btn ms-btn--primary ms-btn--sm" to={exploreHref}>Explore related products <ArrowRight size={15} /></Link>
                     <Link className="ms-btn ms-btn--outline ms-btn--sm" to={routes.enquiry({ intent: 'pricing' })}>Request a Quote</Link>

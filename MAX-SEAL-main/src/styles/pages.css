@@ -486,6 +486,48 @@
 .mx__fam-arr { color: var(--steel-300); display: grid; place-items: center; }
 .mx__fam:hover .mx__fam-arr, .mx__fam.hot .mx__fam-arr { color: var(--azure-600); }
 .mx__empty { font-size: 0.9rem; color: var(--steel-500); }
+
+/* Excel-curated "Relevant Products" — expandable cards (Product Name /
+   Best Applications, expanding to reveal Why It Fits + a product link).
+   Desktop (hover-capable + fine pointer): hover expands, mouseleave
+   collapses — pure CSS, no JS mouse tracking. Touch/keyboard: the .open
+   class (from RelevantProductCard's click handler) drives the same
+   grid-rows transition, and :focus-within covers keyboard-only navigation
+   that never fires :hover. The body stays mounted at all times; the
+   grid-template-rows 0fr/1fr trick animates its height without JS
+   measurement and without a separate max-height guess. */
+.mx__rp-list { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; max-width: 100%; box-sizing: border-box; }
+.mx__rp { border: 1px solid var(--color-border); border-radius: var(--radius-sm); transition: border-color 140ms ease, background 140ms ease; width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden; }
+.mx__rp:hover, .mx__rp.open, .mx__rp:focus-within { border-color: var(--steel-400); background: var(--titanium-50); }
+.mx__rp-head { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; width: 100%; max-width: 100%; box-sizing: border-box; padding: 0.7rem 0.85rem; background: none; border: none; text-align: left; font: inherit; cursor: pointer; }
+.mx__rp-headtext { min-width: 0; flex: 1 1 auto; }
+.mx__rp-name { display: block; font-weight: 600; font-size: 1rem; color: var(--graphite-900); line-height: 1.1; overflow-wrap: break-word; word-break: normal; }
+.mx__rp-apps { display: block; font-size: 0.82rem; color: var(--steel-500); margin-top: 2px; overflow-wrap: break-word; word-break: normal; }
+.mx__rp-toggle { flex: none; color: var(--steel-300); display: grid; place-items: center; transition: transform 160ms ease, color 140ms ease; }
+.mx__rp.open .mx__rp-toggle, .mx__rp:focus-within .mx__rp-toggle { transform: rotate(180deg); color: var(--azure-600); }
+/* .mx__rp-collapse/-body are CSS Grid items, which default to
+   min-width:auto/min-height:auto — that lets their intrinsic content size
+   win over the grid track's computed width and visually push "Why it fits"
+   past the card's own border. min-width:0 + explicit 100%/max-100% widths
+   (plus box-sizing: border-box so padding never adds on top) keep every
+   expanded child clamped to the card's inner width; overflow-wrap lets long
+   sentences wrap instead of forcing that intrinsic blowout in the first
+   place. The card height itself is never fixed — grid-template-rows 0fr/1fr
+   grows to fit content naturally. */
+.mx__rp-collapse { display: grid; grid-template-rows: 0fr; min-width: 0; width: 100%; max-width: 100%; box-sizing: border-box; transition: grid-template-rows 220ms var(--ease-out, cubic-bezier(.16,1,.3,1)); }
+.mx__rp-collapse > .mx__rp-body { overflow: hidden; min-width: 0; min-height: 0; width: 100%; max-width: 100%; box-sizing: border-box; }
+.mx__rp.open .mx__rp-collapse, .mx__rp:focus-within .mx__rp-collapse { grid-template-rows: 1fr; }
+.mx__rp-body { padding: 0 0.85rem 0.85rem; }
+.mx__rp-why-k { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-600); margin-bottom: 0.3rem; }
+.mx__rp-why { font-size: 0.88rem; color: var(--steel-600); line-height: 1.5; overflow-wrap: break-word; word-break: normal; }
+.mx__rp-link { margin-top: 0.7rem; max-width: 100%; }
+/* Hover-to-expand only where hover is a real, precise pointer interaction —
+   excludes touch/tablet so there's no "phantom hover" stuck open after a
+   tap, per the mobile requirement (tap/click keeps using .open instead). */
+@media (hover: hover) and (pointer: fine) {
+  .mx__rp:hover .mx__rp-collapse { grid-template-rows: 1fr; }
+  .mx__rp:hover .mx__rp-toggle { transform: rotate(180deg); color: var(--azure-600); }
+}
 .mx__panel-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.4rem; }
 .mx__panel-ask { margin-top: 1rem; }
 

@@ -313,12 +313,25 @@ const industryById = new Map(industries.map((i) => [i.Id, i]));
 
 const productIndustries = new Map(); // productId -> [industryId,...] sorted
 const industryProductNames = new Map(); // industryId -> [productName,...] sorted
+// industryId -> [{ productId, bestApplications, whyItFits },...] sorted — the
+// industry-specific "Relevant Products" content. ProductId resolves against
+// the Products sheet (source of truth for product identity/name); this map
+// only carries the two fields that are genuinely industry-specific and only
+// live in ProductIndustryLinks: BestApplications and WhyItFits. Blank on
+// either field (e.g. rows only used for the legacy family list) is skipped
+// so "Relevant Products" never renders an empty/fabricated card.
+const industryProducts = new Map();
 for (const p of products) productIndustries.set(p.Id, []);
-for (const i of industries) industryProductNames.set(i.Id, []);
+for (const i of industries) { industryProductNames.set(i.Id, []); industryProducts.set(i.Id, []); }
 for (const row of [...links].sort((a, b) => (Number(a.SortOrder) || 0) - (Number(b.SortOrder) || 0))) {
   if (!productIds.has(row.ProductId) || !industryIds.has(row.IndustryId)) continue;
   productIndustries.get(row.ProductId).push(row.IndustryId);
   industryProductNames.get(row.IndustryId).push(productById.get(row.ProductId).Name);
+  if (row.BestApplications && row.WhyItFits && productById.get(row.ProductId).Status === 'active') {
+    industryProducts.get(row.IndustryId).push({
+      productId: row.ProductId, bestApplications: row.BestApplications, whyItFits: row.WhyItFits,
+    });
+  }
 }
 
 const materialsByProduct = new Map(materials.map((m) => [m.ProductId, m]));
@@ -403,6 +416,7 @@ const outProducts = activeProducts.map((p) => {
 
 const outIndustries = industries.map((i) => ({
   id: i.Id, name: i.Name, image: i.ImagePath, ctx: i.Ctx, families: industryProductNames.get(i.Id) || [],
+  relevantProducts: industryProducts.get(i.Id) || [],
 }));
 
 const outDocs = docs.map((d) => {
