@@ -22,21 +22,42 @@ export default function Industries() {
   return <IndustriesMatrix key={searchParams.get('industry') || 'default'} />;
 }
 
-/* Excel-driven "Relevant Products" card — Product Name is resolved from the
+/* Excel-driven "Relevant Products" cards — Product Name is resolved from the
    catalog (FAMILIES/product page, the identity source of truth); Best
    Applications and Why It Fits come from the industry's ProductIndustryLinks
    row in the Excel (see scripts/generate-catalog.mjs -> relevantProducts).
    Collapsed by default. Desktop expands on hover (pure CSS, gated to
    hover-capable/fine-pointer devices in pages.css so touch never gets a
-   sticky "phantom hover"); touch/keyboard still toggle via the click handler
-   below, which also drives aria-expanded for assistive tech. The body stays
-   mounted at all times (grid-rows 0fr/1fr transition in CSS) so the CSS
-   :hover rule alone can reveal it without any JS mouse tracking. */
-function RelevantProductCard({ product, bestApplications, whyItFits }) {
-  const [open, setOpen] = useState(false);
+   sticky "phantom hover") — only the hovered card is ever open there, since
+   the browser only matches :hover on the one element under the cursor.
+   Touch/tablet has no equivalent physical "hover", so tap reproduces the
+   same one-open-at-a-time feel: openId is shared across the whole list here
+   (not local to each card) so tapping a card closes whichever other card was
+   open, the same way moving the mouse away from one card and onto another
+   does on desktop. Tapping the open card again closes it. Keyboard focus
+   also uses this shared state via aria-expanded/:focus-within. */
+function RelevantProductsList({ items }) {
+  const [openId, setOpenId] = useState(null);
+  return (
+    <div className="mx__rp-list">
+      {items.map(rp => (
+        <RelevantProductCard
+          key={rp.product.id}
+          product={rp.product}
+          bestApplications={rp.bestApplications}
+          whyItFits={rp.whyItFits}
+          open={openId === rp.product.id}
+          onToggle={() => setOpenId(id => (id === rp.product.id ? null : rp.product.id))}
+        />
+      ))}
+    </div>
+  );
+}
+
+function RelevantProductCard({ product, bestApplications, whyItFits, open, onToggle }) {
   return (
     <div className={'mx__rp' + (open ? ' open' : '')}>
-      <button type="button" className="mx__rp-head" aria-expanded={open} onClick={() => setOpen(o => !o)}>
+      <button type="button" className="mx__rp-head" aria-expanded={open} onClick={onToggle}>
         <span className="mx__rp-headtext">
           <span className="mx__rp-name">{product.name}</span>
           <span className="mx__rp-apps">{bestApplications}</span>
@@ -208,11 +229,7 @@ function IndustriesMatrix() {
                   {relevantProducts.length > 0 ? (
                     <>
                       <div className="mx__panel-fams-k"><Layers size={15} /> Relevant products</div>
-                      <div className="mx__rp-list">
-                        {relevantProducts.map(rp => (
-                          <RelevantProductCard key={rp.product.id} product={rp.product} bestApplications={rp.bestApplications} whyItFits={rp.whyItFits} />
-                        ))}
-                      </div>
+                      <RelevantProductsList items={relevantProducts} />
                     </>
                   ) : (
                     <>
