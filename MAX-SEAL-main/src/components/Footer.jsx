@@ -1,10 +1,17 @@
 import { Link } from 'react-router-dom';
-import { CATEGORIES } from '../data/data';
+import { CATEGORIES, DOCS } from '../data/data';
 import { Phone, Mail, MessageCircle } from '../icons/icons';
 import { routes } from '../router/paths';
 import logo from '../assets/maxseal-logo.png';
 
 export default function Footer() {
+  // The Terms and Conditions footer link opens the PDF the business
+  // maintains in the Excel Docs sheet (slug "terms-and-conditions") rather
+  // than the separate /terms text route — kept excluded from the Catalog
+  // listing there (ShowInCatalog=FALSE) since it's a legal document, not a
+  // product catalog entry, but the row/PDF still exist so this link and any
+  // other consumer can resolve it straight from the generated catalog data.
+  const termsDoc = DOCS.find(d => d.slug === 'terms-and-conditions');
   // Main Categories only (Excel Categories sheet), matching the Products
   // dropdown's top level — one row per category, not per subcategory/series,
   // so this column doesn't grow or duplicate as more series get added.
@@ -48,7 +55,11 @@ export default function Footer() {
           <span className="foot__copyright">© 2026 Max-Seal Inc. All rights reserved.</span>
           <span className="foot__attribution">Designed by InnooRyze</span>
           <div className="foot__legal">
-            <Link to={routes.terms}>Terms and Conditions</Link>
+            {termsDoc ? (
+              <a href={termsDoc.pdfAsset} target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
+            ) : (
+              <Link to={routes.terms}>Terms and Conditions</Link>
+            )}
             <Link to={routes.privacy}>Privacy Policy</Link>
           </div>
         </div>
