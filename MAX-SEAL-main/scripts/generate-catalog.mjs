@@ -22,6 +22,7 @@ import { fileURLToPath } from 'url';
 import {
   FACETS_VALUES, DOC_TYPE_VALUES, PRICE_ACCESS_VALUES,
   PRODUCT_STATUS_VALUES, CATEGORY_STATUS_VALUES, PRODUCT_SECTION_TYPES, PRODUCT_MEDIA_TYPES,
+  INDUSTRY_SEGMENT_VALUES,
 } from './lib/vocab.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -235,6 +236,10 @@ checkAsset('Industries', industries, 'ImagePath', { required: true });
 requireFields('ProductIndustryLinks', links, ['ProductId', 'IndustryId']);
 checkFK('ProductIndustryLinks', links, 'ProductId', productIds);
 checkFK('ProductIndustryLinks', links, 'IndustryId', industryIds);
+// Segment is optional (blank for every industry except oil-gas's
+// Downstream/Midstream/Upstream split) — checkVocab already treats a blank
+// cell as "nothing to validate".
+checkVocab('ProductIndustryLinks', links, 'Segment', INDUSTRY_SEGMENT_VALUES);
 
 requireFields('Materials', materials, ['ProductId']);
 checkFK('Materials', materials, 'ProductId', productIds);
@@ -321,16 +326,28 @@ const industryProductNames = new Map(); // industryId -> [productName,...] sorte
 // either field (e.g. rows only used for the legacy family list) is skipped
 // so "Relevant Products" never renders an empty/fabricated card.
 const industryProducts = new Map();
+// industryId -> Map(productId -> [{ code, application },...]) — the
+// Downstream/Midstream/Upstream split, currently only populated for
+// oil-gas (rows with a Segment value). A Map keyed by productId collapses
+// a product's multiple segment rows into one card entry with several tags,
+// instead of one row per (product, segment) pair.
+const industrySegmentProducts = new Map();
 for (const p of products) productIndustries.set(p.Id, []);
-for (const i of industries) { industryProductNames.set(i.Id, []); industryProducts.set(i.Id, []); }
+for (const i of industries) { industryProductNames.set(i.Id, []); industryProducts.set(i.Id, []); industrySegmentProducts.set(i.Id, new Map()); }
 for (const row of [...links].sort((a, b) => (Number(a.SortOrder) || 0) - (Number(b.SortOrder) || 0))) {
   if (!productIds.has(row.ProductId) || !industryIds.has(row.IndustryId)) continue;
   productIndustries.get(row.ProductId).push(row.IndustryId);
   industryProductNames.get(row.IndustryId).push(productById.get(row.ProductId).Name);
-  if (row.BestApplications && row.WhyItFits && productById.get(row.ProductId).Status === 'active') {
+  const product = productById.get(row.ProductId);
+  if (row.BestApplications && row.WhyItFits && product.Status === 'active') {
     industryProducts.get(row.IndustryId).push({
       productId: row.ProductId, bestApplications: row.BestApplications, whyItFits: row.WhyItFits,
     });
+  }
+  if (row.Segment && row.BestApplications && product.Status === 'active') {
+    const bySegment = industrySegmentProducts.get(row.IndustryId);
+    if (!bySegment.has(row.ProductId)) bySegment.set(row.ProductId, []);
+    bySegment.get(row.ProductId).push({ code: row.Segment, application: row.BestApplications });
   }
 }
 
@@ -417,6 +434,7 @@ const outProducts = activeProducts.map((p) => {
 const outIndustries = industries.map((i) => ({
   id: i.Id, name: i.Name, image: i.ImagePath, ctx: i.Ctx, families: industryProductNames.get(i.Id) || [],
   relevantProducts: industryProducts.get(i.Id) || [],
+  segmentProducts: [...(industrySegmentProducts.get(i.Id) || new Map())].map(([productId, segments]) => ({ productId, segments })),
 }));
 
 const outDocs = docs.map((d) => {

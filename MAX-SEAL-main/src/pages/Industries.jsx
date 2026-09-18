@@ -36,6 +36,11 @@ export default function Industries() {
    open, the same way moving the mouse away from one card and onto another
    does on desktop. Tapping the open card again closes it. Keyboard focus
    also uses this shared state via aria-expanded/:focus-within. */
+// Downstream/Midstream/Upstream — UI-only label taxonomy for the segment
+// tags, same pattern as DOC_TYPES in data.js (labels, not catalog content).
+// Keyed by the Excel ProductIndustryLinks.Segment code (DS/MS/UP).
+const SEGMENT_LABELS = { DS: 'Downstream', MS: 'Midstream', UP: 'Upstream' };
+
 function RelevantProductsList({ items }) {
   const [openId, setOpenId] = useState(null);
   return (
@@ -46,6 +51,7 @@ function RelevantProductsList({ items }) {
           product={rp.product}
           bestApplications={rp.bestApplications}
           whyItFits={rp.whyItFits}
+          segments={rp.segments}
           open={openId === rp.product.id}
           onToggle={() => setOpenId(id => (id === rp.product.id ? null : rp.product.id))}
         />
@@ -54,20 +60,46 @@ function RelevantProductsList({ items }) {
   );
 }
 
-function RelevantProductCard({ product, bestApplications, whyItFits, open, onToggle }) {
+/* Same card shell/hover mechanics as the other industries (.mx__rp/.mx__rp-
+   head/.mx__rp-collapse — see pages.css for the hover-capable-only :hover
+   rule, the shared-openId tap-to-toggle, and the box-sizing/overflow-wrap
+   fixes) so nothing about the existing interaction changes. Only Oil & Gas
+   passes `segments` (from catalog.json's segmentProducts, itself from the
+   Excel's Downstream/Midstream/Upstream rows) — every other industry keeps
+   passing bestApplications/whyItFits exactly as before and renders exactly
+   as before. */
+function RelevantProductCard({ product, bestApplications, whyItFits, segments, open, onToggle }) {
+  const isSegmented = Array.isArray(segments) && segments.length > 0;
   return (
     <div className={'mx__rp' + (open ? ' open' : '')}>
       <button type="button" className="mx__rp-head" aria-expanded={open} onClick={onToggle}>
         <span className="mx__rp-headtext">
           <span className="mx__rp-name">{product.name}</span>
-          <span className="mx__rp-apps">{bestApplications}</span>
+          {isSegmented ? (
+            <span className="mx__rp-segtags">
+              {segments.map(s => <span key={s.code} className="mx__rp-segtag">{SEGMENT_LABELS[s.code] || s.code}</span>)}
+            </span>
+          ) : (
+            <span className="mx__rp-apps">{bestApplications}</span>
+          )}
         </span>
         <span className="mx__rp-toggle"><ChevronDown size={16} /></span>
       </button>
       <div className="mx__rp-collapse">
         <div className="mx__rp-body">
-          <div className="mx__rp-why-k">Why it fits</div>
-          <p className="mx__rp-why">{whyItFits}</p>
+          {isSegmented ? (
+            segments.map(s => (
+              <div key={s.code} className="mx__rp-seg">
+                <div className="mx__rp-why-k">{SEGMENT_LABELS[s.code] || s.code}</div>
+                <p className="mx__rp-why">{s.application}</p>
+              </div>
+            ))
+          ) : (
+            <>
+              <div className="mx__rp-why-k">Why it fits</div>
+              <p className="mx__rp-why">{whyItFits}</p>
+            </>
+          )}
           <Link className="link-arrow mx__rp-link" to={routes.productDetail(product.id)}>View product <ArrowRight size={15} /></Link>
         </div>
       </div>
@@ -142,13 +174,24 @@ function IndustriesMatrix() {
   // scripts/generate-catalog.mjs). Application Need filtering still uses the
   // broader family list below; the curated list is shown for "All needs"
   // only, since the Excel mapping isn't broken out per application need.
+  // ind.segmentProducts is the Oil & Gas Downstream/Midstream/Upstream split
+  // (empty array for every other industry) — concatenating is safe since at
+  // most one of the two arrays is ever non-empty for a given industry.
   const relevantProducts = !activeApp
-    ? (ind.relevantProducts || [])
-        .map(rp => {
-          const product = FAMILIES.find(f => f.id === rp.productId);
-          return product ? { product, bestApplications: rp.bestApplications, whyItFits: rp.whyItFits } : null;
-        })
-        .filter(Boolean)
+    ? [
+        ...(ind.relevantProducts || [])
+          .map(rp => {
+            const product = FAMILIES.find(f => f.id === rp.productId);
+            return product ? { product, bestApplications: rp.bestApplications, whyItFits: rp.whyItFits } : null;
+          })
+          .filter(Boolean),
+        ...(ind.segmentProducts || [])
+          .map(sp => {
+            const product = FAMILIES.find(f => f.id === sp.productId);
+            return product ? { product, segments: sp.segments } : null;
+          })
+          .filter(Boolean),
+      ]
     : [];
 
   const selectInd = (id) => { setActiveInd(id); setActiveApp(null); };

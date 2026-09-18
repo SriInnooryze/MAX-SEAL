@@ -503,6 +503,13 @@
 .mx__rp-headtext { min-width: 0; flex: 1 1 auto; }
 .mx__rp-name { display: block; font-weight: 600; font-size: 1rem; color: var(--graphite-900); line-height: 1.1; overflow-wrap: break-word; word-break: normal; }
 .mx__rp-apps { display: block; font-size: 0.82rem; color: var(--steel-500); margin-top: 2px; overflow-wrap: break-word; word-break: normal; }
+/* Oil & Gas segment tags (Downstream/Midstream/Upstream) — small, subtle
+   chips in place of the plain Best Applications line other industries show;
+   same card/hover otherwise, so this stays visually secondary to the
+   product name rather than reading as buttons. */
+.mx__rp-segtags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.35rem; }
+.mx__rp-segtag { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.04em; color: var(--azure-700); background: var(--azure-50); border-radius: var(--radius-pill, 999px); padding: 0.15rem 0.55rem; }
+.mx__rp-seg + .mx__rp-seg { margin-top: 0.7rem; }
 .mx__rp-toggle { flex: none; color: var(--steel-300); display: grid; place-items: center; transition: transform 160ms ease, color 140ms ease; }
 .mx__rp.open .mx__rp-toggle, .mx__rp:focus-within .mx__rp-toggle { transform: rotate(180deg); color: var(--azure-600); }
 /* .mx__rp-collapse/-body are CSS Grid items, which default to

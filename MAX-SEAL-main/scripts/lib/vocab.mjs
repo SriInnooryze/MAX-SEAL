@@ -20,3 +20,7 @@ export const PRODUCT_STATUS_VALUES = ['active', 'inactive', 'archived'];
 export const CATEGORY_STATUS_VALUES = ['active', 'inactive'];
 export const PRODUCT_SECTION_TYPES = ['overview', 'specifications', 'applications', 'materials', 'documents'];
 export const PRODUCT_MEDIA_TYPES = ['image', 'pdf', 'video', '3d', 'cad', 'drawing'];
+// ProductIndustryLinks.Segment: optional, currently only populated for the
+// oil-gas industry's Downstream/Midstream/Upstream Relevant Products split.
+// Blank for every other industry's rows.
+export const INDUSTRY_SEGMENT_VALUES = ['DS', 'MS', 'UP'];
