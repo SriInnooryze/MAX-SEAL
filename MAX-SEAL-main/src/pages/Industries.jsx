@@ -87,20 +87,22 @@ function RelevantProductCard({ product, bestApplications, whyItFits, segments, o
       </button>
       <div className="mx__rp-collapse">
         <div className="mx__rp-body">
-          {isSegmented ? (
-            segments.map(s => (
-              <div key={s.code} className="mx__rp-seg">
-                <div className="mx__rp-why-k">{SEGMENT_LABELS[s.code] || s.code}</div>
-                <p className="mx__rp-why">{s.application}</p>
-              </div>
-            ))
-          ) : (
-            <>
-              <div className="mx__rp-why-k">Why it fits</div>
-              <p className="mx__rp-why">{whyItFits}</p>
-            </>
-          )}
-          <Link className="link-arrow mx__rp-link" to={routes.productDetail(product.id)}>View product <ArrowRight size={15} /></Link>
+          <div className="mx__rp-body-inner">
+            {isSegmented ? (
+              segments.map(s => (
+                <div key={s.code} className="mx__rp-seg">
+                  <div className="mx__rp-why-k">{SEGMENT_LABELS[s.code] || s.code}</div>
+                  <p className="mx__rp-why">{s.application}</p>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="mx__rp-why-k">Why it fits</div>
+                <p className="mx__rp-why">{whyItFits}</p>
+              </>
+            )}
+            <Link className="link-arrow mx__rp-link" to={routes.productDetail(product.id)}>View product <ArrowRight size={15} /></Link>
+          </div>
         </div>
       </div>
     </div>

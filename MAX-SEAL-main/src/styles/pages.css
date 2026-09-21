@@ -524,7 +524,16 @@
 .mx__rp-collapse { display: grid; grid-template-rows: 0fr; min-width: 0; width: 100%; max-width: 100%; box-sizing: border-box; transition: grid-template-rows 220ms var(--ease-out, cubic-bezier(.16,1,.3,1)); }
 .mx__rp-collapse > .mx__rp-body { overflow: hidden; min-width: 0; min-height: 0; width: 100%; max-width: 100%; box-sizing: border-box; }
 .mx__rp.open .mx__rp-collapse, .mx__rp:focus-within .mx__rp-collapse { grid-template-rows: 1fr; }
-.mx__rp-body { padding: 0 0.85rem 0.85rem; }
+/* Padding lives on .mx__rp-body-inner, never on .mx__rp-body itself: a
+   border-box element can't render shorter than its own padding, so any
+   padding placed directly on the 0fr grid item (.mx__rp-body) puts a floor
+   under the "collapsed" track — Chrome was resolving grid-template-rows: 0fr
+   to ~13.6px (exactly the old bottom padding) instead of 0, letting the
+   first line of hidden content (e.g. the "Downstream" segment label) peek
+   out under the card as a stray floating word. Keeping .mx__rp-body padding
+   at 0 lets the track genuinely collapse to 0; the inner wrapper reproduces
+   the old spacing once expanded. */
+.mx__rp-body-inner { padding: 0 0.85rem 0.85rem; }
 .mx__rp-why-k { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-600); margin-bottom: 0.3rem; }
 .mx__rp-why { font-size: 0.88rem; color: var(--steel-600); line-height: 1.5; overflow-wrap: break-word; word-break: normal; }
 .mx__rp-link { margin-top: 0.7rem; max-width: 100%; }
