@@ -661,7 +661,6 @@ export const ABOUT_PARTNER_REGIONS = [
     id: 'na', name: 'North America', blurb: 'U.S. operations and distributor support.',
     cards: [
       { type: 'Facility', title: 'Lumberton, North Carolina', detail: 'Main manufacturing facility and headquarters.', meta: '4815 West 5th Street, Lumberton, NC 28358' },
-      { type: 'Facility', title: 'Houston, Texas', detail: 'U.S. facility supporting manual and automated process valve requirements.', meta: 'United States' },
       { type: 'Distributors', title: 'Partners across multiple states', detail: 'Distributing partners support customers across the United States.', meta: 'United States' },
     ]
   },

@@ -28,8 +28,8 @@ export const ABOUT_TIMELINE = [
     id: 'timeline-us',
     label: 'United States',
     period: 'United States',
-    title: 'Operations in North Carolina and Texas',
-    description: 'Max-Seal operates from facilities in Lumberton, North Carolina and Houston, Texas, supporting manual and automated process valve requirements.',
+    title: 'Operations in North Carolina',
+    description: 'Max-Seal operates from facilities in Lumberton, North Carolina, supporting manual and automated process valve requirements.',
     mediaPh: 'Facility or production photo',
     imageAlt: 'United States industrial operations and valve supply facility',
     imageSlotId: 'about-tl-2'
@@ -69,7 +69,7 @@ export const ABOUT_TIMELINE = [
 export const ABOUT_FACTS = [
   { v: '2008', l: 'Established as a butterfly valve company', s: 'Max-Seal, Inc. was established in 2008.' },
   { v: '35+', l: 'Years of valve experience behind the business', s: 'President Martin Gibbons brings more than 35 years of valve industry experience.' },
-  { v: '2', l: 'U.S. facilities', s: 'Main facilities in Lumberton, North Carolina and Houston, Texas.' },
+  { v: '2', l: 'U.S. facilities', s: 'Main facilities in Lumberton, North Carolina.' },
   { v: '3', l: 'Regional sales offices in Latin America', s: 'Sales offices in Argentina, Chile and Mexico.' },
   { v: 'Global', l: 'Partner support in key markets', s: 'Partner relationships and product-use references extend across multiple markets.' },
 ];
