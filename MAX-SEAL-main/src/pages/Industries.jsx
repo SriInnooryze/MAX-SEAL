@@ -8,6 +8,25 @@ import useCenterActiveInScroller from '../hooks/useCenterActiveInScroller';
 import PageHero from '../components/PageHero';
 import { INDUSTRIES, FAMILIES, APP_NEEDS, HERO_INDUSTRY_IMAGE } from '../data/data';
 import { ArrowRight, Headset, ChevronRight, ChevronDown, Layers } from '../icons/icons';
+
+/* Title-cased display labels for the industry-card valve type suffix.
+   Kept separate from the FACETS constant in data.js (which uses sentence-case
+   for the Products page filter chips) so both can use the right casing for
+   their own context without affecting each other. Keys match product.types[].
+   Source truth: product.types[] values come from catalog.json (Excel → generator). */
+const TYPE_LABEL = {
+  'resilient':        'Resilient Seated',
+  'high-performance': 'High Performance',
+  'triple-offset':    'Triple Offset',
+  'lined':            'PFA Lined',
+  'alloy':            'Special Alloy',
+  'automated':        'Automated',
+  'custom':           'Customized',
+};
+/* Returns the first type label for a product, or null if types is empty.
+   Shown as "Product Name — Valve Type" on industry-related product cards. */
+const productTypeLabel = (product) =>
+  product?.types?.length ? TYPE_LABEL[product.types[0]] ?? null : null;
 import { routes } from '../router/paths';
 
 /* /industries and /industries?industry=<id> are the same route, so clicking
@@ -74,7 +93,12 @@ function RelevantProductCard({ product, bestApplications, whyItFits, segments, o
     <div className={'mx__rp' + (open ? ' open' : '')}>
       <button type="button" className="mx__rp-head" aria-expanded={open} onClick={onToggle}>
         <span className="mx__rp-headtext">
-          <span className="mx__rp-name">{product.name}</span>
+          <span className="mx__rp-name">
+            {product.name}
+            {productTypeLabel(product) && (
+              <span className="mx__rp-type"> — {productTypeLabel(product)}</span>
+            )}
+          </span>
           {isSegmented ? (
             <span className="mx__rp-segtags">
               {segments.map(s => <span key={s.code} className="mx__rp-segtag">{SEGMENT_LABELS[s.code] || s.code}</span>)}
@@ -283,7 +307,15 @@ function IndustriesMatrix() {
                         {displayedFams.map(f => (
                           <Link key={f.id} className={'mx__fam' + (highlightFam === f.name ? ' hot' : '')} to={routes.productDetail(f.id)}>
                             <span className="mx__fam-code">{f.code}</span>
-                            <span className="mx__fam-body"><span className="mx__fam-name">{f.name}</span><span className="mx__fam-need">{f.need}</span></span>
+                            <span className="mx__fam-body">
+                              <span className="mx__fam-name">
+                                {f.name}
+                                {productTypeLabel(f) && (
+                                  <span className="mx__fam-type"> — {productTypeLabel(f)}</span>
+                                )}
+                              </span>
+                              <span className="mx__fam-need">{f.need}</span>
+                            </span>
                             <span className="mx__fam-arr"><ArrowRight size={16} /></span>
                           </Link>
                         ))}

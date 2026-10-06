@@ -481,7 +481,8 @@
 .mx__fam:hover { border-color: var(--steel-400); background: var(--titanium-50); }
 .mx__fam.hot { border-color: var(--azure-500); background: var(--azure-50); }
 .mx__fam-code { font-family: var(--font-mono); font-size: 0.74rem; color: var(--azure-700); width: 2.2rem; }
-.mx__fam-name { display: block; font-weight: 600; font-size: 1rem; color: var(--graphite-900); line-height: 1.1; }
+.mx__fam-name { display: block; font-weight: 600; font-size: 1rem; color: var(--graphite-900); line-height: 1.1; overflow-wrap: break-word; word-break: normal; }
+.mx__fam-type { font-weight: inherit; font-size: inherit; color: inherit; }
 .mx__fam-need { display: block; font-size: 0.82rem; color: var(--steel-500); margin-top: 2px; }
 .mx__fam-arr { color: var(--steel-300); display: grid; place-items: center; }
 .mx__fam:hover .mx__fam-arr, .mx__fam.hot .mx__fam-arr { color: var(--azure-600); }
@@ -502,6 +503,7 @@
 .mx__rp-head { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; width: 100%; max-width: 100%; box-sizing: border-box; padding: 0.7rem 0.85rem; background: none; border: none; text-align: left; font: inherit; cursor: pointer; }
 .mx__rp-headtext { min-width: 0; flex: 1 1 auto; }
 .mx__rp-name { display: block; font-weight: 600; font-size: 1rem; color: var(--graphite-900); line-height: 1.1; overflow-wrap: break-word; word-break: normal; }
+.mx__rp-type { font-weight: inherit; font-size: inherit; color: inherit; }
 .mx__rp-apps { display: block; font-size: 0.82rem; color: var(--steel-500); margin-top: 2px; overflow-wrap: break-word; word-break: normal; }
 /* Oil & Gas segment tags (Downstream/Midstream/Upstream) — small, subtle
    chips in place of the plain Best Applications line other industries show;

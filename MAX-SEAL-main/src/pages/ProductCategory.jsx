@@ -65,7 +65,7 @@ export default function ProductCategory() {
           ) : (
             <>
               <div className="matchsum">
-                <h2 className="matchsum__count">{subcategories.length} {subcategories.length === 1 ? 'category' : 'categories'} in {category.name}</h2>
+                <h2 className="matchsum__count">{subcategories.length === 1 ? 'Category' : 'Categories'} in {category.name}</h2>
                 <p className="matchsum__note">Select a category to view its available series and products.</p>
               </div>
               <div className="subcategory-series-grid">

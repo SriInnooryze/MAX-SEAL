@@ -293,12 +293,12 @@ export default function ProductDetail() {
                   <dl className="pstage2__specs" style={{ marginTop: '1.4rem' }}>
                     {f.sizes && <div><dt>Size range</dt><dd>{f.sizes}</dd></div>}
                     {f.rating && <div><dt>Pressure</dt><dd>{f.rating}</dd></div>}
-                    {f.application && <div><dt>Typical</dt><dd>{f.application}</dd></div>}
+                    {f.application && <div><dt>Common Applications</dt><dd>{f.application}</dd></div>}
                     {automationLabel && <div><dt>Automation</dt><dd>{automationLabel}</dd></div>}
                   </dl>
                 )}
                 <div className="pdet__approvals">
-                  <span className="pdet__appr-k">Approvals</span>
+                  <span className="pdet__appr-k">Certifications</span>
                   {f.approvals === 'To be validated'
                     ? <span className="tbv">{f.approvals}</span>
                     : <span>{f.approvals}</span>}
