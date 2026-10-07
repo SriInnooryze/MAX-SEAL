@@ -67,7 +67,7 @@ export default function IndustryDetail() {
                   {famObjs.map(f => (
                     <Link key={f.id} className="rrow rrow--compact" to={routes.productDetail(f.id)}>
                       <div className="rrow__thumb"><image-slot id={'inddet-fam-' + ind.id + '-' + f.id} src={f.image} shape="rect" fit="contain" placeholder={f.code} /></div>
-                      <div><div className="rrow__name">{f.name}</div><div className="rrow__purpose">{f.need}</div></div>
+                      <div><div className="rrow__name">{ind.productDisplayNames?.[f.id] || f.name}</div><div className="rrow__purpose">{f.need}</div></div>
                       <span className="rrow__meta" style={{ color: 'var(--azure-700)' }}><ArrowRight size={18} /></span>
                     </Link>
                   ))}

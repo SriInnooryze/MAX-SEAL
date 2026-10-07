@@ -80,6 +80,40 @@ function sheet(name) {
 const parseList = (v) => (v ? String(v).split(',').map((s) => s.trim()).filter(Boolean) : []);
 const isTrue = (v) => String(v).trim().toUpperCase() === 'TRUE';
 
+// Docs' Title column is authored as "<Name> (<pdf filename>)" so the sheet
+// stays human-readable while listing which file a row points to. The client
+// wants the document number (which lives at the start of the PDF filename,
+// e.g. "498-25 Chem-Tek R3.pdf") promoted to the front of the visible title
+// instead, e.g. "498-25 Chem-Tek Series Catalog". Only acts when the title's
+// trailing parenthetical is an exact match for the PDF's own filename (so it
+// never touches a title that doesn't show a filename) and that filename
+// starts with something that reliably reads as a document number -- anything
+// else (no PDF, no parenthetical, no recognizable leading number) is left
+// exactly as authored rather than guessing.
+//
+// Document numbers aren't all "NNN-NN" (e.g. "498-25", "496A-22") -- some are
+// bare alphanumeric codes with no hyphen at all (e.g. "52DF"). So instead of
+// one rigid pattern, grab the filename's leading token (up to the first
+// space/underscore) and accept it as a document number only if it contains a
+// digit *and* either a letter or a hyphen -- that's what separates a real
+// code ("52DF", "498-25", "496A-22") from an unrelated leading number that
+// just happens to start a filename (a bare year like "2020", which has no
+// letter or hyphen and would otherwise be a false positive).
+const LEADING_TOKEN_RE = /^([0-9A-Za-z-]+)(?=[ _]|$)/;
+function looksLikeDocNumber(token) {
+  return /\d/.test(token) && (/[A-Za-z]/.test(token) || token.includes('-'));
+}
+function formatDocTitle(title, pdfAssetPath) {
+  if (!title || !pdfAssetPath) return title;
+  const filename = path.basename(pdfAssetPath);
+  const suffix = ` (${filename})`;
+  if (!title.endsWith(suffix)) return title;
+  const match = filename.match(LEADING_TOKEN_RE);
+  if (!match || !looksLikeDocNumber(match[1])) return title;
+  const baseTitle = title.slice(0, -suffix.length);
+  return `${match[1]} ${baseTitle}`;
+}
+
 function requireFields(sheetName, rows, fields) {
   for (const row of rows) {
     for (const f of fields) {
@@ -332,16 +366,34 @@ const industryProducts = new Map();
 // a product's multiple segment rows into one card entry with several tags,
 // instead of one row per (product, segment) pair.
 const industrySegmentProducts = new Map();
-for (const p of products) productIndustries.set(p.Id, []);
-for (const i of industries) { industryProductNames.set(i.Id, []); industryProducts.set(i.Id, []); industrySegmentProducts.set(i.Id, new Map()); }
+const industryProductDisplayNames = new Map(); // industryId -> Map(productId -> displayName)
+const productIndustryDisplayNames = new Map(); // productId -> Map(industryId -> displayName)
+for (const p of products) {
+  productIndustries.set(p.Id, []);
+  productIndustryDisplayNames.set(p.Id, new Map());
+}
+for (const i of industries) {
+  industryProductNames.set(i.Id, []);
+  industryProducts.set(i.Id, []);
+  industrySegmentProducts.set(i.Id, new Map());
+  industryProductDisplayNames.set(i.Id, new Map());
+}
 for (const row of [...links].sort((a, b) => (Number(a.SortOrder) || 0) - (Number(b.SortOrder) || 0))) {
   if (!productIds.has(row.ProductId) || !industryIds.has(row.IndustryId)) continue;
   productIndustries.get(row.ProductId).push(row.IndustryId);
   industryProductNames.get(row.IndustryId).push(productById.get(row.ProductId).Name);
   const product = productById.get(row.ProductId);
+  const displayName = String(row.IndustryDisplayName || row.DisplayName || '').trim();
+  if (displayName) {
+    industryProductDisplayNames.get(row.IndustryId).set(row.ProductId, displayName);
+    productIndustryDisplayNames.get(row.ProductId).set(row.IndustryId, displayName);
+  }
   if (row.BestApplications && row.WhyItFits && product.Status === 'active') {
     industryProducts.get(row.IndustryId).push({
-      productId: row.ProductId, bestApplications: row.BestApplications, whyItFits: row.WhyItFits,
+      productId: row.ProductId,
+      ...(displayName ? { displayName } : {}),
+      bestApplications: row.BestApplications,
+      whyItFits: row.WhyItFits,
     });
   }
   if (row.Segment && row.BestApplications && product.Status === 'active') {
@@ -394,7 +446,7 @@ for (const d of docs) {
   const targets = d.PrimaryProductId === 'ALL' ? [...productIds] : [d.PrimaryProductId, ...parseList(d.RelatedProductIds)];
   for (const pid of targets) {
     if (!mediaByProduct.has(pid)) continue;
-    mediaByProduct.get(pid).push({ mediaType: 'pdf', path: d.PdfAssetPath, title: d.Title, sortOrder: 0, isPrimary: false });
+    mediaByProduct.get(pid).push({ mediaType: 'pdf', path: d.PdfAssetPath, title: formatDocTitle(d.Title, d.PdfAssetPath), sortOrder: 0, isPrimary: false });
   }
 }
 for (const row of media) {
@@ -417,7 +469,9 @@ const outProducts = activeProducts.map((p) => {
     sourceFile: p.SourceFile || '',
     subcategoryId: p.SubcategoryId, categoryId: cat ? cat.Id : null,
     types: parseList(p.Types), apps: parseList(p.Apps),
-    industries: productIndustries.get(p.Id) || [], service: parseList(p.Service), automation: parseList(p.Automation),
+    industries: productIndustries.get(p.Id) || [],
+    industryDisplayNames: Object.fromEntries(productIndustryDisplayNames.get(p.Id) || new Map()),
+    service: parseList(p.Service), automation: parseList(p.Automation),
     approvals: p.Approvals || '',
     materials: {
       bodyMaterials: m.BodyMaterials || '', seatLiningOptions: m.SeatLiningOptions || '',
@@ -433,6 +487,7 @@ const outProducts = activeProducts.map((p) => {
 
 const outIndustries = industries.map((i) => ({
   id: i.Id, name: i.Name, image: i.ImagePath, ctx: i.Ctx, families: industryProductNames.get(i.Id) || [],
+  productDisplayNames: Object.fromEntries(industryProductDisplayNames.get(i.Id) || new Map()),
   relevantProducts: industryProducts.get(i.Id) || [],
   segmentProducts: [...(industrySegmentProducts.get(i.Id) || new Map())].map(([productId, segments]) => ({ productId, segments })),
 }));
@@ -441,7 +496,7 @@ const outDocs = docs.map((d) => {
   const primaryName = d.PrimaryProductId === 'ALL' ? 'All families' : (productById.get(d.PrimaryProductId)?.Name || '');
   const familyIdsForDoc = d.PrimaryProductId === 'ALL' ? ['ALL'] : [d.PrimaryProductId, ...parseList(d.RelatedProductIds)].filter(Boolean);
   return {
-    id: d.Id, slug: d.Slug, type: d.Type, title: d.Title, fam: primaryName, date: d.Date, size: d.SizeLabel,
+    id: d.Id, slug: d.Slug, type: d.Type, title: formatDocTitle(d.Title, d.PdfAssetPath), fam: primaryName, date: d.Date, size: d.SizeLabel,
     pages: Number(d.Pages) || 0, pdfAsset: d.PdfAssetPath || null, coverAsset: d.CoverAssetPath || null,
     familyIds: familyIdsForDoc,
     // Blank/missing defaults to shown, so existing rows stay visible unless explicitly opted out.

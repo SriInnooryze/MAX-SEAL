@@ -62,20 +62,17 @@ export default function TimelineItem({ item, index, current, passed, rowRef }) {
    conditionally rendered, `display: none`d, or removed from the DOM, so
    there is no path to a blank stage or a vanished card in either scroll
    direction. Purely decorative (the rail already carries the same content
-   accessibly), so both stages mark their parent aria-hidden. */
+   accessibly, including period/title/description text), so both stages
+   mark their parent aria-hidden. Image only — no text body — per client
+   feedback that the wording under these images duplicated the timeline. */
 export function TimelineCard({ item, index, state }) {
-  const { period, label, title, description, imageSlotId } = item;
+  const { imageSlotId } = item;
   const slotId = 'stage-' + (imageSlotId || `about-tl-${index}`);
 
   return (
     <div className={'htl-card' + (state ? ' ' + state : '')}>
       <div className="htl-card__media">
         <TimelineMedia item={item} id={slotId} className="htl-card__media-fill" />
-      </div>
-      <div className="htl-card__body">
-        <span className="htl-card__period">{period || label}</span>
-        <h3 className="htl-card__title">{title}</h3>
-        <p className="htl-card__text">{description}</p>
       </div>
     </div>
   );

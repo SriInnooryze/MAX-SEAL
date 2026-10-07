@@ -245,6 +245,24 @@
    touching every other page that reuses PageHero. */
 .page-hero--about .page-hero__scrim { background: linear-gradient(100deg, rgba(12,15,17,0.86), rgba(12,15,17,0.54) 70%, rgba(12,15,17,0.32)); }
 
+/* Industries hero only: trims overall hero height by ~20-25% on desktop.
+   The tall hero wasn't actually a padding problem — the long title wraps
+   to 3 lines inside the shared .page-hero__inner's 54rem max-width
+   (home.css), and that single extra wrapped line alone costs ~65px, more
+   than all the vertical padding combined. Widening the inner column to
+   66rem lets the same text, same font-size, same line-height wrap to 2
+   lines instead; on tablet/mobile the viewport is already narrower than
+   66rem so this has no effect there (title still wraps to the available
+   width exactly as before). Combined with a smaller — not removed —
+   padding-block and slightly tighter inter-block spacing (still using
+   margin-top, not font-size/line-height), this keeps breathing room
+   while making the hero visibly more compact. Scoped to this modifier
+   only, so no other page using PageHero is affected. */
+.page-hero--industries .page-hero__inner { max-width: 66rem; padding-block: clamp(2.3rem, 3.1vw + 0.8rem, 4.3rem) clamp(1.9rem, 2.3vw, 2.8rem); }
+.page-hero--industries .page-hero__title { margin-top: 0.7rem; }
+.page-hero--industries .page-hero__lead { margin-top: 0.75rem; }
+.page-hero--industries .phero__actions { margin-top: 1.25rem; }
+
 /* ============================================================
    PRODUCTS — filter chips, mobile panel, product stage, result index
    ============================================================ */
@@ -1014,10 +1032,6 @@
 }
 .htl-card__media { position: relative; aspect-ratio: 16 / 10; background: var(--titanium-100); overflow: hidden; }
 .htl-card__media-fill { width: 100%; height: 100%; display: block; object-fit: cover; }
-.htl-card__body { padding: clamp(1.5rem, 2.5vw, 2.2rem); }
-.htl-card__period { display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-700); }
-.htl-card__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem); line-height: 1.2; letter-spacing: -0.005em; color: var(--graphite-900); margin: 0.5rem 0 0; }
-.htl-card__text { color: var(--steel-600); font-size: 1rem; line-height: 1.6; margin-top: 0.7rem; max-width: 48ch; }
 
 /* ---------- Mobile/tablet sticky step-card stage (<900px) ----------
    Only activates once BOTH conditions hold: `.htl-enhanced` is present

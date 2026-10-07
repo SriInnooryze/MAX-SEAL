@@ -68,6 +68,7 @@ function RelevantProductsList({ items }) {
         <RelevantProductCard
           key={rp.product.id}
           product={rp.product}
+          displayName={rp.displayName}
           bestApplications={rp.bestApplications}
           whyItFits={rp.whyItFits}
           segments={rp.segments}
@@ -87,14 +88,14 @@ function RelevantProductsList({ items }) {
    Excel's Downstream/Midstream/Upstream rows) — every other industry keeps
    passing bestApplications/whyItFits exactly as before and renders exactly
    as before. */
-function RelevantProductCard({ product, bestApplications, whyItFits, segments, open, onToggle }) {
+function RelevantProductCard({ product, displayName, bestApplications, whyItFits, segments, open, onToggle }) {
   const isSegmented = Array.isArray(segments) && segments.length > 0;
   return (
     <div className={'mx__rp' + (open ? ' open' : '')}>
       <button type="button" className="mx__rp-head" aria-expanded={open} onClick={onToggle}>
         <span className="mx__rp-headtext">
           <span className="mx__rp-name">
-            {product.name}
+            {displayName || product.name}
             {productTypeLabel(product) && (
               <span className="mx__rp-type"> — {productTypeLabel(product)}</span>
             )}
@@ -208,13 +209,22 @@ function IndustriesMatrix() {
         ...(ind.relevantProducts || [])
           .map(rp => {
             const product = FAMILIES.find(f => f.id === rp.productId);
-            return product ? { product, bestApplications: rp.bestApplications, whyItFits: rp.whyItFits } : null;
+            return product ? {
+              product,
+              displayName: rp.displayName || ind.productDisplayNames?.[product.id] || product.name,
+              bestApplications: rp.bestApplications,
+              whyItFits: rp.whyItFits,
+            } : null;
           })
           .filter(Boolean),
         ...(ind.segmentProducts || [])
           .map(sp => {
             const product = FAMILIES.find(f => f.id === sp.productId);
-            return product ? { product, segments: sp.segments } : null;
+            return product ? {
+              product,
+              displayName: ind.productDisplayNames?.[product.id] || product.name,
+              segments: sp.segments,
+            } : null;
           })
           .filter(Boolean),
       ]
@@ -225,13 +235,13 @@ function IndustriesMatrix() {
 
   return (
     <main>
-        <PageHero kicker="Industries and Applications"
+        <PageHero className="page-hero--industries" kicker="Industries and Applications"
           title="Explore the operating environments behind every valve decision"
           lead="Select an industry, application need, or operating condition to explore the Max-Seal product families connected to that requirement."
           crumbs={[{ label: 'Home', href: routes.home }, { label: 'Industries' }]}
           mediaId="industries-hero" mediaSrc={HERO_INDUSTRY_IMAGE} mediaPlaceholder="Industrial application visual">
           <div className="phero__actions">
-            <button className="ms-btn ms-btn--primary ms-btn--lg" onClick={() => workspaceRef.current && workspaceRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })}>Explore the Matrix <ArrowRight size={16} /></button>
+            <button className="ms-btn ms-btn--primary ms-btn--lg" onClick={() => workspaceRef.current && workspaceRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })}>Explore Industries <ArrowRight size={16} /></button>
             <Link className="ms-btn ms-btn--on-dark ms-btn--lg" to={routes.enquiry({ intent: 'technical' })}>Ask a Technical Question</Link>
           </div>
         </PageHero>
@@ -309,7 +319,7 @@ function IndustriesMatrix() {
                             <span className="mx__fam-code">{f.code}</span>
                             <span className="mx__fam-body">
                               <span className="mx__fam-name">
-                                {f.name}
+                                {ind.productDisplayNames?.[f.id] || f.name}
                                 {productTypeLabel(f) && (
                                   <span className="mx__fam-type"> — {productTypeLabel(f)}</span>
                                 )}
