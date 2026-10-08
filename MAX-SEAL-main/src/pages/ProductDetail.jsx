@@ -248,6 +248,14 @@ export default function ProductDetail() {
                   onMouseMove={handleZoomMove}
                   onMouseEnter={handleZoomEnter}
                   onMouseLeave={() => setZooming(false)}
+                  // Catalog photos aren't all 4:3 (most are square, some
+                  // portrait, some wider) -- a fixed 4:3 box (the CSS
+                  // fallback, used only until imgSize loads) left fit=contain
+                  // letterboxing most of them, and that letterbox boundary is
+                  // what was showing as vertical lines down the sides. Sizing
+                  // the box to each image's own measured ratio means contain
+                  // never has anything to letterbox, for any product.
+                  style={imgSize ? { aspectRatio: `${imgSize.w} / ${imgSize.h}` } : undefined}
                 >
                   <image-slot id={'pd-media-' + f.id + '-' + shot} src={activeImage} shape="rect" fit="contain" placeholder={f.name + ' · ' + (shots[shot]?.label || '')} />
                   <span className="pdet__zoomhint"><Search size={14} /> Hover to zoom</span>
