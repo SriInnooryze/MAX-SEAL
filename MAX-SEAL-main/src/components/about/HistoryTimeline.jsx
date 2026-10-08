@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import TimelineItem, { TimelineCard } from './TimelineItem';
 import { ABOUT_TIMELINE } from '../../data/aboutData';
-import timeline2008Img from '../../assets/about/timeline-2008-founding.jpg';
+import timeline2008Img from '../../assets/about/team-photo.jpg';
 import timelineLeadershipImg from '../../assets/about/timeline-leadership-valve-experience.png';
 import timelineUsImg from '../../assets/about/timeline-us-operations-supply.png';
 import timelineLatamImg from '../../assets/about/timeline-latin-america-sales-support.png';

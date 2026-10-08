@@ -76,7 +76,7 @@ export default function ProductSubcategory() {
           ) : (
             <>
               <div className="matchsum">
-                <h2 className="matchsum__count">{series.length} {series.length === 1 ? 'series' : 'series'} in {subcategory.name}</h2>
+                <h2 className="matchsum__count">{subcategory.name}</h2>
                 <p className="matchsum__note">Select a series to view full specifications, documents and related products.</p>
               </div>
               <div className="subcategory-series-grid">

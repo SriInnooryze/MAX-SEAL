@@ -2,10 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Headset } from '../../icons/icons';
 import PageHero from '../PageHero';
 import { routes } from '../../router/paths';
-// src/assets/about/team-photo.jpg no longer exists on disk (replaced by the
-// dedicated timeline photo set) — using the 2008 founding photo here too so
-// this import doesn't break the build.
-import teamPhotoImg from '../../assets/about/timeline-2008-founding.jpg';
+import teamPhotoImg from '../../assets/about/team-photo.jpg';
 
 export default function AboutHero() {
   return (
