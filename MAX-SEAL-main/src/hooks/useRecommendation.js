@@ -10,7 +10,7 @@ export function useRecommendation() {
     let rec;
     if (sizingMedia === 'corrosive') {
       rec = {
-        title: 'PFA Lined (Chem Flo/Chem Tek) or Special Alloy Series',
+        title: 'PFA Lined (Fluoro-Tek/Chem Tek) or Special Alloy Series',
         desc: 'Designed specifically to protect wetted parts from aggressive chemicals, acids, and exotic media. We recommend wetted w/ PFA liners or special alloy construction (Monel, Hastelloy, Duplex) to resist corrosion.',
         link: routes.products({ type: 'lined' }),
         linkText: 'Explore Lined Valves',

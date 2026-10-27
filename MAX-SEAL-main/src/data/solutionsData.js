@@ -102,11 +102,11 @@ export const SOLUTIONS_SERIES = [
   },
   {
     id: 'chem-flo-series',
-    title: 'Chem Flo Series',
+    title: 'Fluoro-Tek Series',
     desc: 'Lined industrial butterfly valves protecting wetted parts from hostile chemicals, acids, and high purity wetted medias.',
     href: routes.products({ type: 'lined' }),
     imageSlotId: 'sol-series-chemflo',
-    imagePlaceholder: 'Chem Flo Lined Series'
+    imagePlaceholder: 'Fluoro-Tek Lined Series'
   },
   {
     id: 'chem-tek-series',

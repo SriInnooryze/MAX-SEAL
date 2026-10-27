@@ -114,7 +114,7 @@ export const PRODUCT_STORIES = [
     teaser: 'PFA lined and special alloy constructions help protect wetted parts in aggressive media where material selection is critical to valve life.',
     line: 'Material and lining options for environments where media compatibility matters.',
     story: 'When the media is aggressive, material compatibility decides how long a valve keeps working. PFA lined and special alloy constructions protect wetted parts in corrosive environments. Selections are guided by the chemistry of your process.',
-    families: ['PROD-008', 'PROD-005'], app: 'Chemical, petrochemical and other aggressive media',
+    families: ['PROD-007', 'PROD-005'], app: 'Chemical, petrochemical and other aggressive media',
     image: fluoroTekPfaLined
   },
   {
