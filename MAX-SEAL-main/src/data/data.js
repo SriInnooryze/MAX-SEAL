@@ -150,6 +150,7 @@ export const PRODUCT_STORIES = [
     line: 'Practical engineering input from selection through configuration.',
     story: 'Choosing the right valve is easier with engineering input alongside it. Max-Seal helps match series, seat and trim to your service condition. Support continues from selection through sizing and configuration.',
     families: ['PROD-007', 'PROD-006', 'PROD-013'], app: 'Selection, sizing and application support',
+    eyebrow: '', tagLabels: [],
     image: engineeringCardRing,
     askPrimary: true
   },

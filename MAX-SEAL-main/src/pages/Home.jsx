@@ -11,6 +11,9 @@ import heroVideo from '../assets/home/Max-Seal.mp4';
 
 
 function famShort(id) { const f = FAMILIES.find(x => x.id === id); return f ? f.name : id; }
+/* A story's eyebrow/tags default to its families; `eyebrow: ''` or `tagLabels: []` hides them. */
+function storyEyebrow(s) { return s.eyebrow !== undefined ? s.eyebrow : famShort(s.families[0]); }
+function storyTags(s) { return s.tagLabels || s.families.slice(0, 3).map(famShort); }
 function prefersReducedMotion() {
   return typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
@@ -202,7 +205,7 @@ function ProductPreview() {
                     aria-expanded={center ? open : undefined}
                     onClick={() => center ? setOpen(true) : goTo(sIdx, pos === 2 ? 1 : -1)}
                   >
-                    <span className="ptile__label">{famShort(s.families[0])}</span>
+                    {storyEyebrow(s) && <span className="ptile__label">{storyEyebrow(s)}</span>}
                     <span className="ptile__title">{s.title}</span>
                     {center && <span className="ptile__explore">Explore <ArrowRight size={15} /></span>}
                   </button>
@@ -210,10 +213,10 @@ function ProductPreview() {
                     <div className={'ptile__overlay' + (open ? ' up' : '')} role="dialog" aria-modal="true" aria-label={s.title} aria-hidden={!open}>
                       <button ref={closeRef} className="slay__close" aria-label="Close details" onClick={closeOverlay}><X size={20} /></button>
                       <div className="ptile__overlay-inner">
-                        <span className="slay__eyebrow">{s.eyebrow || famShort(s.families[0])}</span>
+                        {storyEyebrow(s) && <span className="slay__eyebrow">{storyEyebrow(s)}</span>}
                         <div className="slay__title">{s.title}</div>
                         <p className="slay__teaser">{s.teaser}</p>
-                        <div className="slay__tags">{(s.tagLabels || s.families.slice(0, 3).map(famShort)).map(label => <span key={label} className="slay__tag">{label}</span>)}</div>
+                        {storyTags(s).length > 0 && <div className="slay__tags">{storyTags(s).map(label => <span key={label} className="slay__tag">{label}</span>)}</div>}
                         <TeaserActions exploreHref={routes.products({ story: s.id })} exploreLabel="Explore Solutions" askPrimary={s.askPrimary} />
                       </div>
                     </div>
