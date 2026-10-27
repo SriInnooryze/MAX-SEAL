@@ -120,7 +120,10 @@ export default function ProductDetail() {
   // Automation is only shown when Excel actually specifies it — an empty
   // Automation cell means "not applicable / not yet specified", not "manual"
   // by default (that silently invented a fact the catalog doesn't have).
-  const automationLabel = f.automation.length
+  // A ProductSpecifications row labelled "Automation" overrides the facet-
+  // derived label for wording the facets can't express (e.g. "Gear Op").
+  const automationSpec = f.specifications.find(s => s.label === 'Automation');
+  const automationLabel = automationSpec ? automationSpec.value : f.automation.length
     ? (f.automation.includes('manual') && f.automation.includes('actuated') ? 'Manual / Actuated'
       : f.automation.includes('actuated') ? 'Actuated' : 'Manual')
     : null;
@@ -149,11 +152,12 @@ export default function ProductDetail() {
     f.rating && ['Pressure rating', f.rating],
     f.application && ['Typical application', f.application],
     automationLabel && ['Automation', automationLabel],
-    ...f.specifications.map(s => [s.label, s.value]),
+    ...f.specifications.filter(s => s !== automationSpec).map(s => [s.label, s.value]),
   ].filter(Boolean);
   const tech = hasTechData ? <SpecTable caption="Technical data" rows={specRows} /> : null;
   const applications = f.application ? (
-    <div className="prose"><p>Typical applications include {f.application.toLowerCase()}. Material and seat options are matched to media and operating conditions.</p></div>
+    // Lowercased to read mid-sentence, but all-caps acronyms (HVAC, LNG) keep their case.
+    <div className="prose"><p>Typical applications include {f.application.replace(/\b\w+\b/g, w => (w.length > 1 && w === w.toUpperCase() && /[A-Z]/.test(w)) ? w : w.toLowerCase())}. Material and seat options are matched to media and operating conditions.</p></div>
   ) : null;
 
   // Materials tab only appears once at least one field carries a real,
