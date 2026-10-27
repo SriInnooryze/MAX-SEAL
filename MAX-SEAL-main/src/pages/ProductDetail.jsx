@@ -1,7 +1,7 @@
 /* Max-Seal — Product Detail (reusable template). */
 import { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { FAMILIES, INDUSTRIES, bestDocForFamily } from '../data/data';
+import { FAMILIES, INDUSTRIES, DOCS, bestDocForFamily } from '../data/data';
 import { ArrowRight, Headset, Download, FileText, Compass, Search, Eye } from '../icons/icons';
 import { routes } from '../router/paths';
 import Tabs from '../components/ds/Tabs';
@@ -184,17 +184,22 @@ export default function ProductDetail() {
   // superseded multi-product catalogs and sitewide "ALL" docs (general
   // price guides, install/maintenance samples) alongside the real one.
   const bestDoc = bestDocForFamily(f.id);
-  const documents = bestDoc ? (
+  // Per-model Datasheet rows that belong to this product alone are listed
+  // after it (e.g. the IVT stainless model sheets); other doc types still
+  // collapse to the single best document.
+  const datasheets = DOCS.filter(d => d.type === 'Datasheet' && d.pdfAsset && d !== bestDoc
+    && d.familyIds.length === 1 && d.familyIds[0] === f.id);
+  const docList = bestDoc ? [bestDoc, ...datasheets] : datasheets;
+  const documents = docList.length ? (
     <div className="rlist">
-      {(() => {
-        const d = bestDoc;
+      {docList.map(d => {
         // encodeURI (not encodeURIComponent) so the "/" path separators
         // survive while spaces and other special characters in the actual
         // on-disk filename resolve correctly as a browser request.
         const href = encodeURI(d.pdfAsset);
         const fileName = d.pdfAsset.split('/').pop();
         return (
-          <div className="doc-row">
+          <div className="doc-row" key={d.id}>
             <div className="doc-ic"><FileText size={20} /></div>
             <div className="doc-main">
               <div className="doc-main__t">{d.title}</div>
@@ -211,7 +216,7 @@ export default function ProductDetail() {
             </div>
           </div>
         );
-      })()}
+      })}
     </div>
   ) : null;
   const sectionContent = { overview, specifications: tech, applications, materials, documents };
