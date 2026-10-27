@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
-import { INTENTS, FAMILIES, INDUSTRIES } from '../data/data';
+import { INTENTS, FAMILIES, INDUSTRIES, REQUEST_ONLY_SERIES } from '../data/data';
 import * as Icons from '../icons/icons';
 import { routes } from '../router/paths';
 import Input from '../components/ds/Input';
@@ -28,7 +28,10 @@ export default function Enquiry() {
   const cur = INTENTS.find(i => i.id === intent);
   const presetProduct = getParam('product');
 
-  const famOptions = FAMILIES.map(f => ({ value: f.id, label: f.name }));
+  const famOptions = [
+    ...FAMILIES.map(f => ({ value: f.id, label: f.name })),
+    ...REQUEST_ONLY_SERIES.map(s => ({ value: s.id, label: s.name + ' (available upon request)' })),
+  ];
   const indOptions = INDUSTRIES.map(x => ({ value: x.id, label: x.name }));
   const countryOptions = [
     { value: 'us', label: 'United States' }, { value: 'ca', label: 'Canada' }, { value: 'mx', label: 'Mexico' },

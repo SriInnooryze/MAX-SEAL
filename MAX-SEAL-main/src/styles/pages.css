@@ -1577,6 +1577,11 @@
 .subcategory-series-card__desc { font-family: var(--font-body); font-size: 0.88rem; font-weight: var(--weight-regular); color: var(--steel-600); line-height: 1.5; flex: 1; }
 .subcategory-series-card__cta { display: inline-flex; align-items: center; gap: 0.35rem; font-family: var(--font-body); font-weight: 600; font-size: 0.88rem; color: var(--azure-700); margin-top: 0.5rem; }
 .subcategory-series-card__cta:hover { color: var(--azure-500); }
+/* Request-only series note (REQUEST_ONLY_SERIES) — small clickable box under the series grid */
+.request-note { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.5rem; max-width: 720px; margin: 2rem auto 0; padding: 1rem 1.25rem; border: 1px solid var(--color-border); border-left: 3px solid var(--azure-700); background: var(--paper-0); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.95rem; font-weight: 600; color: var(--graphite-900); transition: box-shadow 160ms ease, border-color 160ms ease; }
+.request-note:hover { box-shadow: var(--shadow-lg); border-color: var(--steel-300); border-left-color: var(--azure-500); }
+.request-note__cta { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.88rem; color: var(--azure-700); }
+.request-note:hover .request-note__cta { color: var(--azure-500); }
 
 /* Compare on/off control — equal box, centred check, clear label, full click area */
 .cmpcheck { display: inline-flex; align-items: center; gap: 0.55rem; font-family: var(--font-body); font-weight: 600; font-size: 0.9rem; color: var(--graphite-800); background: var(--paper-0); border: 1px solid var(--steel-300); border-radius: var(--radius-sm); height: 38px; padding: 0 0.9rem; cursor: pointer; transition: border-color 140ms ease, background 140ms ease, color 140ms ease; }

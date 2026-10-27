@@ -9,7 +9,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
-import { CATEGORIES, SUBCATEGORIES, FAMILIES } from '../data/data';
+import { CATEGORIES, SUBCATEGORIES, FAMILIES, REQUEST_ONLY_SERIES } from '../data/data';
 import { ArrowRight, Headset } from '../icons/icons';
 import { routes } from '../router/paths';
 
@@ -93,6 +93,12 @@ export default function ProductSubcategory() {
                   </article>
                 ))}
               </div>
+              {REQUEST_ONLY_SERIES.filter(s => s.subcategoryId === subcategory.id).map(s => (
+                <Link className="request-note" key={s.id} to={routes.enquiry({ intent: 'pricing', product: s.id })}>
+                  <span>{s.note}</span>
+                  <span className="request-note__cta">Request a quote <ArrowRight size={15} /></span>
+                </Link>
+              ))}
             </>
           )}
         </div>

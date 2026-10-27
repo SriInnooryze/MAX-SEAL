@@ -128,11 +128,6 @@ export const SOLUTIONS_SERIES = [
 
 export const SOLUTIONS_SERVICES = [
   {
-    title: 'Custom Stem Extensions',
-    desc: 'Engineered stem and shaft extensions for insulated pipes, buried services, or high-temperature lines. Built to match your specific torque and height needs.',
-    iconType: 'sliders'
-  },
-  {
     title: 'Mounting Brackets & Hardware',
     desc: 'Custom mounting brackets, couplings, and adapter plates designed and machined in-house for seamless valve-to-actuator pairing.',
     iconType: 'layers'

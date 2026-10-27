@@ -50,6 +50,15 @@ export function subcategoryTarget(category, subcategory) {
   return routes.productSubcategory(category.slug, subcategory.slug);
 }
 
+/* Series Max-Seal does not stock or list as a product, but quotes on request
+   (client: "Cryogenic Series Valves available upon request."). Each entry
+   shows as a clickable note on its Sub Category-1 page and as an extra
+   Product family option on the Support (Enquiry) form, preselected via
+   ?product=<id> when the note is clicked. */
+export const REQUEST_ONLY_SERIES = [
+  { id: 'cryogenic-series', subcategoryId: 'SUB-002', name: 'Cryogenic Series', note: 'Cryogenic Series Valves available upon request.' },
+];
+
 /* Products page filter facets */
 export const FACETS = [
   {
