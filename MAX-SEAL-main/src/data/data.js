@@ -9,6 +9,10 @@
  */
 import { routes } from '../router/paths';
 import catalog from './generated/catalog.json';
+import haywardGearFront from '../assets/home/Hayward_Butterfly_Gear_Front.png';
+import chemTek53a from '../assets/home/Chem-Tek-53a-Transparent (1).png';
+import fluoroTekPfaLined from '../assets/home/3”-Actuated-Fluoro-Tek-PFA-LinedTransparent.png';
+import engineeringCardRing from '../assets/home/WhiteMaxSeal_Engineering_card_ring.png';
 
 export const HERO_INDUSTRY_IMAGE = '/assets/maxseal/industries/hero.png';
 
@@ -110,24 +114,26 @@ export const PRODUCT_STORIES = [
     teaser: 'PFA lined and special alloy constructions help protect wetted parts in aggressive media where material selection is critical to valve life.',
     line: 'Material and lining options for environments where media compatibility matters.',
     story: 'When the media is aggressive, material compatibility decides how long a valve keeps working. PFA lined and special alloy constructions protect wetted parts in corrosive environments. Selections are guided by the chemistry of your process.',
-    families: ['PROD-004', 'PROD-005'], app: 'Chemical, petrochemical and other aggressive media',
-    image: FAMILIES.find((f) => f.id === 'PROD-004').image
+    families: ['PROD-008', 'PROD-005'], app: 'Chemical, petrochemical and other aggressive media',
+    image: fluoroTekPfaLined
   },
   {
     id: 'automated-control', title: 'Automated control',
     teaser: 'Valve and actuator packages are prepared around control needs, operating response and accessories suited to the application.',
     line: 'Valve and actuator packages prepared around control, response, and operating needs.',
     story: 'Control systems need valves that respond predictably and integrate cleanly. Max-Seal assembles valve and actuator packages around control, response and operating needs. Accessories and controls are prepared to suit the duty.',
-    families: ['PROD-006', 'PROD-013', 'PROD-007'], app: 'Process automation and control loops',
-    image: FAMILIES.find((f) => f.id === 'PROD-006').image
+    families: ['PROD-012', 'PROD-013', 'PROD-007'], app: 'Process automation and control loops',
+    image: chemTek53a
   },
   {
     id: 'application-specific', title: 'Application-specific solutions',
     teaser: 'When standard configurations are not enough, Max-Seal can support customized valve solutions based on service conditions and project requirements.',
     line: 'Customized configurations supported by practical engineering input.',
     story: 'Not every requirement fits a standard configuration. Customized solutions are engineered to order with practical input from our team. We work from your application to the valve, not the other way around.',
-    families: ['PROD-007', 'PROD-005'], app: 'Project specific requirements',
-    image: FAMILIES.find((f) => f.id === 'PROD-007').image
+    families: ['PROD-007', 'PROD-005', 'PROD-006'], app: 'Project specific requirements',
+    eyebrow: 'Hayward BV Series Butterfly Valve',
+    tagLabels: ['PFA Lined Ball Valve', 'Hayward BV Series Butterfly Valve', 'PFA Lined Butterfly Valve'],
+    image: haywardGearFront
   },
   {
     id: 'engineered-support', title: 'Engineering support',
@@ -135,7 +141,8 @@ export const PRODUCT_STORIES = [
     line: 'Practical engineering input from selection through configuration.',
     story: 'Choosing the right valve is easier with engineering input alongside it. Max-Seal helps match series, seat and trim to your service condition. Support continues from selection through sizing and configuration.',
     families: ['PROD-007', 'PROD-006', 'PROD-013'], app: 'Selection, sizing and application support',
-    image: FAMILIES.find((f) => f.id === 'PROD-005').image
+    image: engineeringCardRing,
+    askPrimary: true
   },
 ];
 

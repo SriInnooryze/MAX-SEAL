@@ -98,7 +98,15 @@ function VideoHero() {
 }
 
 /* Teaser overlay actions — shared between product and industry overlays. */
-function TeaserActions({ exploreHref, exploreLabel }) {
+function TeaserActions({ exploreHref, exploreLabel, askPrimary }) {
+  if (askPrimary) {
+    return (
+      <div className="slay__actions">
+        <Link className="ms-btn ms-btn--primary" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask the Engineers</Link>
+        <Link className="ms-btn ms-btn--on-dark" to={routes.enquiry({ intent: 'pricing' })}>Request a Quote</Link>
+      </div>
+    );
+  }
   return (
     <div className="slay__actions">
       <Link className="ms-btn ms-btn--primary" to={exploreHref}>{exploreLabel} <ArrowRight size={16} /></Link>
@@ -202,11 +210,11 @@ function ProductPreview() {
                     <div className={'ptile__overlay' + (open ? ' up' : '')} role="dialog" aria-modal="true" aria-label={s.title} aria-hidden={!open}>
                       <button ref={closeRef} className="slay__close" aria-label="Close details" onClick={closeOverlay}><X size={20} /></button>
                       <div className="ptile__overlay-inner">
-                        <span className="slay__eyebrow">{famShort(s.families[0])}</span>
+                        <span className="slay__eyebrow">{s.eyebrow || famShort(s.families[0])}</span>
                         <div className="slay__title">{s.title}</div>
                         <p className="slay__teaser">{s.teaser}</p>
-                        <div className="slay__tags">{s.families.slice(0, 3).map(fid => <span key={fid} className="slay__tag">{famShort(fid)}</span>)}</div>
-                        <TeaserActions exploreHref={routes.products({ story: s.id })} exploreLabel="Explore Solutions" />
+                        <div className="slay__tags">{(s.tagLabels || s.families.slice(0, 3).map(famShort)).map(label => <span key={label} className="slay__tag">{label}</span>)}</div>
+                        <TeaserActions exploreHref={routes.products({ story: s.id })} exploreLabel="Explore Solutions" askPrimary={s.askPrimary} />
                       </div>
                     </div>
                   )}
