@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { INDUSTRIES } from '../../data/data';
 import { Headset } from '../../icons/icons';
 import { routes } from '../../router/paths';
 
@@ -34,23 +35,23 @@ const END_USER_IDS = [
 const END_USERS = END_USER_IDS.map(([id, name]) => ({ id, name, logo: findLogo(id) }));
 
 /* Client-supplied list (About page feedback), in the client's own wording
-   and order. Plain labels, not links: several of these markets (Steel & iron,
-   LNG, HRSG, Desalination, Fiber) have no Industry page. */
+   and order. A market with a matching INDUSTRIES entry links to it; the rest
+   (Steel & iron, LNG, HRSG, Desalination, Fiber) have none and stay plain. */
 const SERVED_MARKETS = [
-  'Chemical & petrochemical',
-  'Power generation plants',
-  'Ship building industries',
-  'Steel & iron industries',
-  'Pulp & paper plants',
-  'Coal & mining industries',
-  'Higher Pressure HVAC Applications',
-  'Food industries',
-  'LNG',
-  'HRSG industries',
-  'Oil refinery industries',
-  'Desalination industries',
-  'Fiber Industries',
-];
+  ['Chemical & petrochemical', 'petrochemical'],
+  ['Power generation plants', 'power'],
+  ['Ship building industries', 'marine'],
+  ['Steel & iron industries'],
+  ['Pulp & paper plants', 'pulp-paper'],
+  ['Coal & mining industries', 'mining'],
+  ['Higher Pressure HVAC Applications', 'hvac'],
+  ['Food industries', 'food-beverage'],
+  ['LNG'],
+  ['HRSG industries'],
+  ['Oil refinery industries', 'refining'],
+  ['Desalination industries'],
+  ['Fiber Industries'],
+].map(([name, id]) => ({ name, industry: INDUSTRIES.some((x) => x.id === id) ? id : null }));
 
 export default function EndUsersSection() {
   return (
@@ -96,8 +97,9 @@ export default function EndUsersSection() {
           <div className="about-serve__markets">
             <span className="about-serve__panel-label">Markets served</span>
             <div className="about-serve__chips">
-              {SERVED_MARKETS.map((m) => (
-                <span className="about-serve__chip" key={m}>{m}</span>
+              {SERVED_MARKETS.map((m) => (m.industry
+                ? <Link className="about-serve__chip about-serve__chip--link" key={m.name} to={routes.industryDetail(m.industry)}>{m.name}</Link>
+                : <span className="about-serve__chip" key={m.name}>{m.name}</span>
               ))}
             </div>
           </div>
