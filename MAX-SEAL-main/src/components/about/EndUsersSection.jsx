@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { INDUSTRIES } from '../../data/data';
 import { Headset } from '../../icons/icons';
 import { routes } from '../../router/paths';
 
@@ -34,12 +33,24 @@ const END_USER_IDS = [
 ];
 const END_USERS = END_USER_IDS.map(([id, name]) => ({ id, name, logo: findLogo(id) }));
 
-/* A representative subset of the site's existing INDUSTRIES data
-   (src/data/data.js) — not a new list, just fewer of the same real entries
-   already used by the Industries page/dropdown, so this stays a compact
-   credibility panel rather than the full Industries directory. */
-const SERVED_MARKET_IDS = ['oil-gas', 'power', 'data-centers', 'hvac', 'marine', 'petrochemical', 'refining', 'mining'];
-const servedMarkets = SERVED_MARKET_IDS.map((id) => INDUSTRIES.find((x) => x.id === id)).filter(Boolean);
+/* Client-supplied list (About page feedback), in the client's own wording
+   and order. Plain labels, not links: several of these markets (Steel & iron,
+   LNG, HRSG, Desalination, Fiber) have no Industry page. */
+const SERVED_MARKETS = [
+  'Chemical & petrochemical',
+  'Power generation plants',
+  'Ship building industries',
+  'Steel & iron industries',
+  'Pulp & paper plants',
+  'Coal & mining industries',
+  'Higher Pressure HVAC Applications',
+  'Food industries',
+  'LNG',
+  'HRSG industries',
+  'Oil refinery industries',
+  'Desalination industries',
+  'Fiber Industries',
+];
 
 export default function EndUsersSection() {
   return (
@@ -85,8 +96,8 @@ export default function EndUsersSection() {
           <div className="about-serve__markets">
             <span className="about-serve__panel-label">Markets served</span>
             <div className="about-serve__chips">
-              {servedMarkets.map((m) => (
-                <Link className="about-serve__chip" key={m.id} to={routes.industryDetail(m.id)}>{m.name}</Link>
+              {SERVED_MARKETS.map((m) => (
+                <span className="about-serve__chip" key={m}>{m}</span>
               ))}
             </div>
           </div>
