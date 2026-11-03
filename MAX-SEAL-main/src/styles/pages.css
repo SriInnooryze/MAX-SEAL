@@ -960,18 +960,12 @@
    IntersectionObserver in HistoryTimeline.jsx) only recolour the dot/rail.
    Neither ever touches opacity/display/visibility of content or images.
 
-   Two decorative, aria-hidden sticky stages reuse the same TimelineCard
-   markup and read the same shared activeIndex:
-     - Desktop (>=900px): stage sits beside the rail; the rail's own image
-       is hidden there since the stage carries it instead.
-     - Mobile/tablet (<900px, JS-enhanced, motion allowed): a dedicated
-       tall track (.htl-mobile-track) provides scroll distance for its own
-       sticky step-card stage; once it activates, the rail is visually
-       moved off-screen (still fully present for assistive tech) instead
-       of shown inline, since the stage now carries the same content.
-   In every mode — no JS, reduced motion, or either stage active — all six
-   milestones are always rendered somewhere and never removed from the
-   DOM; only opacity/transform/z-index ever change. */
+   Desktop (>=900px, motion allowed) adds one decorative, aria-hidden
+   sticky image stage beside the rail (TimelineCard, driven by activeIndex);
+   the rail's own image is hidden there since the stage carries it instead.
+   Below 900px the rail itself is the timeline: each milestone's text with
+   its photo underneath. (An image-only scroll stage used to replace it on
+   mobile, which left phones with no milestone text at all.) */
 .htl { list-style: none; margin: 0; padding: 0; }
 .htl__row {
   display: grid; grid-template-columns: 2.6rem minmax(0, 1fr);
@@ -986,8 +980,8 @@
 .htl__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.25rem, 1rem + 0.7vw, 1.6rem); line-height: 1.22; letter-spacing: -0.005em; color: var(--graphite-900); margin: 0.45rem 0 0; max-width: 24ch; }
 .htl__text { color: var(--steel-600); font-size: 1rem; line-height: 1.62; margin-top: 0.6rem; max-width: 52ch; }
 
-/* Rail's own image — visible whenever neither stage is (reduced motion at
-   any width, or before JS enhancement finishes). Consistent 16:10 ratio,
+/* Rail's own image — shown below 900px, and at any width with reduced
+   motion (where the desktop stage stays off). Consistent 16:10 ratio,
    bordered/minimal-radius/shadow treatment matching the rest of the
    site's media frames. */
 .htl__media { grid-column: 2; margin-top: 0.9rem; max-width: 480px; position: relative; aspect-ratio: 16 / 10; background: var(--titanium-100); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-xs); overflow: hidden; }
@@ -995,7 +989,6 @@
 
 .htl-layout { display: block; }
 .htl-stage { display: none; }
-.htl-mobile { display: none; }
 
 /* Mild rail highlight only — dot/line colour, nothing else. Lives on
    .htl__connector (not the row) — see the comment in TimelineItem.jsx for
@@ -1004,8 +997,8 @@
 .htl__connector.is-passed .htl__line { background: var(--azure-500); }
 
 /* Soft "currently near centre of viewport" highlight on the rail's own
-   image card — only matters while the rail itself is the visible timeline
-   (reduced motion, or the brief pre-enhancement moment). Plain sibling
+   image card — only matters while the rail's images are visible
+   (below 900px). Plain sibling
    combinator (not `:has()`), works everywhere — .htl__connector and
    .htl__media are DOM siblings inside the same <li>. Colour/shadow only,
    applies unconditionally and never affects any other row's opacity. */
@@ -1017,15 +1010,12 @@
   .htl__media { transition: border-color 300ms ease, box-shadow 300ms ease; }
 }
 
-/* Shared "premium industrial card" look for both sticky stages — the
-   desktop right-side stage and the mobile/tablet step stage both render
-   the same TimelineCard markup (see HistoryTimeline.jsx). grid-column/
-   grid-row: 1 is the CSS Grid same-cell-stacking technique: every card in
-   a stage occupies the same cell, so the stage's height is always the
-   tallest card's height — no position:absolute, no hardcoded height, no
-   risk of a blank gap. Only opacity/transform/z-index/pointer-events
-   differ between desktop and mobile, set separately below since their
-   offsets/timing intentionally differ slightly. */
+/* "Premium industrial card" look for the desktop sticky stage's
+   TimelineCard (see HistoryTimeline.jsx). grid-column/grid-row: 1 is the
+   CSS Grid same-cell-stacking technique: every card in the stage occupies
+   the same cell, so the stage's height is always the tallest card's
+   height — no position:absolute, no hardcoded height, no risk of a blank
+   gap. */
 .htl-card {
   grid-column: 1; grid-row: 1;
   background: var(--paper-0); border: 1px solid var(--color-border); border-radius: var(--radius-md);
@@ -1033,79 +1023,6 @@
 }
 .htl-card__media { position: relative; aspect-ratio: 16 / 10; background: var(--titanium-100); overflow: hidden; }
 .htl-card__media-fill { width: 100%; height: 100%; display: block; object-fit: cover; }
-
-/* ---------- Mobile/tablet sticky step-card stage (<900px) ----------
-   Only activates once BOTH conditions hold: `.htl-enhanced` is present
-   (React has mounted — see HistoryTimeline.jsx) and the user allows
-   motion. Otherwise `.htl-mobile` stays `display:none` (its base rule
-   above) and the plain, fully-visible, fully-accessible rail is the whole
-   mobile timeline — a slow/failed script or reduced-motion preference
-   both land on exactly that same safe fallback, never a blank state. */
-@media (max-width: 899.98px) and (prefers-reduced-motion: no-preference) {
-  /* The stage takes over visually; the rail stays mounted and fully
-     populated (real text, real <img> alt text) but is visually clipped
-     off-screen with the standard "sr-only" technique — assistive tech
-     still reads it, sighted mobile/tablet users see the sticky stage. */
-  .htl-enhanced .htl {
-    position: absolute;
-    width: 1px; height: 1px;
-    margin: -1px; padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .htl-enhanced .htl-mobile { display: block; }
-
-  /* Tall track: real scroll distance for all N milestones (--htl-steps is
-     set inline per item count in HistoryTimeline.jsx). vh first for
-     universal support; the svh line after it wins in browsers that
-     support it, which keeps the track's height steady on mobile Safari
-     instead of jumping as the address bar shows/hides mid-scroll. The
-     track itself renders no visible content beyond the sticky block below
-     — the rest of its height is what the user scrolls through while the
-     stage stays pinned in place. */
-  .htl-mobile-track {
-    position: relative;
-    min-height: calc(var(--htl-steps, 6) * 78vh);
-    min-height: calc(var(--htl-steps, 6) * 78svh);
-  }
-
-  .htl-mobile-sticky {
-    position: sticky;
-    top: calc(var(--header-h, 82px) + 1rem);
-    padding-top: 0.2rem;
-  }
-
-  .htl-mobile-progress { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.85rem; }
-  .htl-mobile-progress__count { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel-500); }
-  .htl-mobile-progress__dots { display: flex; align-items: center; gap: 0.4rem; }
-  .htl-mobile-progress__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-border); transition: background-color 320ms ease, transform 320ms ease; }
-  .htl-mobile-progress__dot.is-active { background: var(--azure-500); transform: scale(1.35); }
-
-  .htl-mobile-stage { display: grid; }
-
-  /* Invisible, non-interactive scroll-position markers — one per
-     milestone, evenly spaced across the track via inline top/height
-     percentages in HistoryTimeline.jsx. Pure geometry for the
-     IntersectionObserver there; never rendered, never intercepts
-     touch/scroll (no scroll hijacking). */
-  .htl-mobile-triggers { position: absolute; inset: 0; pointer-events: none; }
-  .htl-mobile-trigger { position: absolute; left: 0; right: 0; }
-
-  /* Step transition: previous/next cards are fully transparent and
-     shifted just off the active card's position, so a change reads as a
-     deliberate step rather than a fade — same idea as the desktop stage,
-     with mobile-tuned offsets/timing. */
-  .htl-mobile-stage .htl-card {
-    opacity: 0; transform: translateY(24px) scale(0.985); z-index: 1; pointer-events: none;
-    transition: opacity 560ms cubic-bezier(0.22, 1, 0.36, 1), transform 560ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 560ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .htl-mobile-stage .htl-card.is-active { opacity: 1; transform: translateY(0) scale(1); z-index: 3; pointer-events: auto; }
-  .htl-mobile-stage .htl-card.is-prev { opacity: 0; transform: translateY(-18px) scale(0.985); z-index: 1; }
-  .htl-mobile-stage .htl-card.is-next { opacity: 0; transform: translateY(24px) scale(0.985); z-index: 1; }
-}
 
 /* ---------- Desktop sticky stage (>=900px) — unchanged ---------- */
 @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {

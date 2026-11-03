@@ -27,11 +27,8 @@ export function TimelineMedia({ item, id, className }) {
    touches that attribute again after mount, so `.in` is untouchable.
    The row's own image (.htl__media) stays in the DOM at every breakpoint.
    On desktop, CSS alone hides it once the sticky stage takes over. Below
-   900px, CSS visually moves the whole rail off-screen (accessible-only)
-   once the mobile sticky stage activates — see `.htl-enhanced .htl` in
-   pages.css — but `.htl__content`/`.htl__media` themselves stay plain,
-   always-fully-visible elements with no JS-driven state of their own,
-   so the rail is a correct, complete fallback with zero JS dependency. */
+   900px the rail is the whole timeline, so text and image both show here,
+   with no JS-driven state of their own. */
 export default function TimelineItem({ item, index, current, passed, rowRef }) {
   const { period, label, title, description, imageSlotId } = item;
   const slotId = imageSlotId || `about-tl-${index}`;
@@ -54,17 +51,14 @@ export default function TimelineItem({ item, index, current, passed, rowRef }) {
   );
 }
 
-/* One stacked card in a sticky stage — reused for both the desktop
-   right-side stage and the mobile/tablet stage (HistoryTimeline.jsx renders
-   it twice, once per stage). All six cards are always rendered in each
-   stage — `state` only ever switches which is-* class is present, driving
-   opacity/transform/z-index in pages.css. Nothing here is ever
-   conditionally rendered, `display: none`d, or removed from the DOM, so
+/* One stacked card in the desktop sticky stage (HistoryTimeline.jsx). All
+   six cards are always rendered — `state` only ever switches which is-*
+   class is present, driving opacity/transform/z-index in pages.css, so
    there is no path to a blank stage or a vanished card in either scroll
-   direction. Purely decorative (the rail already carries the same content
-   accessibly, including period/title/description text), so both stages
-   mark their parent aria-hidden. Image only — no text body — per client
-   feedback that the wording under these images duplicated the timeline. */
+   direction. Purely decorative (the rail beside it carries the same
+   content, including period/title/description text), so the stage is
+   aria-hidden. Image only — no text body — per client feedback that the
+   wording under these images duplicated the timeline. */
 export function TimelineCard({ item, index, state }) {
   const { imageSlotId } = item;
   const slotId = 'stage-' + (imageSlotId || `about-tl-${index}`);
