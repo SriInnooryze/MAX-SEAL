@@ -66,7 +66,7 @@ export default function Products() {
   const [category, setCategory] = useState(seedCategory);
   const [adv, setAdv] = useState(seedAdv);          // applied advanced filters
   const [advDraft, setAdvDraft] = useState(seedAdv); // working copy inside refine
-  const [view, setView] = useState('featured');      // featured · list
+  const [view, setView] = useState('list');          // list (default, has Add to Compare) · featured
   const [compare, setCompare] = useState([]);
   const [showCompare, setShowCompare] = useState(false);
   const [refineOpen, setRefineOpen] = useState(false);
