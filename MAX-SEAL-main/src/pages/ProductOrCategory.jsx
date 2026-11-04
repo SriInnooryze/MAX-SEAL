@@ -1,13 +1,13 @@
-/* Max-Seal — dispatcher for the single-segment /products/:family route.
-   That URL shape is shared by two different things: a Main Category slug
-   (/products/butterfly-valves) and a Product id (/products/PROD-014).
-   React Router can only bind one element to a given path pattern, so this
-   checks which one :family actually is against the Excel-generated catalog
-   data and renders the matching page — ProductCategory.jsx and
-   ProductDetail.jsx both stay untouched and fully unaware of each other.
+/* Max-Seal — dispatcher for the /products/* route (everything except the
+   2-segment subcategory pages, which have their own route). The path is
+   matched against the Excel-generated catalog data:
+   - a Main Category slug (/products/butterfly-valves) → category page
+   - a product UrlPath (/products/butterfly-valves/resilient-seated/
+     performance-series-butterfly-valve/prf-series) → product page
+   - an old product Id link (/products/PROD-009) → redirect to its UrlPath
    Anything else (an inactive/removed product such as PROD-018, or a typo)
    gets a not-found page instead of ProductDetail's first-product fallback. */
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
 import { CATEGORIES, FAMILIES } from '../data/data';
@@ -33,8 +33,15 @@ function ProductNotFound() {
 }
 
 export default function ProductOrCategory() {
-  const { family } = useParams();
-  const isCategory = CATEGORIES.some(c => c.slug === family && c.status === 'active');
+  // Everything after /products/ except the 2-segment subcategory pages,
+  // which have their own route. Trailing slashes are ignored.
+  const path = (useParams()['*'] || '').replace(/\/+$/, '');
+  const isCategory = CATEGORIES.some(c => c.slug === path && c.status === 'active');
   if (isCategory) return <ProductCategory />;
-  return FAMILIES.some(f => f.id === family) ? <ProductDetail /> : <ProductNotFound />;
+  const product = FAMILIES.find(f => f.urlPath === path);
+  if (product) return <ProductDetail id={product.id} />;
+  // Old /products/PROD-xxx links redirect to the product's current URL.
+  const byId = FAMILIES.find(f => f.id === path);
+  if (byId) return <Navigate to={routes.productDetail(byId.id)} replace />;
+  return <ProductNotFound />;
 }

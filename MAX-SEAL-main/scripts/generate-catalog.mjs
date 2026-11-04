@@ -326,6 +326,51 @@ if (!errors.length) {
   }
 }
 
+// Product page URL + breadcrumb (Products.UrlPath / Products.Breadcrumb).
+// The breadcrumb follows the same rules ProductDetail.jsx renders:
+// Home / Products / Category / Subcategory / Product / "<Code> Series", with
+// the subcategory left out when it's switched off or has the product's own
+// name. UrlPath is the page address after /products/ — blank falls back to
+// the slugged breadcrumb. It must have at least 3 segments so it never
+// collides with a category (1) or subcategory (2) page.
+const slugify = (s) => String(s).toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+function productTrail(p) {
+  const sub = subcategories.find((s) => s.Id === p.SubcategoryId);
+  const cat = sub ? categories.find((c) => c.Id === sub.CategoryId) : null;
+  const showSub = sub && sub.Status === 'active' && sub.Name !== p.Name;
+  const series = `${p.Code} Series`;
+  const crumbs = ['Home', 'Products', ...(cat && cat.Status === 'active' ? [cat.Name] : []), ...(showSub ? [sub.Name] : []), p.Name, series];
+  const segs = [cat?.Slug || slugify(cat?.Name || ''), ...(showSub ? [sub.Slug || slugify(sub.Name)] : []), slugify(p.Name), slugify(series)].filter(Boolean);
+  return { breadcrumb: crumbs.join('/'), urlPath: segs.join('/') };
+}
+const productUrlPath = new Map();
+const productBreadcrumb = new Map();
+const SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+for (const [sheetName, rows] of [['Categories', categories], ['Subcategories', subcategories]]) {
+  for (const row of rows) {
+    if (row.Slug && !SLUG_RE.test(row.Slug)) err(`${sheetName} row ${row.__row}: Slug "${row.Slug}" must be lowercase letters, numbers and hyphens (e.g. "${slugify(row.Name)}")`);
+  }
+}
+if (!errors.length) {
+  const seenPaths = new Map();
+  for (const p of products.filter((x) => x.Status === 'active')) {
+    const expected = productTrail(p);
+    const urlPath = p.UrlPath || expected.urlPath;
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*(\/[a-z0-9]+(-[a-z0-9]+)*){2,}$/.test(urlPath)) {
+      err(`Products row ${p.__row}: UrlPath "${urlPath}" must be 3 or more lowercase-slug segments separated by "/" (e.g. "${expected.urlPath}")`);
+    } else if (seenPaths.has(urlPath)) {
+      err(`Products row ${p.__row}: UrlPath "${urlPath}" is already used by ${seenPaths.get(urlPath)}`);
+    } else {
+      seenPaths.set(urlPath, p.Id);
+    }
+    if (p.Breadcrumb && p.Breadcrumb !== expected.breadcrumb) {
+      err(`Products row ${p.__row}: Breadcrumb "${p.Breadcrumb}" doesn't match what the page shows — expected "${expected.breadcrumb}"`);
+    }
+    productUrlPath.set(p.Id, urlPath);
+    productBreadcrumb.set(p.Id, expected.breadcrumb);
+  }
+}
+
 if (errors.length) {
   console.error(`\nCatalog generation failed with ${errors.length} error(s):\n`);
   errors.forEach((e) => console.error(`  ✗ ${e}`));
@@ -468,7 +513,8 @@ const outProducts = activeProducts.map((p) => {
   const sub = subcategoryById.get(p.SubcategoryId);
   const cat = sub ? categoryById.get(sub.CategoryId) : null;
   return {
-    id: p.Id, sku: p.SKU, code: p.Code, name: p.Name, menuName: p.MenuName, menuDesc: p.MenuDesc, short: p.Short,
+    id: p.Id, urlPath: productUrlPath.get(p.Id), breadcrumb: productBreadcrumb.get(p.Id),
+    sku: p.SKU, code: p.Code, name: p.Name, menuName: p.MenuName, menuDesc: p.MenuDesc, short: p.Short,
     image: p.ImagePath, need: p.Need, where: p.Where, application: p.Application, sizes: p.Sizes, rating: p.Rating,
     sourceFile: p.SourceFile || '',
     subcategoryId: p.SubcategoryId, categoryId: cat ? cat.Id : null,

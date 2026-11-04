@@ -17,7 +17,7 @@ export default function ProductCategory() {
   useSiteChrome();
   // Mounted on the shared /products/:family route (see ProductOrCategory.jsx)
   // — the param is named "family" there, not "categorySlug".
-  const { family: categorySlug } = useParams();
+  const { '*': categorySlug } = useParams();
 
   const category = CATEGORIES.find(c => c.slug === categorySlug && c.status === 'active');
 

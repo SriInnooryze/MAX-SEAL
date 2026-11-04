@@ -1,5 +1,8 @@
 /* Max-Seal — central route path builders. Every internal <Link> in the app
    goes through these helpers so the URL scheme lives in exactly one place. */
+import catalog from '../data/generated/catalog.json';
+
+const productUrlPaths = new Map(catalog.products.map((p) => [p.id, p.urlPath]));
 
 function withQuery(path, params) {
   if (!params) return path;
@@ -15,11 +18,15 @@ export const routes = {
   home: '/',
   home2: '/home-2',
   products: (params) => withQuery('/products', params),
-  productDetail: (id) => '/products/' + id,
+  /* Product page — /products/<category>/<subcategory>/<product>/<code>-series,
+     from Products.UrlPath in the workbook (catalog.json `urlPath`). Callers
+     still pass the product Id; an unknown Id falls back to /products/<id>,
+     which ProductOrCategory.jsx redirects or shows as not found. */
+  productDetail: (id) => '/products/' + (productUrlPaths.get(id) || id),
   /* Main Category page (dynamic Products navigation) — shows a category's
-     Sub Category-1 tiles. Shares the single-segment /products/:family URL
-     shape with productDetail; ProductOrCategory.jsx decides which one a
-     given slug/id resolves to. */
+     Sub Category-1 tiles. Single-segment /products/<slug>; the old
+     /products/PROD-xxx links share that shape and ProductOrCategory.jsx
+     redirects them to the product's current URL. */
   productCategory: (categorySlug) => '/products/' + categorySlug,
   /* Category > Subcategory hierarchy page (dynamic Products navigation) —
      shows a subcategory's own Sub Category-2 tiles (the individual product

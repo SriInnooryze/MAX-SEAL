@@ -45,7 +45,7 @@ export default function AppRouter() {
         <Route path="/products" element={<SiteLayout current="products"><Products /></SiteLayout>} />
         <Route path="/products/explore-all" element={<SiteLayout current="products"><ExploreAllProducts /></SiteLayout>} />
         <Route path="/products/:categorySlug/:subcategorySlug" element={<SiteLayout current="products"><ProductSubcategory /></SiteLayout>} />
-        <Route path="/products/:family" element={<SiteLayout current="products"><ProductOrCategory /></SiteLayout>} />
+        <Route path="/products/*" element={<SiteLayout current="products"><ProductOrCategory /></SiteLayout>} />
         <Route path="/industries" element={<SiteLayout current="industries"><Industries /></SiteLayout>} />
         <Route path="/solutions" element={<SiteLayout current="solutions"><Solutions /></SiteLayout>} />
         <Route path="/about" element={<SiteLayout current="about"><About /></SiteLayout>} />

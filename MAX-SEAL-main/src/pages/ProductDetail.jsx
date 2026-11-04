@@ -1,6 +1,6 @@
 /* Max-Seal — Product Detail (reusable template). */
 import { useState, useRef, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FAMILIES, INDUSTRIES, DOCS, CATEGORIES, SUBCATEGORIES, bestDocForFamily } from '../data/data';
 import { ArrowRight, Headset, Download, FileText, Compass, Search, Eye } from '../icons/icons';
 import { routes } from '../router/paths';
@@ -8,9 +8,8 @@ import Tabs from '../components/ds/Tabs';
 import SpecTable from '../components/ds/SpecTable';
 import Badge from '../components/ds/Badge';
 
-export default function ProductDetail() {
-  const { family: familyParam } = useParams();
-  const id = familyParam || FAMILIES[0].id;
+// `id` comes from ProductOrCategory.jsx, which matches the URL to a product.
+export default function ProductDetail({ id }) {
   const f = FAMILIES.find(x => x.id === id) || FAMILIES[0];
   const related = f.relatedProducts.map(rid => FAMILIES.find(x => x.id === rid)).filter(Boolean);
   // Breadcrumb trail: Home / Products / Category / Subcategory / Product / "<Code> Series".
