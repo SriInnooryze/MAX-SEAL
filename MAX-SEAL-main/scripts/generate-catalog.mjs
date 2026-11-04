@@ -380,9 +380,13 @@ for (const i of industries) {
 }
 for (const row of [...links].sort((a, b) => (Number(a.SortOrder) || 0) - (Number(b.SortOrder) || 0))) {
   if (!productIds.has(row.ProductId) || !industryIds.has(row.IndustryId)) continue;
-  productIndustries.get(row.ProductId).push(row.IndustryId);
-  industryProductNames.get(row.IndustryId).push(productById.get(row.ProductId).Name);
   const product = productById.get(row.ProductId);
+  // A product can have several rows for one industry (oil-gas has one per
+  // Upstream/Midstream/Downstream segment); list the industry/product once.
+  if (!productIndustries.get(row.ProductId).includes(row.IndustryId)) {
+    productIndustries.get(row.ProductId).push(row.IndustryId);
+    industryProductNames.get(row.IndustryId).push(product.Name);
+  }
   const displayName = String(row.IndustryDisplayName || row.DisplayName || '').trim();
   if (displayName) {
     industryProductDisplayNames.get(row.IndustryId).set(row.ProductId, displayName);
