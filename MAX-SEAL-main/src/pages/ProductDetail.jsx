@@ -178,6 +178,22 @@ export default function ProductDetail() {
     </div>
   ) : null;
 
+  // Certifications tab: shown on every product. The Approvals list renders
+  // one item per entry; blank or "To be validated" gets a short note
+  // pointing to the engineers instead.
+  const certList = f.approvals && f.approvals !== 'To be validated'
+    ? f.approvals.split(/[;,]/).map(s => s.trim()).filter(Boolean)
+    : [];
+  const certifications = certList.length ? (
+    <ul className="pdet__certs">
+      {certList.map(c => <li key={c}>{c}</li>)}
+    </ul>
+  ) : (
+    <div className="prose">
+      <p>Certifications to be confirmed. <Link to={routes.enquiry({ intent: 'technical' })}>Contact our engineers</Link> for current approvals.</p>
+    </div>
+  );
+
   // Product Detail shows the ONE catalog PDF that's actually specific to
   // this product (see bestDocForFamily in data.js) — not every DOCS row
   // whose FamilyIds happens to list it, which previously surfaced
@@ -219,7 +235,7 @@ export default function ProductDetail() {
       })}
     </div>
   ) : null;
-  const sectionContent = { overview, specifications: tech, applications, materials, documents };
+  const sectionContent = { overview, specifications: tech, applications, materials, certifications, documents };
   // Excel's per-product Sections rows (if any) still take priority and are
   // still filtered against real content below; when a product has none, the
   // full standard template is offered and each tab self-hides per data.
@@ -230,7 +246,14 @@ export default function ProductDetail() {
     { type: 'materials', title: 'Materials' },
     { type: 'documents', title: 'Documents' },
   ];
-  const sectionsToShow = (f.sections.length ? f.sections : defaultSections)
+  // Certifications isn't a workbook section type, so it's slotted in here for
+  // every product, just before Documents (or last when there is none).
+  const baseSections = f.sections.length ? f.sections : defaultSections;
+  const docsAt = baseSections.findIndex(s => s.type === 'documents');
+  const certSection = { type: 'certifications', title: 'Certifications' };
+  const sectionsToShow = (docsAt === -1
+    ? [...baseSections, certSection]
+    : [...baseSections.slice(0, docsAt), certSection, ...baseSections.slice(docsAt)])
     .filter(s => sectionContent[s.type] != null);
   const tabItems = sectionsToShow.map(s => ({ id: s.type, label: s.title, content: sectionContent[s.type] }));
 
@@ -314,12 +337,6 @@ export default function ProductDetail() {
                     {automationLabel && <div><dt>Automation</dt><dd>{automationLabel}</dd></div>}
                   </dl>
                 )}
-                <div className="pdet__approvals">
-                  <span className="pdet__appr-k">Certifications</span>
-                  {f.approvals === 'To be validated'
-                    ? <span className="tbv">{f.approvals}</span>
-                    : <span>{f.approvals}</span>}
-                </div>
                 <div className="pdet__actions">
                   <Link className="ms-btn ms-btn--primary" to={routes.enquiry({ intent: 'pricing', product: f.id })}>Request a Quote <ArrowRight size={16} /></Link>
                   <Link className="ms-btn ms-btn--outline" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask the Engineers</Link>
