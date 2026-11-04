@@ -102,6 +102,13 @@
 .breadcrumbs a:hover { color: #fff; }
 .breadcrumbs .sep { opacity: 0.5; }
 .breadcrumbs .cur { color: var(--azure-300); }
+/* Long trails (Home / Products / Category / Subcategory / Product / Series)
+   wrap onto extra lines on narrow screens instead of squeezing each crumb
+   into a word-per-line column or pushing the last one out of view. */
+@media (max-width: 899.98px) {
+  .breadcrumbs { flex-wrap: wrap; row-gap: 0.35rem; }
+  .breadcrumbs > * { flex: none; }
+}
 
 /* ============================================================
    HERO — single video-led, fluid, editorial offset

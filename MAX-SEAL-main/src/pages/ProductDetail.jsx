@@ -1,7 +1,7 @@
 /* Max-Seal — Product Detail (reusable template). */
 import { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { FAMILIES, INDUSTRIES, DOCS, bestDocForFamily } from '../data/data';
+import { FAMILIES, INDUSTRIES, DOCS, CATEGORIES, SUBCATEGORIES, bestDocForFamily } from '../data/data';
 import { ArrowRight, Headset, Download, FileText, Compass, Search, Eye } from '../icons/icons';
 import { routes } from '../router/paths';
 import Tabs from '../components/ds/Tabs';
@@ -13,6 +13,14 @@ export default function ProductDetail() {
   const id = familyParam || FAMILIES[0].id;
   const f = FAMILIES.find(x => x.id === id) || FAMILIES[0];
   const related = f.relatedProducts.map(rid => FAMILIES.find(x => x.id === rid)).filter(Boolean);
+  // Breadcrumb trail: Home / Products / Category / Subcategory / Product / "<Code> Series".
+  // The subcategory only links when it has its own listing page (more than
+  // one product); a single-product subcategory redirects straight back here,
+  // so it's shown as plain text instead — or left out when it has the same
+  // name as the product (the IVT pages), to avoid repeating it.
+  const crumbCategory = CATEGORIES.find(c => c.id === f.categoryId && c.status === 'active');
+  const crumbSubcategory = SUBCATEGORIES.find(s => s.id === f.subcategoryId && s.status === 'active' && s.name !== f.name);
+  const subHasListing = crumbSubcategory && FAMILIES.filter(x => x.subcategoryId === crumbSubcategory.id).length > 1;
   // f.industries is the direct ProductIndustryLinks mapping for this product
   // (catalog/MAXSEAL_CATALOG.xlsx, ProductIndustryLinks sheet — SortOrder
   // preserved from generate-catalog.mjs). Reading it directly, with no cap,
@@ -264,7 +272,16 @@ export default function ProductDetail() {
           <div className="wrap page-hero__inner" style={{ maxWidth: 'none' }}>
             <nav className="breadcrumbs" aria-label="Breadcrumb">
               <Link to={routes.home}>Home</Link><span className="sep">/</span>
-              <Link to={routes.products()}>Products</Link><span className="sep">/</span><span className="cur">{f.name}</span>
+              <Link to={routes.products()}>Products</Link><span className="sep">/</span>
+              {crumbCategory && (<><Link to={routes.productCategory(crumbCategory.slug)}>{crumbCategory.name}</Link><span className="sep">/</span></>)}
+              {crumbSubcategory && crumbCategory && (<>
+                {subHasListing
+                  ? <Link to={routes.productSubcategory(crumbCategory.slug, crumbSubcategory.slug)}>{crumbSubcategory.name}</Link>
+                  : <span>{crumbSubcategory.name}</span>}
+                <span className="sep">/</span>
+              </>)}
+              <span>{f.name}</span><span className="sep">/</span>
+              <span className="cur">{f.code} Series</span>
             </nav>
           </div>
         </section>
