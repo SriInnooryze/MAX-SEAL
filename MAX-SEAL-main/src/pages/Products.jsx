@@ -1,7 +1,7 @@
 /* Max-Seal — Products page.
    Two clear paths after the hero: Help Me Choose (a two-step guided journey)
    or Browse All Products. Both land on a clean match-results view with a
-   Featured / List toggle, advanced filters tucked behind Refine Results, and a
+   List / Featured toggle, advanced filters tucked behind Refine Results, and a
    Compare tray that only appears once the first product is selected. */
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -340,8 +340,8 @@ export default function Products() {
                   <button className="ms-btn ms-btn--outline ms-btn--sm" onClick={startOver}><ArrowLeft size={15} /> Start Over</button>
                   <div className="resbar__spacer" />
                   <div className="viewtoggle" role="tablist" aria-label="Result view">
-                    <button role="tab" aria-selected={view === 'featured'} className={view === 'featured' ? 'on' : ''} onClick={() => setView('featured')}>Featured</button>
                     <button role="tab" aria-selected={view === 'list'} className={view === 'list' ? 'on' : ''} onClick={() => setView('list')}>List</button>
+                    <button role="tab" aria-selected={view === 'featured'} className={view === 'featured' ? 'on' : ''} onClick={() => setView('featured')}>Featured</button>
                   </div>
                 </div>
 
