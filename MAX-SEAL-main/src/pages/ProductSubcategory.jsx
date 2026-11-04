@@ -50,20 +50,21 @@ export default function ProductSubcategory() {
 
   return (
     <main>
-      <PageHero
-        crumbs={[
-          { label: 'Home', href: routes.home },
-          { label: 'Products', href: routes.products() },
-          { label: category.name, href: routes.products({ category: category.id }) },
-          { label: subcategory.name },
-        ]}
-        title={subcategory.menuName || subcategory.name}
-        lead={subcategory.description}
-        mediaId={'subcat-' + subcategory.id}
-        mediaSrc={subcategory.image}
-        mediaPlaceholder={subcategory.name + ' visual'}
-      />
-      <section className="section">
+      {/* Same slim breadcrumb bar as Product Detail, so a Sub Category-1
+          listing and the products under it share one hero height. The
+          heading and description sit in the section below. */}
+      <section className="page-hero page-hero--slim">
+        <div className="page-hero__scrim" />
+        <div className="wrap page-hero__inner" style={{ maxWidth: 'none' }}>
+          <nav className="breadcrumbs" aria-label="Breadcrumb">
+            <Link to={routes.home}>Home</Link><span className="sep">/</span>
+            <Link to={routes.products()}>Products</Link><span className="sep">/</span>
+            <Link to={routes.products({ category: category.id })}>{category.name}</Link><span className="sep">/</span>
+            <span className="cur">{subcategory.name}</span>
+          </nav>
+        </div>
+      </section>
+      <section className="section" style={{ paddingTop: 'clamp(2rem,3vw,3rem)' }}>
         <div className="wrap">
           {series.length === 0 ? (
             <div className="rempty">
@@ -76,8 +77,8 @@ export default function ProductSubcategory() {
           ) : (
             <>
               <div className="matchsum">
-                <h2 className="matchsum__count">{subcategory.name}</h2>
-                <p className="matchsum__note">Select a series to view full specifications, documents and related products.</p>
+                <h1 className="matchsum__count">{subcategory.menuName || subcategory.name}</h1>
+                <p className="matchsum__note">{subcategory.description ? subcategory.description + '. ' : ''}Select a series to view full specifications, documents and related products.</p>
               </div>
               <div className="subcategory-series-grid">
                 {series.map(f => (
