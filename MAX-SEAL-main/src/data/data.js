@@ -20,6 +20,7 @@ export const HERO_INDUSTRY_IMAGE = '/assets/maxseal/industries/hero.png';
 /* Simplified primary navigation. Dropdowns are previews, not full mega-menus. */
 export const NAV = [
   { id: 'home', label: 'Home', href: routes.home },
+  { id: 'home2', label: 'Home 2', href: routes.home2 },
   // Clicking the label navigates to the Products landing page (like every
   // other dropdown nav item below) — the dropdown itself still opens on
   // hover/focus regardless, via Header.jsx's onMouseEnter.

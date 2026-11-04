@@ -13,6 +13,7 @@ function withQuery(path, params) {
 
 export const routes = {
   home: '/',
+  home2: '/home-2',
   products: (params) => withQuery('/products', params),
   productDetail: (id) => '/products/' + id,
   /* Main Category page (dynamic Products navigation) — shows a category's

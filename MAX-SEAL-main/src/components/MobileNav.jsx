@@ -8,11 +8,12 @@ import logo from '../assets/maxseal-logo.png';
 
 /* Mobile navigation — full drawer with focus trap, Esc, outside click, scroll lock.
    Matches the desktop nav order and dropdown grouping (Priority 4 nav cleanup):
-   Home, Products, Industries, Solutions, Resources, About, Contact — Support
-   stays the persistent CTA in .mnav__foot below, same decision as desktop
-   (see Priority 4 nav report). */
+   Home, Home 2, Products, Industries, Solutions, Resources, About, Contact —
+   Support stays the persistent CTA in .mnav__foot below, same decision as
+   desktop (see Priority 4 nav report). */
 const MOBILE_NAV = [
   { id: 'home', label: 'Home', href: routes.home },
+  { id: 'home2', label: 'Home 2', href: routes.home2 },
   {
     id: 'products', label: 'Products', href: routes.products(), children: [
       // Each active category carries its own nested children — the active
