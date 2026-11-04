@@ -316,8 +316,8 @@ image-slot { display: block; width: 100%; height: 100%; }
 .foot__copyright { color: var(--steel-500); }
 .foot__attribution { color: var(--steel-500) !important; justify-self: center; text-align: center; }
 .foot__legal { display: flex; align-items: center; justify-self: end; gap: 1.6rem; }
-.foot__legal a { color: var(--steel-500); transition: color 160ms ease; }
-.foot__legal a:hover { color: var(--azure-400); text-decoration: underline; text-underline-offset: 3px; }
+.foot__legal a, .foot__attribution a { color: var(--steel-500); transition: color 160ms ease; }
+.foot__legal a:hover, .foot__attribution a:hover { color: var(--azure-400); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ============================================================
    MOBILE CTA USABILITY (shared) — full-width, stacked, 44px targets
