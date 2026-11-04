@@ -1,7 +1,7 @@
 /*
  * Ongoing Excel -> JSON generator.
  *
- * Reads catalog/MAXSEAL_CATALOG.xlsx (Category > Subcategory > Product
+ * Reads catalog/Updated Max-Seal.xlsx (Category > Subcategory > Product
  * hierarchy schema), validates it exhaustively, and on success writes
  * src/data/generated/catalog.json. src/data/data.js's FAMILIES export stays
  * a passthrough of catalog.products (export NAME unchanged deliberately —
@@ -28,7 +28,7 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
-const WORKBOOK_PATH = path.join(ROOT, 'catalog/MAXSEAL_CATALOG.xlsx');
+const WORKBOOK_PATH = path.join(ROOT, 'catalog/Updated Max-Seal.xlsx');
 const BACKUP_DIR = path.join(ROOT, 'catalog/backups');
 const OUT_DIR = path.join(ROOT, 'src/data/generated');
 const OUT_FILE = path.join(OUT_DIR, 'catalog.json');
@@ -46,9 +46,10 @@ if (!fs.existsSync(WORKBOOK_PATH)) {
 const wb = new ExcelJS.Workbook();
 await wb.xlsx.readFile(WORKBOOK_PATH);
 
-function sheet(name) {
+function sheet(name, { optional = false } = {}) {
   const ws = wb.getWorksheet(name);
   if (!ws) {
+    if (optional) return [];
     err(`Missing required sheet: "${name}"`);
     return [];
   }
@@ -189,7 +190,9 @@ const subcategories = sheet('Subcategories');
 const products = sheet('Products');
 const specifications = sheet('ProductSpecifications');
 const sections = sheet('ProductSections');
-const media = sheet('ProductMedia');
+// Optional: extra per-product media rows. Gallery images and product docs
+// already feed the media list, so the sheet can be left out entirely.
+const media = sheet('ProductMedia', { optional: true });
 const industries = sheet('Industries');
 const links = sheet('ProductIndustryLinks');
 const materials = sheet('Materials');
@@ -384,7 +387,7 @@ if (errors.length) {
 
 fs.mkdirSync(BACKUP_DIR, { recursive: true });
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').slice(0, 19);
-fs.copyFileSync(WORKBOOK_PATH, path.join(BACKUP_DIR, `MAXSEAL_CATALOG_${stamp}.xlsx`));
+fs.copyFileSync(WORKBOOK_PATH, path.join(BACKUP_DIR, `Updated Max-Seal_${stamp}.xlsx`));
 
 // ---------------------------------------------------------------------------
 // Build output shapes

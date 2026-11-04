@@ -7,11 +7,11 @@ import { fileURLToPath } from 'url'
 
 const __dirname_cfg = path.dirname(fileURLToPath(import.meta.url))
 
-/* Watches catalog/MAXSEAL_CATALOG.xlsx during `npm run dev` and re-runs the
+/* Watches catalog/Updated Max-Seal.xlsx during `npm run dev` and re-runs the
  * Excel -> JSON generator + full-reloads the browser whenever it's saved,
  * so editing the workbook doesn't require restarting the dev server. */
 function catalogWatcherPlugin() {
-  const xlsxPath = path.join(__dirname_cfg, 'catalog/MAXSEAL_CATALOG.xlsx')
+  const xlsxPath = path.join(__dirname_cfg, 'catalog/Updated Max-Seal.xlsx')
   return {
     name: 'maxseal-catalog-watcher',
     configureServer(server) {

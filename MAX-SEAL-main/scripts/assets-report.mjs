@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const WORKBOOK_PATH = path.join(ROOT, 'catalog/MAXSEAL_CATALOG.xlsx');
+const WORKBOOK_PATH = path.join(ROOT, 'catalog/Updated Max-Seal.xlsx');
 const ASSETS_DIR = path.join(ROOT, 'public/assets/maxseal');
 
 if (!fs.existsSync(WORKBOOK_PATH)) {

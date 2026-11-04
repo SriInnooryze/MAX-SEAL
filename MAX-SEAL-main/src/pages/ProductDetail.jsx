@@ -21,13 +21,13 @@ export default function ProductDetail({ id }) {
   const crumbSubcategory = SUBCATEGORIES.find(s => s.id === f.subcategoryId && s.status === 'active' && s.name !== f.name);
   const subHasListing = crumbSubcategory && FAMILIES.filter(x => x.subcategoryId === crumbSubcategory.id).length > 1;
   // f.industries is the direct ProductIndustryLinks mapping for this product
-  // (catalog/MAXSEAL_CATALOG.xlsx, ProductIndustryLinks sheet — SortOrder
+  // (catalog/Updated Max-Seal.xlsx, ProductIndustryLinks sheet — SortOrder
   // preserved from generate-catalog.mjs). Reading it directly, with no cap,
   // so "Where it's used" shows every industry actually mapped to this
   // product — a name-based reverse lookup capped at 4 was silently dropping
   // a real mapping for any product with more than 4 links (most have 5).
   const relIndustries = f.industries.map(iid => INDUSTRIES.find(x => x.id === iid)).filter(Boolean);
-  // Every product's Gallery rows (catalog/MAXSEAL_CATALOG.xlsx, Gallery
+  // Every product's Gallery rows (catalog/Updated Max-Seal.xlsx, Gallery
   // sheet) provide exactly 3 shots — Main View / View 2 / View 3 — so the
   // thumbnail strip renders the same for every product, data-driven, never
   // hardcoded to one product. Main View defaults to selected (index 0), and

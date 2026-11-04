@@ -1,7 +1,7 @@
 /* Max-Seal — shared content data.
  *
  * FAMILIES, INDUSTRIES, DOCS, PRICE_LISTS and RESOURCE_LIBS below are
- * generated from catalog/MAXSEAL_CATALOG.xlsx (see scripts/generate-catalog.mjs)
+ * generated from catalog/Updated Max-Seal.xlsx (see scripts/generate-catalog.mjs)
  * — this is catalog content, not hand-edited here. Editing the workbook and
  * running "npm run catalog:generate" (or npm run dev / build) is the only
  * way to change it; any literal edit made directly in this file to those
