@@ -355,8 +355,8 @@ export default function ProductDetail({ id }) {
                   </dl>
                 )}
                 <div className="pdet__actions">
-                  <Link className="ms-btn ms-btn--primary" to={routes.enquiry({ intent: 'pricing', product: f.id })}>Request a Quote <ArrowRight size={16} /></Link>
-                  <Link className="ms-btn ms-btn--outline" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask the Engineers</Link>
+                  <Link className="ms-btn ms-btn--primary ms-btn--sm" to={routes.enquiry({ intent: 'pricing', product: f.id })}>Request a Quote <ArrowRight size={16} /></Link>
+                  <Link className="ms-btn ms-btn--outline ms-btn--sm" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask the Engineers</Link>
                   <CompareToggle id={f.id} />
                 </div>
                 {relIndustries.length > 0 && (

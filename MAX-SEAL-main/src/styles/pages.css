@@ -1527,9 +1527,12 @@
 /* Card footer: View Details on the left, Add to Compare on the right. */
 .subcategory-series-card__foot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.5rem; }
 .subcategory-series-card__foot .subcategory-series-card__cta { margin-top: 0; }
-/* Product detail page: compare sits with Request a Quote / Ask the Engineers. */
-.pdet__actions .cmpcheck { height: 46px; padding: 0 1.2rem; }
-@media (max-width: 600px) { .pdet__actions .cmpcheck { width: 100%; justify-content: center; } }
+/* Product detail page: Request a Quote, Ask the Engineers and Add to Compare
+   sit on one row as compact (ms-btn--sm, 38px) buttons; phones stack them
+   full-width at 44px like the other small buttons. */
+.pdet__actions { gap: 0.6rem; }
+.pdet__actions .cmpcheck { height: 38px; padding: 0 1rem; font-size: 0.84rem; }
+@media (max-width: 600px) { .pdet__actions .cmpcheck { width: 100%; justify-content: center; height: 44px; } }
 /* Space at the end of every page so the fixed compare tray never covers the
    footer (rendered by CompareDock only while the tray is showing). */
 .cmptray-spacer { height: 6.5rem; }
