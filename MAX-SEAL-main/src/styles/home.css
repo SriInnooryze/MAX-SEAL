@@ -424,6 +424,16 @@
 .home2-page .ptile:not(.is-open):focus-within :is(.ptile__title, .ptile__explore) { color: #fff; }
 .home2-page .ptile:not(.is-open):hover .ptile__label,
 .home2-page .ptile:not(.is-open):focus-within .ptile__label { color: var(--azure-300); }
+/* Home 3 only: tiles stay plain white at all times (no gradient, no grey
+   shade, dark text); hovering only zooms the product photo. */
+.home3-page .ptile__grad { display: none; }
+.home3-page .ptile--center:not(.is-open) .ptile__face:hover { background: transparent; }
+.home3-page .ptile--side:hover { opacity: 1; }
+.home3-page .ptile__title, .home3-page .ptile__explore { color: var(--navy-800); }
+.home3-page .ptile__label { color: var(--azure-600); }
+@media (prefers-reduced-motion: no-preference) {
+  .home3-page .ptile:not(.is-open):hover .ptile__img { transform: scale(1.1); }
+}
 .ptile__face:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--color-focus-ring); }
 .ptile__label { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--azure-300); margin-bottom: 0.5rem; }
 .ptile__title { font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: -0.01em; }

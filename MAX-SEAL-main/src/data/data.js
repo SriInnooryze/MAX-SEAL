@@ -21,6 +21,7 @@ export const HERO_INDUSTRY_IMAGE = '/assets/maxseal/industries/hero.png';
 export const NAV = [
   { id: 'home', label: 'Home', href: routes.home },
   { id: 'home2', label: 'Home 2', href: routes.home2 },
+  { id: 'home3', label: 'Home 3', href: routes.home3 },
   // Clicking the label navigates to the Products landing page (like every
   // other dropdown nav item below) — the dropdown itself still opens on
   // hover/focus regardless, via Header.jsx's onMouseEnter.
