@@ -60,7 +60,7 @@ export default function ProductSubcategory() {
           <nav className="breadcrumbs" aria-label="Breadcrumb">
             <Link to={routes.home}>Home</Link><span className="sep">/</span>
             <Link to={routes.products()}>Products</Link><span className="sep">/</span>
-            <Link to={routes.products({ category: category.id })}>{category.name}</Link><span className="sep">/</span>
+            <Link to={routes.productCategory(category.slug)}>{category.name}</Link><span className="sep">/</span>
             <span className="cur">{subcategory.name}</span>
           </nav>
         </div>
