@@ -280,7 +280,6 @@ export default function ProductDetail({ id }) {
                   : <span>{crumbSubcategory.name}</span>}
                 <span className="sep">/</span>
               </>)}
-              <span>{f.name}</span><span className="sep">/</span>
               <span className="cur">{f.code} Series</span>
             </nav>
           </div>
