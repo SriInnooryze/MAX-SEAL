@@ -51,7 +51,13 @@ export default function ProductCategory() {
         mediaId={'cat-' + category.id}
         mediaSrc={category.image}
         mediaPlaceholder={category.name + ' visual'}
-      />
+        className="page-hero--category"
+      >
+        <div className="phero__actions">
+          <Link className="ms-btn ms-btn--primary ms-btn--lg" to={routes.enquiry({ intent: 'pricing' })}>Request a Quote <ArrowRight size={16} /></Link>
+          <Link className="ms-btn ms-btn--on-dark ms-btn--lg" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask the Engineers</Link>
+        </div>
+      </PageHero>
       <section className="section">
         <div className="wrap">
           {subcategories.length === 0 ? (

@@ -262,6 +262,13 @@
 .page-hero--industries .page-hero__title { margin-top: 0.7rem; }
 .page-hero--industries .page-hero__lead { margin-top: 0.75rem; }
 .page-hero--industries .phero__actions { margin-top: 1.25rem; }
+/* Main Category pages (ProductCategory.jsx): same hero height as the
+   Products page (416px on tablet/desktop, where its two-line title sets
+   it); content stays top-aligned so the breadcrumb sits in the same place.
+   On phones both heroes size to their content. */
+@media (min-width: 769px) {
+  .page-hero--category { min-height: 26rem; }
+}
 
 /* ============================================================
    PRODUCTS — filter chips, mobile panel, product stage, result index
