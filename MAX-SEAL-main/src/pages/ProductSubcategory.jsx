@@ -12,6 +12,7 @@ import PageHero from '../components/PageHero';
 import { CATEGORIES, SUBCATEGORIES, FAMILIES, REQUEST_ONLY_SERIES } from '../data/data';
 import { ArrowRight, Headset } from '../icons/icons';
 import { routes } from '../router/paths';
+import { CompareToggle } from '../components/compare/Compare';
 
 export default function ProductSubcategory() {
   useSiteChrome();
@@ -89,7 +90,10 @@ export default function ProductSubcategory() {
                     <div className="subcategory-series-card__body">
                       <h3 className="subcategory-series-card__name">{f.name}</h3>
                       <p className="subcategory-series-card__desc">{f.short}</p>
-                      <Link className="subcategory-series-card__cta" to={routes.productDetail(f.id)}>View Details <ArrowRight size={15} /></Link>
+                      <div className="subcategory-series-card__foot">
+                        <Link className="subcategory-series-card__cta" to={routes.productDetail(f.id)}>View Details <ArrowRight size={15} /></Link>
+                        <CompareToggle id={f.id} className="cmpcheck--sm" />
+                      </div>
                     </div>
                   </article>
                 ))}

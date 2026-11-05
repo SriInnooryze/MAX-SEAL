@@ -3,14 +3,16 @@
    or Browse All Products. Both land on a clean match-results view with a
    List / Featured toggle, advanced filters tucked behind Refine Results, and a
    Compare tray that only appears once the first product is selected. */
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
-import { FAMILIES, FACETS, DOCS, CATEGORIES } from '../data/data';
+import { FAMILIES, FACETS, CATEGORIES } from '../data/data';
 import * as Icons from '../icons/icons';
-import { Check, X, ArrowRight, ArrowLeft, Headset, Scale, Plus, Compass, ChevronDown, Sliders, Layers } from '../icons/icons';
+import { Check, X, ArrowRight, ArrowLeft, Headset, Plus, Compass, ChevronDown, Sliders, Layers } from '../icons/icons';
 import { routes } from '../router/paths';
+import { CompareToggle } from '../components/compare/Compare';
+import { useCompare } from '../components/compare/compareStore';
 
 const FACET_TO_FIELD = { types: 'types', apps: 'apps', industries: 'industries', service: 'service', automation: 'automation' };
 const EMPTY_SEL = () => ({ types: [], apps: [], industries: [], service: [], automation: [] });
@@ -67,14 +69,10 @@ export default function Products() {
   const [adv, setAdv] = useState(seedAdv);          // applied advanced filters
   const [advDraft, setAdvDraft] = useState(seedAdv); // working copy inside refine
   const [view, setView] = useState('list');          // list (default, has Add to Compare) · featured
-  const [compare, setCompare] = useState([]);
-  const [showCompare, setShowCompare] = useState(false);
+  const { compare } = useCompare();             // site-wide selection (components/compare)
   const [refineOpen, setRefineOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);   // step 2 "refine with more details"
-  const [trayOpen, setTrayOpen] = useState(false);   // mobile compare sheet expanded
-  const [toast, setToast] = useState('');
   const topRef = useRef(null);
-  const toastT = useRef(null);
 
   const goalObj = GOALS.find(g => g.id === goal);
   const placeObj = PLACES.find(p => p.id === place);
@@ -96,16 +94,7 @@ export default function Products() {
   const results = useMemo(() => FAMILIES.filter(f => (!category || f.categoryId === category) && matchFam(f)), [sel, category]);
   const categoryObj = category ? CATEGORIES.find(c => c.id === category) : null;
 
-  const docFor = (fam) => DOCS.find(d => d.fam === fam.name);
   const facetLabel = (facetId, v) => { const f = FACETS.find(x => x.id === facetId); const o = f && f.options.find(o => o.v === v); return o ? o.l : v; };
-
-  const showToast = (msg) => { setToast(msg); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(''), 2200); };
-  const toggleCompare = (id) => setCompare(c => {
-    if (c.includes(id)) { showToast('Removed from compare'); return c.filter(x => x !== id); }
-    if (c.length >= 3) { showToast('Compare holds up to 3 products'); return c; }
-    showToast('Added ' + FAMILIES.find(x => x.id === id).name + ' to compare');
-    return [...c, id];
-  });
 
   const scrollTop = () => requestAnimationFrame(() => { if (topRef.current) topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   const go = (p) => { setPhase(p); scrollTop(); };
@@ -136,12 +125,6 @@ export default function Products() {
     key: facet + '-' + v, label: facetLabel(facet, v),
     onRemove: () => { const nx = { ...adv, [facet]: adv[facet].filter(x => x !== v) }; setAdv(nx); setAdvDraft(nx); },
   })));
-
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') setShowCompare(false); };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, []);
 
   /* ---------- Reusable pieces ---------- */
   const PickTile = ({ on, title, desc, onClick, IconC }) => (
@@ -191,18 +174,6 @@ export default function Products() {
     </div>
   );
 
-  /* Compare on/off control with a clear, fully clickable label (PART 7). */
-  const CompareToggle = ({ id, block }) => {
-    const on = compare.includes(id);
-    return (
-      <button type="button" className={'cmpcheck' + (on ? ' on' : '') + (block ? ' cmpcheck--block' : '')} aria-pressed={on}
-        onClick={(e) => { e.stopPropagation(); toggleCompare(id); }}>
-        <span className="cmpcheck__box">{on && <Check size={13} />}</span>
-        <span className="cmpcheck__lbl">{on ? 'Added to Compare' : 'Add to Compare'}</span>
-      </button>
-    );
-  };
-
   // Square tile card, matching the same reusable card used for Main
   // Category / Sub Category-1 / Sub Category-2 grids (subcategory-series-*
   // classes) — one card system across the whole product hierarchy instead
@@ -215,12 +186,13 @@ export default function Products() {
       <div className="subcategory-series-card__body">
         <h3 className="subcategory-series-card__name">{r.name}</h3>
         <p className="subcategory-series-card__desc">{r.short}</p>
-        <Link className="subcategory-series-card__cta" to={routes.productDetail(r.id)}>View Details <ArrowRight size={15} /></Link>
+        <div className="subcategory-series-card__foot">
+          <Link className="subcategory-series-card__cta" to={routes.productDetail(r.id)}>View Details <ArrowRight size={15} /></Link>
+          <CompareToggle id={r.id} className="cmpcheck--sm" />
+        </div>
       </div>
     </article>
   );
-
-  const compareActive = compare.length > 0;
 
   return (
     <main>
@@ -236,7 +208,7 @@ export default function Products() {
           </div>
         </PageHero>
 
-        <section className="section" ref={topRef} style={compareActive ? { paddingBottom: '7.5rem' } : undefined}>
+        <section className="section" ref={topRef}>
           <div className="wrap">
 
             {/* OPENING — two paths */}
@@ -397,67 +369,6 @@ export default function Products() {
           </div>
         </section>
 
-        {/* Compare tray — only appears after the first product is selected */}
-        {compareActive && (
-          <div className={'cmptray' + (trayOpen ? ' cmptray--open' : '')} role="region" aria-label="Compare tray">
-            <div className="wrap cmptray__inner">
-              <button type="button" className="cmptray__handle" aria-expanded={trayOpen} aria-label={trayOpen ? 'Collapse compare tray' : 'Expand compare tray'} onClick={() => setTrayOpen(o => !o)}>
-                <Scale size={16} />
-                <b>{compare.length} product{compare.length > 1 ? 's' : ''} selected</b>
-                <ChevronDown size={16} className="cmptray__chev" />
-              </button>
-              <div className="cmptray__items">
-                {compare.map(id => { const f = FAMILIES.find(x => x.id === id); return (
-                  <span className="cmptray__item" key={id}>
-                    {f.name}
-                    <button type="button" aria-label={'Remove ' + f.name} onClick={() => toggleCompare(id)}><X size={13} /></button>
-                  </span>
-                ); })}
-                {compare.length < 3 && <span className="cmptray__hint">Add another product to compare</span>}
-              </div>
-              <div className="cmptray__actions">
-                <button className="ms-btn ms-btn--ghost ms-btn--sm cmptray__clear" onClick={() => setCompare([])}>Clear</button>
-                <button className="ms-btn ms-btn--primary ms-btn--sm" onClick={() => setShowCompare(true)} disabled={compare.length < 2}>Compare Now</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Compare modal */}
-        <div className={'cmpmodal-scrim' + (showCompare ? ' open' : '')} onClick={() => setShowCompare(false)} />
-        <div className={'cmpmodal' + (showCompare ? ' open' : '')} role="dialog" aria-modal="true" aria-label="Compare products">
-          <div className="cmpmodal__head">
-            <span className="cmpmodal__lbl">Compare · {compare.length} product{compare.length > 1 ? 's' : ''}</span>
-            <button className="drawer__close" aria-label="Close comparison" onClick={() => setShowCompare(false)}><X size={18} /></button>
-          </div>
-          <div className="cmpmodal__scroll">
-            <table className="cmptable">
-              <thead>
-                <tr>
-                  <th scope="col">Product Family</th>
-                  {compare.map(id => { const f = FAMILIES.find(x => x.id === id); return (
-                    <th key={id} scope="col">
-                      <span className="cmptable__thumb"><image-slot id={'cmp-h-' + id} src={f.image} shape="rect" fit="contain" placeholder={f.code} /></span>
-                      {f.name}
-                    </th>
-                  ); })}
-                </tr>
-              </thead>
-              <tbody>
-                <tr><th scope="row">Best Suited For</th>{compare.map(id => <td key={id}>{FAMILIES.find(f => f.id === id).need}</td>)}</tr>
-                <tr><th scope="row">Typical Applications</th>{compare.map(id => <td key={id}>{FAMILIES.find(f => f.id === id).application}</td>)}</tr>
-                <tr><th scope="row">Automation Availability</th>{compare.map(id => <td key={id}>{FAMILIES.find(f => f.id === id).automation.includes('actuated') ? 'Manual or actuated' : 'Manual'}</td>)}</tr>
-                <tr><th scope="row">Material or Lining Options</th>{compare.map(id => { const m = FAMILIES.find(x => x.id === id).materials.seatLiningOptions; return <td key={id}>{m && m !== 'To be validated' ? m : <span className="tbv">To be confirmed</span>}</td>; })}</tr>
-                <tr><th scope="row">Technical Documents</th>{compare.map(id => { const d = docFor(FAMILIES.find(x => x.id === id)); return <td key={id}>{d ? d.type + ' · PDF' : <span className="tbv">To be confirmed</span>}</td>; })}</tr>
-                <tr><th scope="row">Engineering Support</th>{compare.map(id => <td key={id}><Link className="link-arrow" to={routes.enquiry({ intent: 'technical', product: id })}>Ask a question</Link></td>)}</tr>
-                <tr><th scope="row"></th>{compare.map(id => <td key={id}><Link className="link-arrow" to={routes.productDetail(id)}>Full details <ArrowRight size={14} /></Link></td>)}</tr>
-              </tbody>
-            </table>
-            <p className="cmpmodal__note"><span className="pdot" /> Fields marked to be confirmed connect to validated data through the future CMS.</p>
-          </div>
-        </div>
-
-        <div className={'toast' + (toast ? ' show' : '')} role="status" aria-live="polite">{toast && <><Check size={16} /> {toast}</>}</div>
     </main>
   );
 }

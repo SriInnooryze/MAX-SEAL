@@ -9,9 +9,10 @@
 import { Link } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
-import { CATEGORIES, SUBCATEGORIES, subcategoryTarget } from '../data/data';
+import { CATEGORIES, SUBCATEGORIES, subcategoryTarget, subcategoryProduct } from '../data/data';
 import { ArrowRight, Headset } from '../icons/icons';
 import { routes } from '../router/paths';
+import { CompareToggle } from '../components/compare/Compare';
 
 export default function ExploreAllProducts() {
   useSiteChrome();
@@ -60,7 +61,10 @@ export default function ExploreAllProducts() {
                         <div className="subcategory-series-card__body">
                           <h3 className="subcategory-series-card__name">{s.menuName || s.name}</h3>
                           {s.description && <p className="subcategory-series-card__desc">{s.description}</p>}
-                          <Link className="subcategory-series-card__cta" to={subcategoryTarget(category, s)}>View Details <ArrowRight size={15} /></Link>
+                          <div className="subcategory-series-card__foot">
+                            <Link className="subcategory-series-card__cta" to={subcategoryTarget(category, s)}>View Details <ArrowRight size={15} /></Link>
+                            {subcategoryProduct(s) && <CompareToggle id={subcategoryProduct(s).id} className="cmpcheck--sm" />}
+                          </div>
                         </div>
                       </article>
                     ))}

@@ -46,6 +46,13 @@ export const SUBCATEGORIES = catalog.subcategories;
    page, which already has its own empty-state for the zero case. Shared by
    every place a Sub Category-1 is linked from (category landing page, nav
    dropdown, mobile nav) so the rule only lives in one place. */
+/* The one product a subcategory holds, or null when it holds several (or
+   none) — its card then stands for that product (e.g. gets Add to Compare). */
+export function subcategoryProduct(subcategory) {
+  const products = FAMILIES.filter(f => f.subcategoryId === subcategory.id);
+  return products.length === 1 ? products[0] : null;
+}
+
 export function subcategoryTarget(category, subcategory) {
   const products = FAMILIES.filter(f => f.subcategoryId === subcategory.id);
   if (products.length === 1) return routes.productDetail(products[0].id);

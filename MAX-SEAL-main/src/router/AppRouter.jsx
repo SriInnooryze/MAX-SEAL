@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 import SiteLayout from '../components/layout/SiteLayout';
+import { CompareProvider, CompareDock } from '../components/compare/Compare';
 import Home from '../pages/Home';
 import Home2 from '../pages/Home2';
 import Home3 from '../pages/Home3';
@@ -40,6 +41,9 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      {/* Compare selection is site-wide: one provider above every route, one
+          tray + comparison table shown on whichever page is open. */}
+      <CompareProvider>
       <Routes>
         <Route path="/" element={<SiteLayout current="home"><Home /></SiteLayout>} />
         <Route path="/home-2" element={<SiteLayout current="home2"><Home2 /></SiteLayout>} />
@@ -64,6 +68,8 @@ export default function AppRouter() {
         <Route path="/terms" element={<SiteLayout current={null}><Terms /></SiteLayout>} />
         <Route path="*" element={<SiteLayout current="home"><Home /></SiteLayout>} />
       </Routes>
+      <CompareDock />
+      </CompareProvider>
     </BrowserRouter>
   );
 }
