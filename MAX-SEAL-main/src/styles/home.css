@@ -413,6 +413,17 @@
 @media (prefers-reduced-motion: no-preference) {
   .home2-page .ptile:not(.is-open):hover .ptile__img { transform: scale(1.1); }
 }
+/* Home 2 only: tiles rest on plain white (no dark gradient, dark text);
+   the gradient fades in on hover / keyboard focus and the text turns white. */
+.home2-page .ptile__grad { opacity: 0; transition: opacity 320ms ease; }
+.home2-page .ptile:not(.is-open):hover .ptile__grad,
+.home2-page .ptile:not(.is-open):focus-within .ptile__grad { opacity: 1; }
+.home2-page .ptile__title, .home2-page .ptile__explore { color: var(--navy-800); transition: color 320ms ease; }
+.home2-page .ptile__label { color: var(--azure-600); transition: color 320ms ease; }
+.home2-page .ptile:not(.is-open):hover :is(.ptile__title, .ptile__explore),
+.home2-page .ptile:not(.is-open):focus-within :is(.ptile__title, .ptile__explore) { color: #fff; }
+.home2-page .ptile:not(.is-open):hover .ptile__label,
+.home2-page .ptile:not(.is-open):focus-within .ptile__label { color: var(--azure-300); }
 .ptile__face:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--color-focus-ring); }
 .ptile__label { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--azure-300); margin-bottom: 0.5rem; }
 .ptile__title { font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: -0.01em; }
