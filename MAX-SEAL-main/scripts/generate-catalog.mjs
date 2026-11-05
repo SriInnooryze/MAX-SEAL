@@ -331,9 +331,9 @@ if (!errors.length) {
 
 // Product page URL + breadcrumb (Products.UrlPath / Products.Breadcrumb).
 // The breadcrumb follows the same rules ProductDetail.jsx renders:
-// Home / Products / Category / Subcategory / Product / "<Code> Series", with
-// the subcategory left out when it's switched off or has the product's own
-// name. UrlPath is the page address after /products/ — blank falls back to
+// Home / Products / Category / Subcategory / "<Code> Series" (the product
+// name is not shown), with the subcategory left out when it's switched off or
+// has the product's own name. UrlPath is the page address after /products/ — blank falls back to
 // the slugged breadcrumb. It must have at least 3 segments so it never
 // collides with a category (1) or subcategory (2) page.
 const slugify = (s) => String(s).toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -342,7 +342,7 @@ function productTrail(p) {
   const cat = sub ? categories.find((c) => c.Id === sub.CategoryId) : null;
   const showSub = sub && sub.Status === 'active' && sub.Name !== p.Name;
   const series = `${p.Code} Series`;
-  const crumbs = ['Home', 'Products', ...(cat && cat.Status === 'active' ? [cat.Name] : []), ...(showSub ? [sub.Name] : []), p.Name, series];
+  const crumbs = ['Home', 'Products', ...(cat && cat.Status === 'active' ? [cat.Name] : []), ...(showSub ? [sub.Name] : []), series];
   const segs = [cat?.Slug || slugify(cat?.Name || ''), ...(showSub ? [sub.Slug || slugify(sub.Name)] : []), slugify(p.Name), slugify(series)].filter(Boolean);
   return { breadcrumb: crumbs.join('/'), urlPath: segs.join('/') };
 }
