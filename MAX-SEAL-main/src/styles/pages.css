@@ -1554,12 +1554,13 @@
    list, not just once scrolled near the bottom -- matters once the catalog
    holds far more than a handful of cards. */
 .cmptray { position: fixed; left: 0; right: 0; bottom: 1.25rem; z-index: 40; padding-inline: var(--gutter); pointer-events: none; }
-.cmptray__inner { pointer-events: auto; display: flex; align-items: center; gap: 0.8rem 1.2rem; flex-wrap: wrap; background: var(--graphite-900); color: #fff; border: 1px solid rgba(255,255,255,0.14); border-top: 2px solid var(--azure-500); border-radius: var(--radius-md); box-shadow: var(--shadow-xl); padding: 0.8rem 1.1rem; }
-.cmptray__handle { display: inline-flex; align-items: center; gap: 0.5rem; background: none; border: 0; color: #fff; font-family: var(--font-body); cursor: default; padding: 0; }
+.cmptray__inner { pointer-events: auto; display: flex; align-items: center; gap: 0.8rem 1.2rem; background: var(--graphite-900); color: #fff; border: 1px solid rgba(255,255,255,0.14); border-top: 2px solid var(--azure-500); border-radius: var(--radius-md); box-shadow: var(--shadow-xl); padding: 0.8rem 1.1rem; flex-wrap: nowrap; }
+.cmptray__handle { flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.5rem; background: none; border: 0; color: #fff; font-family: var(--font-body); cursor: default; padding: 0; }
 .cmptray__handle svg:first-child { color: var(--azure-300); }
 .cmptray__handle b { font-family: var(--font-body); font-weight: 600; font-size: 0.95rem; }
 .cmptray__chev { display: none; }
-.cmptray__items { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; flex: 1 1 auto; }
+/* Names wrap inside their own column, so Clear / Compare Now stay on the right. */
+.cmptray__items { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; flex: 1 1 0; min-width: 0; }
 .cmptray__item { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-body); font-size: 0.85rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-sm); padding: 0.32rem 0.4rem 0.32rem 0.7rem; }
 .cmptray__item button { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; padding: 0; border: 0; background: rgba(255,255,255,0.12); color: #fff; border-radius: 50%; cursor: pointer; flex: none; }
 .cmptray__item button:hover { background: rgba(255,255,255,0.28); }
@@ -1599,7 +1600,7 @@
   .rrow__actions .cmpcheck, .rrow__actions .ms-btn { flex: 1 1 auto; justify-content: center; }
   /* Compare tray becomes a compact bottom sheet */
   .cmptray { bottom: 0; padding-inline: 0; margin-top: 0; }
-  .cmptray__inner { border-radius: 0; border-left: 0; border-right: 0; padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom)); }
+  .cmptray__inner { border-radius: 0; border-left: 0; border-right: 0; padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom)); flex-wrap: wrap; }
   .cmptray__handle { flex: 1 1 100%; cursor: pointer; }
   .cmptray__chev { display: inline-block; margin-left: auto; transition: transform 200ms ease; }
   .cmptray--open .cmptray__chev { transform: rotate(180deg); }
