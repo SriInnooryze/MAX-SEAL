@@ -104,10 +104,13 @@
 /* Compare modal */
 .cmpmodal-scrim { position: fixed; inset: 0; background: rgba(12,15,17,0.55); opacity: 0; visibility: hidden; transition: opacity 240ms ease, visibility 240ms; z-index: 200; }
 .cmpmodal-scrim.open { opacity: 1; visibility: visible; }
-.cmpmodal { position: fixed; inset: 5% 50% auto auto; transform: translateX(50%); width: min(960px, 92vw); max-height: 90vh; overflow: auto; background: var(--paper-0); box-shadow: var(--shadow-xl); z-index: 201; opacity: 0; visibility: hidden; transition: opacity 240ms ease, visibility 240ms; right: 50%; }
+/* Centred on screen. The head stays put and .cmpmodal__scroll is the ONE
+   scroll area (both directions), so the sticky product-name row and the
+   sticky label column line up while scrolling. */
+.cmpmodal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(960px, 92vw); max-height: 90vh; max-height: 90dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--paper-0); box-shadow: var(--shadow-xl); z-index: 201; opacity: 0; visibility: hidden; transition: opacity 240ms ease, visibility 240ms; }
 .cmpmodal.open { opacity: 1; visibility: visible; }
-.cmpmodal__head { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--color-border); position: sticky; top: 0; background: var(--paper-0); }
-.cmptable { width: 100%; border-collapse: collapse; }
+.cmpmodal__head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--color-border); background: var(--paper-0); }
+.cmptable { width: 100%; border-collapse: separate; border-spacing: 0; }
 .cmptable th, .cmptable td { text-align: left; padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--color-divider); font-size: 0.9rem; vertical-align: top; }
 .cmptable thead th { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--graphite-900); }
 .cmptable tbody th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel-500); font-weight: 500; width: 160px; }
@@ -333,7 +336,7 @@
 .rindex__item.on .rindex__name { color: #fff; }
 .rempty__actions { margin-top: 1.2rem; display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; }
 .cmpbar__hint { font-size: 0.82rem; color: var(--text-on-dark-muted); }
-.cmpmodal__scroll { overflow: auto; }
+.cmpmodal__scroll { flex: 1 1 auto; min-height: 0; overflow: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 .cmpmodal__note { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--steel-500); padding: 1rem 1.5rem 1.4rem; }
 .cmpmodal__note .pdot { width: 7px; height: 7px; border-radius: 50%; background: var(--azure-400); }
 .tbv { font-family: var(--font-mono); font-size: 0.76rem; color: var(--steel-500); border: 1px dashed var(--steel-300); padding: 0.15rem 0.45rem; border-radius: var(--radius-xs); white-space: nowrap; }
@@ -428,11 +431,13 @@
   .cmpbar__item { font-size: 0.8rem; }
   .cmpbar__actions { order: 3; }
   .cmpbar__actions .ms-btn { flex: 1; justify-content: center; }
-  .cmpmodal { inset: 0; width: 100vw; max-height: 100vh; height: 100%; transform: none; right: 0; }
-  .cmpmodal__scroll { overflow: auto; -webkit-overflow-scrolling: touch; }
+  /* Full screen; dvh follows the phone's visible area (address bar). */
+  .cmpmodal { top: 0; left: 0; transform: none; width: 100%; height: 100vh; height: 100dvh; max-height: none; }
+  .cmpmodal__head { padding: 0.9rem 1rem; }
   .cmptable { min-width: 560px; }
-  .cmptable thead th, .cmptable tbody th { position: sticky; left: 0; background: var(--paper-0); z-index: 1; box-shadow: 1px 0 0 var(--color-divider); }
-  .cmptable thead th:first-child, .cmptable tbody th { min-width: 130px; }
+  .cmptable th, .cmptable td { padding: 0.8rem 0.9rem; }
+  .cmptable thead th:first-child, .cmptable tbody th { width: 120px; min-width: 120px; box-shadow: 1px 0 0 var(--color-divider); }
+  .cmptable thead th { font-size: 1rem; }
   .cmptable__thumb { max-width: 96px; }
 }
 
@@ -1567,6 +1572,9 @@
 .cmpmodal__lbl { font-family: var(--font-body); font-weight: 600; font-size: 0.95rem; color: var(--graphite-900); }
 /* Keep label column legible + fixed where practical */
 .cmptable thead th:first-child, .cmptable tbody th { position: sticky; left: 0; background: var(--paper-0); z-index: 1; }
+/* Product-name row stays at the top while scrolling down; corner cell sits above both. */
+.cmptable thead th { position: sticky; top: 0; background: var(--paper-0); z-index: 2; }
+.cmptable thead th:first-child { z-index: 3; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 860px) {

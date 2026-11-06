@@ -98,6 +98,15 @@ export function CompareDock() {
     return () => { ro.disconnect(); window.removeEventListener('resize', fit); };
   }, [hasTray]);
 
+  /* While the comparison is open the page behind it must not scroll. */
+  useEffect(() => {
+    if (!showCompare) return;
+    const root = document.documentElement;
+    const prev = root.style.overflow;
+    root.style.overflow = 'hidden';
+    return () => { root.style.overflow = prev; };
+  }, [showCompare]);
+
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') setShowCompare(false); };
     document.addEventListener('keydown', onKey);
