@@ -1286,6 +1286,8 @@
   .feature, .contact-grid, .enq, .lead-row, .pstage2, .pdet, .idet, .idet__story { grid-template-columns: 1fr; }
   .feature__media, .pstage2__media { border-right: 0; border-bottom: 1px solid var(--color-border); }
   .contact-info { border-right: 0; border-bottom: 1px solid var(--color-border); }
+  /* Stacked: the photo box takes the original photo's shape so it shows in full. */
+  .contact-map { aspect-ratio: 1566 / 1005; min-height: 0; }
   .qgrid { grid-template-columns: 1fr; }
   .idet__rail { position: static; }
   .cat-feature, .about__split, .gp, .docp { grid-template-columns: 1fr; }
@@ -1585,7 +1587,6 @@
 }
 @media (max-width: 560px) {
   .subcategory-series-card { flex-basis: 100%; max-width: 100%; }
-  .contact-map { min-height: 220px; }
 }
 @media (max-width: 720px) {
   .paths { grid-template-columns: 1fr; }

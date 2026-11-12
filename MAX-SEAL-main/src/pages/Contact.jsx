@@ -6,6 +6,7 @@ import { Phone, Mail, MessageCircle, MapPin, FileText, ArrowRight, Headset } fro
 import { routes } from '../router/paths';
 import useSiteChrome from '../hooks/useSiteChrome';
 import contactHero from '../assets/contact/Contact-Hero.png';
+import contactPhoto from '../assets/contact/Contact-Photo-tall.jpg';
 
 export default function Contact() {
   useSiteChrome();
@@ -47,7 +48,10 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-              <div className="contact-map"><image-slot id="contact-map" shape="rect" fit="cover" src={contactHero} placeholder="Map or facility photo" /></div>
+              {/* Taller copy of the photo (extra sky/lawn) so the near-square
+                  desktop box shows the whole building; centred so stacked
+                  layouts crop only that added sky/lawn. */}
+              <div className="contact-map"><image-slot id="contact-map" shape="rect" fit="cover" position="center center" src={contactPhoto} placeholder="Map or facility photo" /></div>
             </div>
           </div>
         </section>
