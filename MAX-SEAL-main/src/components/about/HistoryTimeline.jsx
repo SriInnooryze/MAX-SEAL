@@ -3,7 +3,7 @@ import TimelineItem, { TimelineCard } from './TimelineItem';
 import { ABOUT_TIMELINE } from '../../data/aboutData';
 import timeline2008Img from '../../assets/about/team-photo.jpg';
 import timelineLeadershipImg from '../../assets/about/timeline-leadership-valve-experience.png';
-import timelineUsImg from '../../assets/about/timeline-us-operations-supply.png';
+import timelineUsImg from '../../assets/about/timeline-us-operations-sign-16x10.jpg';
 import timelineLatamImg from '../../assets/about/timeline-latin-america-sales-support.png';
 import timelineWorldwideImg from '../../assets/about/timeline-worldwide-distributor-network.png';
 import timelineTodayImg from '../../assets/about/timeline-today-engineering-support.png';
