@@ -341,7 +341,6 @@ export default function ProductDetail({ id }) {
               <div className="pdet__head">
                 <div style={{ marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                   <Badge variant="primary">{f.code} Series</Badge>
-                  {f.sku && <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--steel-500)' }}>SKU: {f.sku}</span>}
                 </div>
                 <h1 className="pdet__name">{f.name}</h1>
                 <p className="pdet__purpose">{f.short || 'Details coming soon — contact our engineers for current availability and specifications.'}</p>
