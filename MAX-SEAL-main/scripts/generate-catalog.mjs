@@ -290,6 +290,12 @@ checkFK('Docs', docs, 'PrimaryProductId', productIds, { allowAll: true });
 checkFKList('Docs', docs, 'RelatedProductIds', productIds, { allowAll: true });
 checkAsset('Docs', docs, 'PdfAssetPath');
 checkAsset('Docs', docs, 'CoverAssetPath');
+// Products.Documents: the Doc Ids shown on that product's Documents tab, in
+// order (blank = the page picks the best catalog itself).
+checkFKList('Products', products, 'Documents', new Set(docs.map((d) => d.Id)));
+// Products.ShowRelatedIndustries: "no" hides the product page's
+// "View related industries" link; blank or "yes" shows it.
+checkClosedValue('Products', products, 'ShowRelatedIndustries', ['yes', 'no'], { allowBlank: true });
 
 // ShowInMarketing is optional (blank = not a Marketing Resource) so existing
 // rows need no backfill. There is no manual "Featured" flag -- Marketing
@@ -526,6 +532,10 @@ const outProducts = activeProducts.map((p) => {
     industryDisplayNames: Object.fromEntries(productIndustryDisplayNames.get(p.Id) || new Map()),
     service: parseList(p.Service), automation: parseList(p.Automation),
     approvals: p.Approvals || '',
+    // Client-written tab text (blank = the page falls back to its stock wording).
+    overview: p.Overview || '', applicationsText: p.ApplicationsText || '',
+    documents: parseList(p.Documents),
+    showRelatedIndustries: String(p.ShowRelatedIndustries || '').trim().toLowerCase() !== 'no',
     materials: {
       bodyMaterials: m.BodyMaterials || '', seatLiningOptions: m.SeatLiningOptions || '',
       discAndStem: m.DiscAndStem || '', configurations: m.Configurations || '',

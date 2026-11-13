@@ -140,7 +140,14 @@ export default function ProductDetail({ id }) {
   // an Excel-required field so this is normally always true, but the guard
   // keeps the tab from ever appearing over an empty paragraph if that ever
   // changes.
-  const overview = f.short ? (
+  // Products.Overview (client-written, one paragraph per line) replaces the
+  // stock wording below when it's filled in.
+  const paras = (text) => text.split('\n').map(t => t.trim()).filter(Boolean);
+  const overview = f.overview ? (
+    <div className="prose" style={{ maxWidth: '64ch' }}>
+      {paras(f.overview).map((t, i) => <p key={i} style={i === 0 ? { fontSize: '1.1rem' } : undefined}>{t}</p>)}
+    </div>
+  ) : f.short ? (
     <div className="prose" style={{ maxWidth: '64ch' }}>
       <p style={{ fontSize: '1.1rem' }}>{f.short}</p>
       {(f.need || f.where) && (
@@ -154,16 +161,23 @@ export default function ProductDetail({ id }) {
   // 'Series' alone, which is just the product code already shown in the
   // header badge and isn't itself a specification.
   const hasTechData = Boolean(f.sizes || f.rating || f.application || automationLabel || f.specifications.length);
+  // When the Excel's technical data already has a row with the same label
+  // (the client's own wording, in their order), the summary row isn't repeated.
+  const specLabels = new Set(f.specifications.map(s => s.label.toLowerCase()));
+  const summary = (label, value) => value && !specLabels.has(label.toLowerCase()) && [label, value];
   const specRows = [
     ['Series', f.code],
-    f.sizes && ['Size range', f.sizes],
-    f.rating && ['Pressure rating', f.rating],
-    f.application && ['Typical application', f.application],
-    automationLabel && ['Automation', automationLabel],
-    ...f.specifications.filter(s => s !== automationSpec).map(s => [s.label, s.value]),
+    summary('Size range', f.sizes),
+    summary('Pressure rating', f.rating),
+    summary('Typical application', f.application),
+    automationSpec ? null : summary('Automation', automationLabel),
+    ...f.specifications.map(s => [s.label, s.value]),
   ].filter(Boolean);
   const tech = hasTechData ? <SpecTable caption="Technical data" rows={specRows} /> : null;
-  const applications = f.application ? (
+  // Products.ApplicationsText (client-written) replaces the stock sentence.
+  const applications = f.applicationsText ? (
+    <div className="prose">{paras(f.applicationsText).map((t, i) => <p key={i}>{t}</p>)}</div>
+  ) : f.application ? (
     // Lowercased to read mid-sentence, but all-caps acronyms (HVAC, LNG) keep their case.
     <div className="prose"><p>Typical applications include {f.application.replace(/\b\w+\b/g, w => (w.length > 1 && w === w.toUpperCase() && /[A-Z]/.test(w)) ? w : w.toLowerCase())}. Material and seat options are matched to media and operating conditions.</p></div>
   ) : null;
@@ -190,7 +204,9 @@ export default function ProductDetail({ id }) {
   // one item per entry; blank or "To be validated" gets a short note
   // pointing to the engineers instead.
   const certList = f.approvals && f.approvals !== 'To be validated'
-    ? f.approvals.split(/[;,]/).map(s => s.trim()).filter(Boolean)
+    // One certification per line in the Excel cell (items can contain "," and
+    // ";"); older single-line values are still split on ";".
+    ? f.approvals.split(f.approvals.includes('\n') ? '\n' : ';').map(s => s.trim()).filter(Boolean)
     : [];
   const certifications = certList.length ? (
     <ul className="pdet__certs">
@@ -207,13 +223,16 @@ export default function ProductDetail({ id }) {
   // whose FamilyIds happens to list it, which previously surfaced
   // superseded multi-product catalogs and sitewide "ALL" docs (general
   // price guides, install/maintenance samples) alongside the real one.
-  const bestDoc = bestDocForFamily(f.id);
+  // Products.Documents lists the exact Doc Ids for this tab, in order; when
+  // it's blank the page falls back to picking the best catalog itself.
+  const listedDocs = f.documents.map(id => DOCS.find(d => d.id === id)).filter(d => d && d.pdfAsset);
+  const bestDoc = listedDocs.length ? null : bestDocForFamily(f.id);
   // Per-model Datasheet rows that belong to this product alone are listed
   // after it (e.g. the IVT stainless model sheets); other doc types still
   // collapse to the single best document.
-  const datasheets = DOCS.filter(d => d.type === 'Datasheet' && d.pdfAsset && d !== bestDoc
+  const datasheets = listedDocs.length ? [] : DOCS.filter(d => d.type === 'Datasheet' && d.pdfAsset && d !== bestDoc
     && d.familyIds.length === 1 && d.familyIds[0] === f.id);
-  const docList = bestDoc ? [bestDoc, ...datasheets] : datasheets;
+  const docList = listedDocs.length ? listedDocs : bestDoc ? [bestDoc, ...datasheets] : datasheets;
   const documents = docList.length ? (
     <div className="rlist">
       {docList.map(d => {
@@ -357,7 +376,8 @@ export default function ProductDetail({ id }) {
                   <Link className="ms-btn ms-btn--outline" to={routes.enquiry({ intent: 'technical', product: f.id })}><Headset size={16} /> Ask the Engineers</Link>
                   <CompareToggle id={f.id} className="cmpcheck--sm" />
                 </div>
-                {relIndustries.length > 0 && (
+                {/* Products.ShowRelatedIndustries = "no" hides this link. */}
+                {relIndustries.length > 0 && f.showRelatedIndustries && (
                   <Link className="link-arrow pdet__relind" to={routes.industries({ family: f.id })}><Compass size={16} /> View related industries</Link>
                 )}
               </div>
