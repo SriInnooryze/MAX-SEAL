@@ -198,7 +198,7 @@ export default function ProductDetail({ id }) {
     </ul>
   ) : (
     <div className="prose">
-      <p>Certifications to be confirmed. <Link to={routes.enquiry({ intent: 'technical' })}>Contact our engineers</Link> for current approvals.</p>
+      <p>Certifications to be confirmed. <Link to={routes.enquiry({ intent: 'technical', product: f.id })}>Contact our engineers</Link> for current approvals.</p>
     </div>
   );
 
@@ -354,7 +354,7 @@ export default function ProductDetail({ id }) {
                 )}
                 <div className="pdet__actions">
                   <Link className="ms-btn ms-btn--primary" to={routes.enquiry({ intent: 'pricing', product: f.id })}>Request a Quote <ArrowRight size={16} /></Link>
-                  <Link className="ms-btn ms-btn--outline" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask the Engineers</Link>
+                  <Link className="ms-btn ms-btn--outline" to={routes.enquiry({ intent: 'technical', product: f.id })}><Headset size={16} /> Ask the Engineers</Link>
                   <CompareToggle id={f.id} className="cmpcheck--sm" />
                 </div>
                 {relIndustries.length > 0 && (
