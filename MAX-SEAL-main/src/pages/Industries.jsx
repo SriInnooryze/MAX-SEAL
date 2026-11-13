@@ -232,6 +232,8 @@ function IndustriesMatrix() {
 
   const selectInd = (id) => { setActiveInd(id); setActiveApp(null); };
   const exploreHref = routes.products({ industry: ind.id, application: activeApp || undefined });
+  // Enquiry links carry the selected industry (and need) so the form opens pre-filled.
+  const enquiryHref = (intent) => routes.enquiry({ intent, industry: ind.id, application: activeApp || undefined });
 
   return (
     <main>
@@ -335,9 +337,9 @@ function IndustriesMatrix() {
                   )}
                   <div className="mx__panel-actions">
                     <Link className="ms-btn ms-btn--primary ms-btn--sm" to={exploreHref}>Explore related products <ArrowRight size={15} /></Link>
-                    <Link className="ms-btn ms-btn--outline ms-btn--sm" to={routes.enquiry({ intent: 'pricing' })}>Request a Quote</Link>
+                    <Link className="ms-btn ms-btn--outline ms-btn--sm" to={enquiryHref('pricing')}>Request a Quote</Link>
                   </div>
-                  <Link className="link-arrow mx__panel-ask" to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask a technical question</Link>
+                  <Link className="link-arrow mx__panel-ask" to={enquiryHref('technical')}><Headset size={16} /> Ask a technical question</Link>
                 </div>
               </div>
             </div>
@@ -353,7 +355,7 @@ function IndustriesMatrix() {
             <div className="convert__actions">
               <Link className="ms-btn ms-btn--primary" to={exploreHref}>Continue to products <ArrowRight size={16} /></Link>
             </div>
-            <Link className="link-arrow link-arrow--ondark" style={{ marginTop: '1.1rem' }} to={routes.enquiry({ intent: 'technical' })}><Headset size={16} /> Ask a technical question</Link>
+            <Link className="link-arrow link-arrow--ondark" style={{ marginTop: '1.1rem' }} to={enquiryHref('technical')}><Headset size={16} /> Ask a technical question</Link>
           </div>
         </section>
     </main>

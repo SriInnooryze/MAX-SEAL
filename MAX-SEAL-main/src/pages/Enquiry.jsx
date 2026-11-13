@@ -1,11 +1,11 @@
 /* Max-Seal — Enquiry page: shared form, 4 intents, intent-adaptive fields.
    Data-driven via INTENTS[].fields. Includes validation, loading and success
-   states. Preselects from ?intent= and ?product=. */
+   states. Preselects from ?intent=, ?product=, ?industry= and ?application=. */
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';
 import PageHero from '../components/PageHero';
-import { INTENTS, FAMILIES, INDUSTRIES, REQUEST_ONLY_SERIES } from '../data/data';
+import { INTENTS, FAMILIES, INDUSTRIES, APP_NEEDS, REQUEST_ONLY_SERIES } from '../data/data';
 import * as Icons from '../icons/icons';
 import { routes } from '../router/paths';
 import Input from '../components/ds/Input';
@@ -27,6 +27,14 @@ export default function Enquiry() {
   const [consent, setConsent] = useState(false);
   const cur = INTENTS.find(i => i.id === intent);
   const presetProduct = getParam('product');
+  // From the Industries page: the selected industry and application need.
+  const presetInd = INDUSTRIES.find(x => x.id === getParam('industry'));
+  const presetApp = APP_NEEDS.find(a => a.id === getParam('application'));
+  // Forms without an Industry dropdown (e.g. Request a quote) carry the
+  // industry in the Application field instead.
+  const presetApplication = cur.fields.includes('industry')
+    ? (presetApp ? presetApp.l : '')
+    : [presetInd && presetInd.name, presetApp && presetApp.l].filter(Boolean).join(' · ');
 
   const famOptions = [
     ...FAMILIES.map(f => ({ value: f.id, label: f.name })),
@@ -51,8 +59,8 @@ export default function Enquiry() {
     state: () => <Input label="State or region" placeholder="Optional" />,
     country: () => <Select label="Country" placeholder="Select country" options={countryOptions} />,
     family: () => <Select label="Product family" placeholder="Select a family" defaultValue={presetProduct || ''} options={famOptions} />,
-    industry: () => <Select label="Industry" placeholder="Select industry" options={indOptions} />,
-    application: () => <Input label="Application" placeholder="e.g. chemical processing" />,
+    industry: () => <Select label="Industry" placeholder="Select industry" defaultValue={presetInd ? presetInd.id : ''} options={indOptions} />,
+    application: () => <Input label="Application" placeholder="e.g. chemical processing" defaultValue={presetApplication} />,
     quantity: () => <Input label="Quantity" placeholder="e.g. 10" />,
     requiredDate: () => <Input label="Required date" type="date" />,
     operating: () => <Input label="Operating conditions" placeholder="Media, pressure, temperature" />,
@@ -66,7 +74,8 @@ export default function Enquiry() {
     if (key === 'attachment') return null;
     const node = F[key] && F[key]();
     if (!node) return null;
-    return <div className={fullWidth.includes(key) ? 'full' : ''} key={key}>{node}</div>;
+    // Application's preset differs per form, so it remounts when the form changes.
+    return <div className={fullWidth.includes(key) ? 'full' : ''} key={key === 'application' ? intent + '-' + key : key}>{node}</div>;
   };
 
   const submit = (e) => {
