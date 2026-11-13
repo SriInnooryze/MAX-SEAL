@@ -1,4 +1,4 @@
-/* Max-Seal — Home page composition. */
+/* Max-Seal — Home page composition (formerly the Home 2 design). */
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import useSiteChrome from '../hooks/useSiteChrome';

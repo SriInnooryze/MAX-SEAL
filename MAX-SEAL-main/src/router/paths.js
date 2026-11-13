@@ -16,8 +16,6 @@ function withQuery(path, params) {
 
 export const routes = {
   home: '/',
-  home2: '/home-2',
-  home3: '/home-3',
   products: (params) => withQuery('/products', params),
   /* Product page — /products/<category>/<subcategory>/<product>/<code>-series,
      from Products.UrlPath in the workbook (catalog.json `urlPath`). Callers

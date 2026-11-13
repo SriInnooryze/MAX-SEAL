@@ -410,34 +410,24 @@
 .ptile__face { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; text-align: left; background: transparent; border: 0; cursor: pointer; padding: clamp(1.3rem, 2.5vw, 2.2rem); transition: background 240ms ease, opacity 240ms ease; }
 .ptile--center:not(.is-open) .ptile__face:hover { background: rgba(12,15,17,0.18); }
 .ptile.is-open .ptile__face { opacity: 0; pointer-events: none; }
-/* Home 2 only: hovering a tile adds no grey shade (no face overlay, side
+/* Home page: hovering a tile adds no grey shade (no face overlay, side
    tiles go to full strength) and zooms the product photo instead. */
-.home2-page .ptile--center:not(.is-open) .ptile__face:hover { background: transparent; }
-.home2-page .ptile--side:hover { opacity: 1; }
+.home-page .ptile--center:not(.is-open) .ptile__face:hover { background: transparent; }
+.home-page .ptile--side:hover { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
-  .home2-page .ptile:not(.is-open):hover .ptile__img { transform: scale(1.1); }
+  .home-page .ptile:not(.is-open):hover .ptile__img { transform: scale(1.1); }
 }
-/* Home 2 only: tiles rest on plain white (no dark gradient, dark text);
+/* Home page: tiles rest on plain white (no dark gradient, dark text);
    the gradient fades in on hover / keyboard focus and the text turns white. */
-.home2-page .ptile__grad { opacity: 0; transition: opacity 320ms ease; }
-.home2-page .ptile:not(.is-open):hover .ptile__grad,
-.home2-page .ptile:not(.is-open):focus-within .ptile__grad { opacity: 1; }
-.home2-page .ptile__title, .home2-page .ptile__explore { color: var(--navy-800); transition: color 320ms ease; }
-.home2-page .ptile__label { color: var(--azure-600); transition: color 320ms ease; }
-.home2-page .ptile:not(.is-open):hover :is(.ptile__title, .ptile__explore),
-.home2-page .ptile:not(.is-open):focus-within :is(.ptile__title, .ptile__explore) { color: #fff; }
-.home2-page .ptile:not(.is-open):hover .ptile__label,
-.home2-page .ptile:not(.is-open):focus-within .ptile__label { color: var(--azure-300); }
-/* Home 3 only: tiles stay plain white at all times (no gradient, no grey
-   shade, dark text); hovering only zooms the product photo. */
-.home3-page .ptile__grad { display: none; }
-.home3-page .ptile--center:not(.is-open) .ptile__face:hover { background: transparent; }
-.home3-page .ptile--side:hover { opacity: 1; }
-.home3-page .ptile__title, .home3-page .ptile__explore { color: var(--navy-800); }
-.home3-page .ptile__label { color: var(--azure-600); }
-@media (prefers-reduced-motion: no-preference) {
-  .home3-page .ptile:not(.is-open):hover .ptile__img { transform: scale(1.1); }
-}
+.home-page .ptile__grad { opacity: 0; transition: opacity 320ms ease; }
+.home-page .ptile:not(.is-open):hover .ptile__grad,
+.home-page .ptile:not(.is-open):focus-within .ptile__grad { opacity: 1; }
+.home-page .ptile__title, .home-page .ptile__explore { color: var(--navy-800); transition: color 320ms ease; }
+.home-page .ptile__label { color: var(--azure-600); transition: color 320ms ease; }
+.home-page .ptile:not(.is-open):hover :is(.ptile__title, .ptile__explore),
+.home-page .ptile:not(.is-open):focus-within :is(.ptile__title, .ptile__explore) { color: #fff; }
+.home-page .ptile:not(.is-open):hover .ptile__label,
+.home-page .ptile:not(.is-open):focus-within .ptile__label { color: var(--azure-300); }
 .ptile__face:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--color-focus-ring); }
 .ptile__label { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--azure-300); margin-bottom: 0.5rem; }
 .ptile__title { font-weight: 700; color: #fff; line-height: 1.1; letter-spacing: -0.01em; }
