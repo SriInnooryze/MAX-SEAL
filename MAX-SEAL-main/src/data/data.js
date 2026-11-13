@@ -83,8 +83,8 @@ export const FACETS = [
   },
   {
     id: 'industries', label: 'Industry', options: [
-      { v: 'oil-gas', l: 'Oil and gas' }, { v: 'refining', l: 'Refining' }, { v: 'petrochemical', l: 'Petrochemical' },
-      { v: 'chemical', l: 'Chemical' }, { v: 'power', l: 'Power' }, { v: 'data-centers', l: 'Data centers' },
+      { v: 'data-centers', l: 'Data centers' }, { v: 'oil-gas', l: 'Oil and gas' }, { v: 'refining', l: 'Refining' },
+      { v: 'petrochemical', l: 'Petrochemical' }, { v: 'chemical', l: 'Chemical' }, { v: 'power', l: 'Power' },
       { v: 'hvac', l: 'HVAC' }, { v: 'marine', l: 'Marine' }, { v: 'pharma', l: 'Pharmaceuticals' },
       { v: 'food-beverage', l: 'Food and beverage' }, { v: 'pulp-paper', l: 'Pulp and paper' }, { v: 'mining', l: 'Mining' }, { v: 'transportation', l: 'Transportation' }]
   },

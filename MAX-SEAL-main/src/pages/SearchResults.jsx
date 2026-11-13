@@ -25,7 +25,7 @@ export default function SearchResults() {
   const [ctype, setCtype] = useState('All');
   const types = ['All', 'Product', 'Industry', 'Catalog', 'Marketing', 'Price List', 'Company'];
   const matches = index.filter(i => (ctype === 'All' || i.type === ctype) && (!q || (i.title + ' ' + i.excerpt).toLowerCase().includes(q.toLowerCase())));
-  const suggestions = ['Triple offset', 'PFA lined', 'Data centers', 'Catalog', 'Price list'];
+  const suggestions = ['Data centers', 'Triple offset', 'PFA lined', 'Catalog', 'Price list'];
 
   return (
     <main>

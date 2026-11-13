@@ -29,9 +29,9 @@ const GOALS = [
 
 /* Step 2 — where it will be used (top-level groupings, not all 13 industries). */
 const PLACES = [
+  { id: 'water', t: 'Data centers, HVAC and infrastructure', d: 'Data centers, HVAC and building services.', sel: ['data-centers', 'hvac'] },
   { id: 'process', t: 'Process industries', d: 'Petrochemical, chemical, pulp and paper.', sel: ['petrochemical', 'chemical', 'pulp-paper'] },
   { id: 'energy', t: 'Energy and refining', d: 'Oil and gas, refining and power.', sel: ['oil-gas', 'refining', 'power'] },
-  { id: 'water', t: 'Water, HVAC and infrastructure', d: 'Data centers, HVAC and building services.', sel: ['data-centers', 'hvac'] },
   { id: 'food', t: 'Food and life sciences', d: 'Food and beverage and pharmaceuticals.', sel: ['food-beverage', 'pharma'] },
   { id: 'marine', t: 'Marine and transportation', d: 'Marine, transportation and mining.', sel: ['marine', 'transportation', 'mining'] },
   { id: 'general', t: 'General industrial use', d: 'Broad utility and general plant service.', sel: [] },
