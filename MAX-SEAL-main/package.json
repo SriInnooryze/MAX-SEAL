@@ -7,7 +7,7 @@
     "predev": "node scripts/generate-catalog.mjs",
     "dev": "vite",
     "prebuild": "node scripts/generate-catalog.mjs",
-    "build": "vite build && node -e \"import('fs').then(fs => fs.copyFileSync('dist/index.html', 'dist/404.html'))\"",
+    "build": "vite build && node -e \"import('fs').then(fs => fs.copyFileSync('dist/index.html', 'dist/404.html'))\" && node scripts/prerender-seo.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "catalog:migrate": "node scripts/migrate-to-excel.mjs",

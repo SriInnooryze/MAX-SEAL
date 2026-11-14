@@ -35,6 +35,7 @@ const MOBILE_NAV = [
       { label: 'View all industries', href: routes.industries(), all: true },
     ]
   },
+  { id: 'data-centers', label: 'Data Centers', href: routes.dataCenters },
   { id: 'solutions', label: 'Solutions', href: routes.solutions },
   {
     id: 'resources', label: 'Resources', href: routes.resources, children: [

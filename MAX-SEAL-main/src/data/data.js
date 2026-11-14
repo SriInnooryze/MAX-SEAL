@@ -25,6 +25,7 @@ export const NAV = [
   // hover/focus regardless, via Header.jsx's onMouseEnter.
   { id: 'products', label: 'Products', href: routes.products(), dropdown: 'products' },
   { id: 'industries', label: 'Industries', href: routes.industries(), dropdown: 'industries' },
+  { id: 'data-centers', label: 'Data Centers', href: routes.dataCenters },
   { id: 'solutions', label: 'Solutions', href: routes.solutions },
   { id: 'resources', label: 'Resources', href: routes.resources, dropdown: 'resources' },
   { id: 'about', label: 'About', href: routes.about, dropdown: 'about' },

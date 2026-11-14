@@ -45,6 +45,7 @@ export const routes = {
      pre-selected via ?industry=, instead of a separate /industry/:id page.
      Kept the function name unchanged so no call site needed to change. */
   industryDetail: (id) => withQuery('/industries', { industry: id }),
+  dataCenters: '/data-centers',
   solutions: '/solutions',
   about: '/about',
   contact: '/contact',

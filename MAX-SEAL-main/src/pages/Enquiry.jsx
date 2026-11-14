@@ -30,6 +30,9 @@ export default function Enquiry() {
   // From the Industries page: the selected industry and application need.
   const presetInd = INDUSTRIES.find(x => x.id === getParam('industry'));
   const presetApp = APP_NEEDS.find(a => a.id === getParam('application'));
+  // Free-text details (e.g. the Data Centers Spec Builder answers) go in the
+  // message / question box.
+  const presetDetails = getParam('details') || '';
   // Forms without an Industry dropdown (e.g. Request a quote) carry the
   // industry in the Application field instead.
   const presetApplication = cur.fields.includes('industry')
@@ -65,8 +68,8 @@ export default function Enquiry() {
     requiredDate: () => <Input label="Required date" type="date" />,
     operating: () => <Input label="Operating conditions" placeholder="Media, pressure, temperature" />,
     distributor: () => <Select label="Distributor status" placeholder="Select status" options={distributorOptions} />,
-    message: () => <Textarea label="Message" placeholder="How can we help?" rows={5} />,
-    question: () => <Textarea label="Technical question" placeholder="Describe the service condition, media and any selection questions you have." rows={5} />,
+    message: () => <Textarea label="Message" placeholder="How can we help?" rows={5} defaultValue={presetDetails} />,
+    question: () => <Textarea label="Technical question" placeholder="Describe the service condition, media and any selection questions you have." rows={5} defaultValue={presetDetails} />,
     reason: () => <Input label="Reason for contact" placeholder="Brief reason" />,
   };
   const fullWidth = ['application', 'operating', 'message', 'question', 'reason', 'requiredDate'];

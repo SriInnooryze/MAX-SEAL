@@ -9,6 +9,7 @@ import ExploreAllProducts from '../pages/ExploreAllProducts';
 import ProductSubcategory from '../pages/ProductSubcategory';
 import ProductOrCategory from '../pages/ProductOrCategory';
 import Industries from '../pages/Industries';
+import DataCenters from '../pages/DataCenters';
 import Solutions from '../pages/Solutions';
 import About from '../pages/About';
 import Contact from '../pages/Contact';
@@ -52,6 +53,7 @@ export default function AppRouter() {
         <Route path="/products/:categorySlug/:subcategorySlug" element={<SiteLayout current="products"><ProductSubcategory /></SiteLayout>} />
         <Route path="/products/*" element={<SiteLayout current="products"><ProductOrCategory /></SiteLayout>} />
         <Route path="/industries" element={<SiteLayout current="industries"><Industries /></SiteLayout>} />
+        <Route path="/data-centers" element={<SiteLayout current="data-centers"><DataCenters /></SiteLayout>} />
         <Route path="/solutions" element={<SiteLayout current="solutions"><Solutions /></SiteLayout>} />
         <Route path="/about" element={<SiteLayout current="about"><About /></SiteLayout>} />
         <Route path="/contact" element={<SiteLayout current="contact"><Contact /></SiteLayout>} />
