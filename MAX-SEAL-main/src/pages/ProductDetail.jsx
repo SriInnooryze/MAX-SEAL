@@ -288,7 +288,7 @@ export default function ProductDetail({ id }) {
     <main>
         <section className="page-hero page-hero--slim">
           <div className="page-hero__scrim" />
-          <div className="wrap page-hero__inner" style={{ maxWidth: 'none' }}>
+          <div className="wrap page-hero__inner" style={{ maxWidth: 'var(--container-max)' }}>
             <nav className="breadcrumbs" aria-label="Breadcrumb">
               <Link to={routes.home}>Home</Link><span className="sep">/</span>
               <Link to={routes.products()}>Products</Link><span className="sep">/</span>

@@ -102,19 +102,25 @@
 .cmpbar__item button svg { width: 14px; height: 14px; }
 
 /* Compare modal */
-.cmpmodal-scrim { position: fixed; inset: 0; background: rgba(12,15,17,0.55); opacity: 0; visibility: hidden; transition: opacity 240ms ease, visibility 240ms; z-index: 200; }
+.cmpmodal-scrim { position: fixed; inset: 0; background: rgba(12,15,17,0.55); opacity: 0; visibility: hidden; transition: opacity 240ms ease, visibility 240ms; z-index: 300; }
 .cmpmodal-scrim.open { opacity: 1; visibility: visible; }
 /* Centred on screen. The head stays put and .cmpmodal__scroll is the ONE
    scroll area (both directions), so the sticky product-name row and the
    sticky label column line up while scrolling. */
-.cmpmodal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(960px, 92vw); max-height: 90vh; max-height: 90dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--paper-0); box-shadow: var(--shadow-xl); z-index: 201; opacity: 0; visibility: hidden; transition: opacity 240ms ease, visibility 240ms; }
+.cmpmodal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: min(960px, 92vw); max-height: 90vh; max-height: 90dvh; display: flex; flex-direction: column; overflow: hidden; background: var(--paper-0); box-shadow: var(--shadow-xl); z-index: 301; opacity: 0; visibility: hidden; transition: opacity 240ms ease, visibility 240ms; }
 .cmpmodal.open { opacity: 1; visibility: visible; }
 .cmpmodal__head { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--color-border); background: var(--paper-0); }
-.cmptable { width: 100%; border-collapse: separate; border-spacing: 0; }
+/* Fixed layout: the label column has a set width and the product columns
+   share the rest equally, whatever their text length. */
+.cmptable { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
 .cmptable th, .cmptable td { text-align: left; padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--color-divider); font-size: 0.9rem; vertical-align: top; }
 .cmptable thead th { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: var(--graphite-900); }
 .cmptable tbody th { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel-500); font-weight: 500; width: 160px; }
 .cmptable td { font-family: var(--font-mono); font-size: 0.82rem; color: var(--graphite-900); }
+/* The top-left "Product Family" cell reads as a row label (same style as the
+   labels below it) and sits level with the product names. */
+.cmptable thead th:first-child { width: 160px; vertical-align: bottom; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel-500); font-weight: 500; }
+.cmptable thead th { overflow-wrap: anywhere; }
 
 /* ============================================================
    ENQUIRY — shared page with intent selector
@@ -434,11 +440,15 @@
   /* Full screen; dvh follows the phone's visible area (address bar). */
   .cmpmodal { top: 0; left: 0; transform: none; width: 100%; height: 100vh; height: 100dvh; max-height: none; }
   .cmpmodal__head { padding: 0.9rem 1rem; }
-  .cmptable { min-width: 560px; }
+  /* Label column + 190px per product, so 2 or 3 products stay readable and
+     the table scrolls sideways under the pinned label column. */
+  .cmptable { min-width: calc(120px + var(--cmp-cols, 2) * 190px); }
   .cmptable th, .cmptable td { padding: 0.8rem 0.9rem; }
   .cmptable thead th:first-child, .cmptable tbody th { width: 120px; min-width: 120px; box-shadow: 1px 0 0 var(--color-divider); }
-  .cmptable thead th { font-size: 1rem; }
+  .cmptable thead th:not(:first-child) { font-size: 1rem; }
   .cmptable__thumb { max-width: 96px; }
+  /* The note sits under a sideways-scrolling table: keep it in view. */
+  .cmpmodal__note { position: sticky; left: 0; width: 100vw; box-sizing: border-box; }
 }
 
 /* ============================================================
@@ -1556,6 +1566,8 @@
    list, not just once scrolled near the bottom -- matters once the catalog
    holds far more than a handful of cards. */
 .cmptray { position: fixed; left: 0; right: 0; bottom: 1.25rem; z-index: 40; padding-inline: var(--gutter); pointer-events: none; }
+/* Hidden while the comparison popup is open, so it doesn't peek out below it. */
+.cmptray--hidden { visibility: hidden; }
 .cmptray__inner { pointer-events: auto; display: flex; align-items: center; gap: 0.8rem 1.2rem; background: var(--graphite-900); color: #fff; border: 1px solid rgba(255,255,255,0.14); border-top: 2px solid var(--azure-500); border-radius: var(--radius-md); box-shadow: var(--shadow-xl); padding: 0.8rem 1.1rem; flex-wrap: nowrap; }
 .cmptray__handle { flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 0.5rem; background: none; border: 0; color: #fff; font-family: var(--font-body); cursor: default; padding: 0; }
 .cmptray__handle svg:first-child { color: var(--azure-300); }

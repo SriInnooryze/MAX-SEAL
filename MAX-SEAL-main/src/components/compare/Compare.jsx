@@ -119,7 +119,7 @@ export function CompareDock() {
         <>
           {/* Keeps the end of every page (footer) clear of the fixed tray. */}
           <div className="cmptray-spacer" ref={spacerRef} aria-hidden="true" />
-          <div ref={trayRef} className={'cmptray' + (trayOpen ? ' cmptray--open' : '')} role="region" aria-label="Compare tray">
+          <div ref={trayRef} className={'cmptray' + (trayOpen ? ' cmptray--open' : '') + (showCompare ? ' cmptray--hidden' : '')} role="region" aria-label="Compare tray">
             <div className="wrap cmptray__inner">
               <button type="button" className="cmptray__handle" aria-expanded={trayOpen} aria-label={trayOpen ? 'Collapse compare tray' : 'Expand compare tray'} onClick={() => setTrayOpen(o => !o)}>
                 <Scale size={16} />
@@ -151,7 +151,7 @@ export function CompareDock() {
           <button className="drawer__close" aria-label="Close comparison" onClick={() => setShowCompare(false)}><X size={18} /></button>
         </div>
         <div className="cmpmodal__scroll">
-          <table className="cmptable">
+          <table className="cmptable" style={{ '--cmp-cols': fams.length }}>
             <thead>
               <tr>
                 <th scope="col">Product Family</th>

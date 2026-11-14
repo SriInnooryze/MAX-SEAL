@@ -18,7 +18,7 @@ export default function DocumentPreview() {
     <main>
         <section className="page-hero page-hero--slim">
           <div className="page-hero__scrim" />
-          <div className="wrap page-hero__inner" style={{ maxWidth: 'none' }}>
+          <div className="wrap page-hero__inner" style={{ maxWidth: 'var(--container-max)' }}>
             <nav className="breadcrumbs" aria-label="Breadcrumb">
               <Link to={routes.home}>Home</Link><span className="sep">/</span>
               <Link to={routes.catalog()}>Catalog</Link><span className="sep">/</span><span className="cur">{doc.title}</span>
