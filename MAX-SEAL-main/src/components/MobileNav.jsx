@@ -4,7 +4,7 @@ import { CATEGORIES, SUBCATEGORIES, INDUSTRIES, subcategoryTarget } from '../dat
 import { INDUSTRY_MENU_IDS } from './DropdownContent';
 import { Search, ChevronDown, Phone, Mail, MessageCircle, ArrowRight, X } from '../icons/icons';
 import { routes } from '../router/paths';
-import logo from '../assets/maxseal-logo.png';
+import logo from '../assets/maxseal-logo.webp';
 
 /* Mobile navigation — full drawer with focus trap, Esc, outside click, scroll lock.
    Matches the desktop nav order and dropdown grouping (Priority 4 nav cleanup):
@@ -117,9 +117,9 @@ export default function MobileNav({ open, onClose, current }) {
   return (
     <>
       <div className={'mnav-scrim' + (open ? ' open' : '')} onClick={onClose} aria-hidden="true" />
-      <div className={'mnav' + (open ? ' open' : '')} role="dialog" aria-modal="true" aria-label="Site menu" aria-hidden={!open} ref={panelRef}>
+      <div className={'mnav' + (open ? ' open' : '')} role="dialog" aria-modal="true" aria-label="Site menu" aria-hidden={!open} inert={!open} ref={panelRef}>
         <div className="mnav__head">
-          <Link className="brand brand--mnav" to={routes.home} onClick={onClose}><img src={logo} alt="Max-Seal Valves and Controls home" /></Link>
+          <Link className="brand brand--mnav" to={routes.home} onClick={onClose}><img src={logo} alt="Max-Seal Valves and Controls home" width="300" height="118" /></Link>
           <button className="mnav__close" aria-label="Close menu" onClick={onClose} ref={firstRef}><X size={22} /></button>
         </div>
         <nav className="mnav__list" aria-label="Primary">

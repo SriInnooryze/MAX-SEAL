@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
 
@@ -11,7 +12,7 @@ export default function SiteLayout({ current, children }) {
   return (
     <>
       <Header current={current} />
-      {children}
+      <Suspense fallback={<div className="page-loading" aria-busy="true" style={{ minHeight: '70vh' }} />}>{children}</Suspense>
       <Footer />
     </>
   );

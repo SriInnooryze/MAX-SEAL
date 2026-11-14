@@ -1,28 +1,30 @@
-import { useEffect } from 'react';
+import { useEffect, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import SiteLayout from '../components/layout/SiteLayout';
 import { CompareProvider, CompareDock } from '../components/compare/Compare';
 import Home from '../pages/Home';
-import Products from '../pages/Products';
-import ExploreAllProducts from '../pages/ExploreAllProducts';
-import ProductSubcategory from '../pages/ProductSubcategory';
-import ProductOrCategory from '../pages/ProductOrCategory';
-import Industries from '../pages/Industries';
-import DataCenters from '../pages/DataCenters';
-import Solutions from '../pages/Solutions';
-import About from '../pages/About';
-import Contact from '../pages/Contact';
-import Resources from '../pages/Resources';
-import Catalog from '../pages/Catalog';
-import MarketingResources from '../pages/MarketingResources';
-import PriceLists from '../pages/PriceLists';
-import SearchResults from '../pages/SearchResults';
-import Enquiry from '../pages/Enquiry';
-import GlobalPartners from '../pages/GlobalPartners';
-import PrivacyPolicy from '../pages/PrivacyPolicy';
-import Terms from '../pages/Terms';
-import DocumentPreview from '../pages/DocumentPreview';
+/* Pages other than Home load on demand (their own JS/CSS files), so a visit
+   downloads only the page it opens. SiteLayout holds the Suspense boundary. */
+const Products = lazy(() => import('../pages/Products'));
+const ExploreAllProducts = lazy(() => import('../pages/ExploreAllProducts'));
+const ProductSubcategory = lazy(() => import('../pages/ProductSubcategory'));
+const ProductOrCategory = lazy(() => import('../pages/ProductOrCategory'));
+const Industries = lazy(() => import('../pages/Industries'));
+const DataCenters = lazy(() => import('../pages/DataCenters'));
+const Solutions = lazy(() => import('../pages/Solutions'));
+const About = lazy(() => import('../pages/About'));
+const Contact = lazy(() => import('../pages/Contact'));
+const Resources = lazy(() => import('../pages/Resources'));
+const Catalog = lazy(() => import('../pages/Catalog'));
+const MarketingResources = lazy(() => import('../pages/MarketingResources'));
+const PriceLists = lazy(() => import('../pages/PriceLists'));
+const SearchResults = lazy(() => import('../pages/SearchResults'));
+const Enquiry = lazy(() => import('../pages/Enquiry'));
+const GlobalPartners = lazy(() => import('../pages/GlobalPartners'));
+const PrivacyPolicy = lazy(() => import('../pages/PrivacyPolicy'));
+const Terms = lazy(() => import('../pages/Terms'));
+const DocumentPreview = lazy(() => import('../pages/DocumentPreview'));
 
 /* Every page load in the original static site started scrolled to top;
    restore that behavior on client-side navigation. Skipped when a hash is

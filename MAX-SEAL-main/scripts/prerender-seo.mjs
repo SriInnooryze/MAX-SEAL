@@ -32,6 +32,7 @@ function headTags(seo) {
   // another page inside the app.
   const m = (attr, k, v) => `<meta ${attr}="${k}" content="${esc(v)}" data-seo="1" />`;
   return [
+    ...(seo.hero ? [`<link rel="preload" as="image" href="${seo.hero.src}" imagesrcset="${seo.hero.srcset}" imagesizes="100vw" fetchpriority="high" data-seo="1" />`] : []),
     m('name', 'description', seo.description),
     m('name', 'keywords', seo.keywords),
     `<link rel="canonical" href="${seo.url}" data-seo="1" />`,
@@ -63,6 +64,8 @@ const pages = [
 
 for (const seo of pages) {
   const html = indexHtml
+    // the page's own description replaces the site-wide default one
+    .replace(/<meta name="description"[^>]*>\s*/, '')
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(seo.title)}</title>\n    ${headTags(seo)}`);
   const out = path.join(DIST, seo.path.replace(/^\//, ''), 'index.html');
   fs.mkdirSync(path.dirname(out), { recursive: true });

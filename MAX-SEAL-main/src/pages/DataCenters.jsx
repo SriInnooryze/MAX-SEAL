@@ -20,10 +20,12 @@ import { FAMILIES, bestDocForFamily } from '../data/data';
 import { DC_ZONES, DC_MATRIX_PRODUCTS, DC_SIZES, DC_OPERATION, DC_MEDIA, DC_CHALLENGES, DC_FAQ } from '../data/dataCenterData';
 import { dataCentersSeo } from '../seo/pageSeo';
 import { routes } from '../router/paths';
+import { thumbFor, onThumbError, industrySrcSet } from '../data/imageVariants';
 import { ArrowRight, Headset, Check, FileText, ChevronDown, Settings } from '../icons/icons';
 import '../styles/datacenters.css';
 
 const famById = (id) => FAMILIES.find((f) => f.id === id);
+const DC_HERO = '/assets/maxseal/industries/data-centers.png';
 const ACTUATORS = ['PROD-034', 'PROD-024'];
 
 /* Largest / smallest inch size in a catalog size string such as
@@ -142,7 +144,7 @@ function CoolingLoopSvg({ zone, setZone, maint }) {
         const on = zone === z.id;
         return (
           <g key={z.id} className={'dcx-hot' + (on ? ' is-on' : '')} transform={`translate(${x} ${y})`}
-            role="button" tabIndex={0} aria-pressed={on} aria-label={`${z.n} ${z.title}`}
+            role="button" tabIndex={0} aria-pressed={on} aria-label={`${Number(z.n)} ${z.title}`}
             onClick={() => setZone(z.id)}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setZone(z.id); } }}>
             <circle className="dcx-hot__pulse" r="22" />
@@ -160,7 +162,7 @@ function ProductMini({ id, fit, why }) {
   if (!f) return null;
   return (
     <Link className="dc-pmini" to={routes.productDetail(f.id)}>
-      <span className="dc-pmini__img"><img src={f.image} alt="" loading="lazy" /></span>
+      <span className="dc-pmini__img"><img src={thumbFor(f.image)} onError={onThumbError(f.image)} alt="" width="46" height="46" loading="lazy" decoding="async" /></span>
       <span className="dc-pmini__body">
         <span className="dc-pmini__name">{f.name}{fit === 'primary' && <span className="dc-fit">Best fit</span>}</span>
         <span className="dc-pmini__why">{why}</span>
@@ -255,24 +257,24 @@ function Matrix({ zone, setZone }) {
         </div>
         <p className="dcm__hint">Select a row to open it in the explorer above, or a product column to see every point it covers.</p>
         <div className="dcm__scroll">
-          <div className="dcm" style={{ '--dcm-cols': cols.length }} role="grid" aria-label="Cooling system zones by Max-Seal product">
-            <div className="dcm__cell dcm__corner" role="columnheader">Cooling system point</div>
+          <div className="dcm" style={{ '--dcm-cols': cols.length }} aria-label="Cooling system zones by Max-Seal product">
+            <div className="dcm__cell dcm__corner">Cooling system point</div>
             {cols.map((c) => (
-              <button key={c.id} type="button" role="columnheader" className={'dcm__cell dcm__head' + (col === c.id ? ' is-col' : '')}
+              <button key={c.id} type="button" aria-pressed={col === c.id} className={'dcm__cell dcm__head' + (col === c.id ? ' is-col' : '')}
                 onMouseEnter={() => setCol(c.id)} onFocus={() => setCol(c.id)} onClick={() => setCol(c.id)} title={c.fam.name}>
                 <span className="dcm__code">{c.fam.code}</span>{c.short}
               </button>
             ))}
             {DC_ZONES.map((z) => (
-              <div className="dcm__row" role="row" key={z.id}>
-                <button type="button" role="rowheader" className={'dcm__cell dcm__rowhead' + (zone === z.id ? ' is-row' : '')}
+              <div className="dcm__row" key={z.id}>
+                <button type="button" aria-pressed={zone === z.id} className={'dcm__cell dcm__rowhead' + (zone === z.id ? ' is-row' : '')}
                   onClick={() => { setZone(z.id); document.getElementById('cooling-loop')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}>
                   <span className="dcm__n">{z.n}</span>{z.title}
                 </button>
                 {cols.map((c) => {
                   const fit = fitOf(z, c.id);
                   return (
-                    <div key={c.id} role="gridcell" aria-label={fit ? `${c.fam.name}: ${fit === 'primary' ? 'best fit' : 'also suitable'}` : `${c.fam.name}: not mapped`}
+                    <div key={c.id} role="img" aria-label={fit ? `${c.fam.name}: ${fit === 'primary' ? 'best fit' : 'also suitable'}` : `${c.fam.name}: not mapped`}
                       className={'dcm__cell dcm__dotcell' + (zone === z.id ? ' is-row' : '') + (col === c.id ? ' is-col' : '')}
                       onClick={() => { setZone(z.id); setCol(c.id); }}>
                       <i className={'dcm__mark' + (fit ? ' is-' + fit : '')} />
@@ -286,7 +288,7 @@ function Matrix({ zone, setZone }) {
         <div className="dcm__detail" aria-live="polite">
           {colFam ? (
             <>
-              <img src={colFam.image} alt="" loading="lazy" />
+              <img src={thumbFor(colFam.image)} onError={onThumbError(colFam.image)} alt="" width="64" height="64" loading="lazy" decoding="async" />
               <div>
                 <div className="dcm__detail-k">{colFam.code} · {colFam.sizes || 'Sizes on request'}</div>
                 <div className="dcm__detail-t">{colFam.name}</div>
@@ -358,7 +360,7 @@ function SpecBuilder({ zone, setZone }) {
           {top ? (
             <>
               <div className="dcs__top">
-                <img src={top.image} alt="" />
+                <img src={thumbFor(top.image)} onError={onThumbError(top.image)} alt="" width="84" height="84" loading="lazy" decoding="async" />
                 <div>
                   <div className="dcs__top-k">Best match</div>
                   <div className="dcs__top-t">{top.name}</div>
@@ -416,7 +418,7 @@ export default function DataCenters() {
   return (
     <main className="dc-page">
       <section className="dc-hero">
-        <img className="dc-hero__img" src="/assets/maxseal/industries/data-centers.png" alt="Chilled water pipework and butterfly valves in a data center mechanical room" />
+        <img className="dc-hero__img" src={DC_HERO.replace(/\.png$/, '-1600.webp')} srcSet={industrySrcSet(DC_HERO)} sizes="100vw" width="1536" height="1024" fetchPriority="high" decoding="async" alt="Chilled water pipework and butterfly valves in a data center mechanical room" />
         <div className="dc-hero__scrim" />
         <div className="wrap dc-hero__inner">
           <nav className="breadcrumbs" aria-label="Breadcrumb">

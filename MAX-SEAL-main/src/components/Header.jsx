@@ -5,7 +5,7 @@ import { Search, ChevronDown, Phone, Mail, MessageCircle, ArrowRight, Menu } fro
 import { routes } from '../router/paths';
 import DropdownContent from './DropdownContent';
 import MobileNav from './MobileNav';
-import logo from '../assets/maxseal-logo.png';
+import logo from '../assets/maxseal-logo.webp';
 
 export default function Header({ current }) {
   const [open, setOpen] = useState(null);
@@ -31,7 +31,7 @@ export default function Header({ current }) {
 
       <header className="site-header" onMouseLeave={leave}>
         <div className="wrap site-header__row">
-          <Link className="brand" to={routes.home}><img src={logo} alt="Max-Seal Valves and Controls" /></Link>
+          <Link className="brand" to={routes.home}><img src={logo} alt="Max-Seal Valves and Controls" width="300" height="118" /></Link>
           <nav className="mainnav">
             {NAV.map((n) => (
               <div key={n.id} className={'navitem' + (n.dropdown && open === n.id ? ' open' : '') + (current === n.id ? ' active' : '')}

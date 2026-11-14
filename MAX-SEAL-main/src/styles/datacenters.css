@@ -75,12 +75,12 @@
 .dcx__chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); font: 500 0.8rem var(--font-body); padding: 0.4rem 0.7rem; cursor: pointer; }
 .dcx__chip b { color: var(--azure-300); margin-right: 0.25rem; }
 .dcx__chip.on { background: #fff; color: var(--navy-900); border-color: #fff; }
-.dcx__chip.on b { color: var(--azure-600); }
+.dcx__chip.on b { color: var(--azure-700); }
 .dcx__chip:focus-visible { outline: 2px solid var(--azure-300); outline-offset: 2px; }
 
 .dcx__panel { background: var(--paper-0); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); padding: clamp(1.2rem, 2vw, 1.7rem); animation: dc-fade 260ms ease; }
 @keyframes dc-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.dcx__panel-k { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-600); font-weight: 600; }
+.dcx__panel-k { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--azure-700); font-weight: 600; }
 .dcx__panel-k--sub { margin-top: 1.3rem; margin-bottom: 0.6rem; color: var(--steel-500); }
 .dcx__panel-t { font-family: var(--font-display); font-size: 1.45rem; font-weight: 700; line-height: 1.2; margin: 0.4rem 0 0.6rem; color: var(--graphite-900); }
 .dcx__panel-role { color: var(--steel-600); line-height: 1.55; font-size: 0.95rem; }
@@ -96,7 +96,7 @@
 .dc-pmini__img img { max-width: 46px; max-height: 46px; object-fit: contain; }
 .dc-pmini__body { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
 .dc-pmini__name { font-weight: 600; font-size: 0.9rem; color: var(--graphite-900); display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
-.dc-fit { font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; background: var(--azure-600); color: #fff; padding: 0.12rem 0.4rem; }
+.dc-fit { font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; background: var(--azure-700); color: #fff; padding: 0.12rem 0.4rem; }
 .dc-pmini__why { font-size: 0.8rem; color: var(--steel-600); line-height: 1.4; }
 .dc-pmini__meta { font-size: 0.74rem; color: var(--steel-500); }
 .dc-pmini__arr { color: var(--azure-600); }
@@ -111,9 +111,9 @@
 .dcm__cell { border: 0; border-bottom: 1px solid var(--color-divider); border-right: 1px solid var(--color-divider); background: transparent; font: inherit; color: inherit; padding: 0.7rem; text-align: left; }
 .dcm__corner { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-500); display: flex; align-items: flex-end; position: sticky; left: 0; background: var(--paper-0); z-index: 2; }
 .dcm__head { cursor: pointer; text-align: center; font-size: 0.78rem; font-weight: 600; color: var(--graphite-800); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 0.2rem; line-height: 1.25; }
-.dcm__code { font-size: 0.66rem; letter-spacing: 0.08em; color: var(--azure-600); }
+.dcm__code { font-size: 0.66rem; letter-spacing: 0.08em; color: var(--azure-700); }
 .dcm__rowhead { cursor: pointer; font-weight: 600; font-size: 0.88rem; display: flex; align-items: center; gap: 0.6rem; position: sticky; left: 0; background: var(--paper-0); z-index: 1; }
-.dcm__n { font-size: 0.72rem; color: var(--azure-600); min-width: 1.4rem; }
+.dcm__n { font-size: 0.72rem; color: var(--azure-700); min-width: 1.4rem; }
 .dcm__dotcell { display: grid; place-items: center; cursor: pointer; }
 .dcm__mark { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--steel-200); background: transparent; }
 .dcm__mark.is-primary { background: var(--azure-500); border-color: var(--azure-500); }
@@ -125,7 +125,7 @@
 .dcm__head:focus-visible, .dcm__rowhead:focus-visible { outline: 2px solid var(--azure-500); outline-offset: -2px; }
 .dcm__detail { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 1rem; align-items: center; margin-top: 1rem; padding: 1rem 1.2rem; background: var(--paper-0); border: 1px solid var(--color-border); min-height: 88px; }
 .dcm__detail img { width: 64px; height: 64px; object-fit: contain; background: var(--titanium-50); }
-.dcm__detail-k { font-size: 0.72rem; color: var(--azure-600); letter-spacing: 0.06em; }
+.dcm__detail-k { font-size: 0.72rem; color: var(--azure-700); letter-spacing: 0.06em; }
 .dcm__detail-t { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin: 0.15rem 0 0.3rem; }
 .dcm__detail p { font-size: 0.88rem; color: var(--steel-600); margin: 0; }
 .dcm__detail-empty { grid-column: 1 / -1; color: var(--steel-500); font-size: 0.9rem; margin: 0; }
@@ -148,7 +148,7 @@
 .dcs__top-t { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; line-height: 1.2; margin: 0.2rem 0; }
 .dcs__top-m { font-size: 0.82rem; color: rgba(255,255,255,0.7); }
 .dcs__alts { font-size: 0.88rem; color: rgba(255,255,255,0.82); line-height: 1.55; margin-bottom: 0.6rem; }
-.dcs__alts a { color: var(--azure-300); }
+.dcs__alts a { color: var(--azure-300); text-decoration: underline; text-underline-offset: 2px; }
 .dcs__actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.1rem; }
 .dcs__none { color: rgba(255,255,255,0.85); line-height: 1.55; margin-top: 1rem; }
 .dcs__note { font-size: 0.75rem; color: rgba(255,255,255,0.55); margin-top: 1.1rem; line-height: 1.5; }
@@ -156,7 +156,7 @@
 /* ---------- Why / docs / FAQ ---------- */
 .dc-why__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
 .dc-why__card { background: var(--paper-0); border: 1px solid var(--color-border); padding: 1.4rem; }
-.dc-why__n { font-size: 0.75rem; color: var(--azure-600); font-weight: 600; letter-spacing: 0.08em; }
+.dc-why__n { font-size: 0.75rem; color: var(--azure-700); font-weight: 600; letter-spacing: 0.08em; }
 .dc-why__card h3 { font-family: var(--font-display); font-size: 1.15rem; margin: 0.6rem 0 0.5rem; }
 .dc-why__card p { color: var(--steel-600); font-size: 0.92rem; line-height: 1.55; margin: 0; }
 .dc-docs__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; }

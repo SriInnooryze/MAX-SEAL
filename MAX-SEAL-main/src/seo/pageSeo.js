@@ -51,8 +51,11 @@ export function dataCentersSeo({ faq = [], products = [] } = {}) {
       mainEntity: faq.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
     },
   ].filter(Boolean);
+  // Hero photo, preloaded in the static HTML so the largest image starts
+  // downloading before the page's JavaScript runs.
+  const hero = { src: '/assets/maxseal/industries/data-centers-1600.webp', srcset: '/assets/maxseal/industries/data-centers-800.webp 800w, /assets/maxseal/industries/data-centers-1600.webp 1600w' };
   return {
-    path, url, title, description, image,
+    path, url, title, description, image, hero,
     keywords: 'data center valves, data center cooling valves, chilled water butterfly valve, chiller isolation valve, condenser water valve, CRAH valve, CDU liquid cooling valve, BMS actuated butterfly valve',
     jsonLd,
   };

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { CATEGORIES, DOCS } from '../data/data';
 import { Phone, Mail, MessageCircle } from '../icons/icons';
 import { routes } from '../router/paths';
-import logo from '../assets/maxseal-logo.png';
+import logo from '../assets/maxseal-logo.webp';
 
 export default function Footer() {
   // The Terms and Conditions footer link opens the PDF the business
@@ -35,14 +35,14 @@ export default function Footer() {
       <div className="wrap foot">
         <div className="foot__top">
           <div className="foot__brand">
-            <img src={logo} alt="Max-Seal" />
+            <img src={logo} alt="Max-Seal" width="300" height="118" />
             <p className="foot__tagline">Highly engineered butterfly valves and automation packages supplied to distributors and industrial teams since 2008.</p>
           </div>
-          <div className="foot__col"><h5>Products</h5>{colProducts.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
-          <div className="foot__col"><h5>Company</h5>{colCompany.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
-          <div className="foot__col"><h5>Resources</h5>{colResources.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
+          <div className="foot__col"><p className="foot__h">Products</p>{colProducts.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
+          <div className="foot__col"><p className="foot__h">Company</p>{colCompany.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
+          <div className="foot__col"><p className="foot__h">Resources</p>{colResources.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}</div>
           <div className="foot__col">
-            <h5>Support</h5>
+            <p className="foot__h">Support</p>
             {colSupport.map(l => <Link key={l.label} to={l.href}>{l.label}</Link>)}
             <div className="foot__contacts">
               <Link to={routes.contact}><Phone size={16} /> Call our team</Link>
